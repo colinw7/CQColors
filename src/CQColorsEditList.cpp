@@ -116,7 +116,7 @@ CQColorsEditList(QWidget *parent) :
     return button;
   };
 
-  QToolButton *upTopButton = addToolButton("upTip", "UP_TOP", SLOT(upTopSlot()));
+  QToolButton *upTopButton = addToolButton("upTop", "UP_TOP", SLOT(upTopSlot()));
   QToolButton *upButton    = addToolButton("up"   , "UP"    , SLOT(upSlot   ()));
   QToolButton *downButton  = addToolButton("down" , "DOWN"  , SLOT(downSlot ()));
   QToolButton *leftButton  = addToolButton("left" , "LEFT"  , SLOT(leftSlot ()));

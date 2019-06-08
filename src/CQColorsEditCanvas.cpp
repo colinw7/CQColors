@@ -53,6 +53,8 @@ init()
   tipText_ = CQUtil::makeLabelWidget<QLabel>(this, "", "tipText");
 
   tipText_->setAutoFillBackground(true);
+
+  hideTipText();
 }
 
 void
@@ -150,20 +152,17 @@ mouseMoveEvent(QMouseEvent *me)
       double dy = mouseData_.movePos.y() - mouseData_.pressPos.y();
 
       moveNearestDefinedColor(nearestData_, dy);
-
-      update();
     }
     else {
       NearestData nearestData;
 
       nearestDefinedColor(mouseData_.movePos, nearestData);
 
-      if (nearestData.i != nearestData_.i || nearestData.c != nearestData_.c) {
+      if (nearestData.i != nearestData_.i || nearestData.c != nearestData_.c)
         nearestData_ = nearestData;
-
-        update();
-      }
     }
+
+    update();
   }
 }
 
@@ -205,11 +204,37 @@ contextMenuEvent(QContextMenuEvent *e)
     return action;
   };
 
+  auto createActionGroup = [](QMenu *menu) {
+    return new QActionGroup(menu);
+  };
+
+  auto addGroupCheckAction = [&](QActionGroup *group, const QString &name, bool checked,
+                                 const char *slotName) {
+    QMenu *menu = qobject_cast<QMenu *>(group->parent());
+
+    QAction *action = new QAction(name, menu);
+
+    action->setCheckable(true);
+    action->setChecked(checked);
+
+    connect(action, SIGNAL(triggered()), this, slotName);
+
+    group->addAction(action);
+
+    return action;
+  };
+
   //---
 
-  addCheckAction(menu, "Lines" , isShowLines (), SLOT(setShowLines (bool)));
-  addCheckAction(menu, "Bars"  , isShowBars  (), SLOT(setShowBars  (bool)));
+  addCheckAction(menu, "Lines", isShowLines(), SLOT(setShowLines(bool)));
+
+  if (! isGray())
+    addCheckAction(menu, "Bars"  , isShowBars(), SLOT(setShowBars(bool)));
+
   addCheckAction(menu, "Points", isShowPoints(), SLOT(setShowPoints(bool)));
+
+  if (! isGray())
+    addCheckAction(menu, "Gray Line", isShowGrayLine(), SLOT(setShowGrayLine(bool)));
 
   //---
 
@@ -222,25 +247,31 @@ contextMenuEvent(QContextMenuEvent *e)
   if (pal) {
     QMenu *valueMenu = addSubMenu(menu, "Bar Value");
 
+    QActionGroup *valueActionGroup = createActionGroup(valueMenu);
+
     if (pal->colorModel() == CQColorsPalette::ColorModel::HSV) {
-      addCheckAction(valueMenu, "Hue"       , showValue() == ShowValue::HUE,
-                     SLOT(setShowHueValue(bool)));
-      addCheckAction(valueMenu, "Saturation", showValue() == ShowValue::SATURATION,
-                     SLOT(setShowSaturationValue(bool)));
-      addCheckAction(valueMenu, "Value"     , showValue() == ShowValue::VALUE,
-                     SLOT(setShowValueValue(bool)));
+      addGroupCheckAction(valueActionGroup, "Hue"       , showValue() == ShowValue::HUE,
+                          SLOT(setShowHueValue()));
+      addGroupCheckAction(valueActionGroup, "Saturation", showValue() == ShowValue::SATURATION,
+                          SLOT(setShowSaturationValue()));
+      addGroupCheckAction(valueActionGroup, "Value"     , showValue() == ShowValue::VALUE,
+                          SLOT(setShowValueValue()));
     }
     else {
-      addCheckAction(valueMenu, "Red"  , showValue() == ShowValue::RED,
-                     SLOT(setShowRedValue(bool)));
-      addCheckAction(valueMenu, "Green", showValue() == ShowValue::GREEN,
-                     SLOT(setShowGreenValue(bool)));
-      addCheckAction(valueMenu, "Blue" , showValue() == ShowValue::BLUE,
-                     SLOT(setShowBlueValue(bool)));
+      addGroupCheckAction(valueActionGroup, "Red"  , showValue() == ShowValue::RED,
+                          SLOT(setShowRedValue()));
+      addGroupCheckAction(valueActionGroup, "Green", showValue() == ShowValue::GREEN,
+                          SLOT(setShowGreenValue()));
+      addGroupCheckAction(valueActionGroup, "Blue" , showValue() == ShowValue::BLUE,
+                          SLOT(setShowBlueValue()));
     }
 
-    addCheckAction(valueMenu, "Gray", showValue() == ShowValue::GRAY,
-                   SLOT(setShowGrayValue(bool)));
+    addGroupCheckAction(valueActionGroup, "Gray", showValue() == ShowValue::GRAY,
+                        SLOT(setShowGrayValue()));
+
+    valueActionGroup->setExclusive(true);
+
+    valueMenu->addActions(valueActionGroup->actions());
   }
 
   //---
@@ -279,6 +310,15 @@ setShowPoints(bool b)
 
 void
 CQColorsEditCanvas::
+setShowGrayLine(bool b)
+{
+  showGrayLine_ = b;
+
+  update();
+}
+
+void
+CQColorsEditCanvas::
 setShowColorBar(bool b)
 {
   showColorBar_ = b;
@@ -297,63 +337,63 @@ setGray(bool b)
 
 void
 CQColorsEditCanvas::
-setShowHueValue(bool b)
+setShowHueValue()
 {
-  showValue_ = (b ? ShowValue::HUE : ShowValue::GRAY);
+  showValue_ = ShowValue::HUE;
 
   update();
 }
 
 void
 CQColorsEditCanvas::
-setShowSaturationValue(bool b)
+setShowSaturationValue()
 {
-  showValue_ = (b ? ShowValue::SATURATION : ShowValue::GRAY);
+  showValue_ = ShowValue::SATURATION;
 
   update();
 }
 
 void
 CQColorsEditCanvas::
-setShowValueValue(bool b)
+setShowValueValue()
 {
-  showValue_ = (b ? ShowValue::VALUE : ShowValue::GRAY);
+  showValue_ = ShowValue::VALUE;
 
   update();
 }
 
 void
 CQColorsEditCanvas::
-setShowRedValue(bool b)
+setShowRedValue()
 {
-  showValue_ = (b ? ShowValue::RED : ShowValue::GRAY);
+  showValue_ = ShowValue::RED;
 
   update();
 }
 
 void
 CQColorsEditCanvas::
-setShowGreenValue(bool b)
+setShowGreenValue()
 {
-  showValue_ = (b ? ShowValue::GREEN : ShowValue::GRAY);
+  showValue_ = ShowValue::GREEN;
 
   update();
 }
 
 void
 CQColorsEditCanvas::
-setShowBlueValue(bool b)
+setShowBlueValue()
 {
-  showValue_ = (b ? ShowValue::BLUE : ShowValue::GRAY);
+  showValue_ = ShowValue::BLUE;
 
   update();
 }
 
 void
 CQColorsEditCanvas::
-setShowGrayValue(bool b)
+setShowGrayValue()
 {
-  showValue_ = (b ? ShowValue::GRAY : ShowValue::GRAY);
+  showValue_ = ShowValue::GRAY;
 
   update();
 }
@@ -709,7 +749,8 @@ paintEvent(QPaintEvent *)
       painter.strokePath(bluePath , bluePen );
     }
 
-    painter.strokePath(blackPath, blackPen);
+    if (isShowGrayLine())
+      painter.strokePath(blackPath, blackPen);
   }
 
   //---
@@ -766,15 +807,28 @@ paintEvent(QPaintEvent *)
     painter.drawLine(QPointF(pxp2, py2), QPointF(pxp1, py2));
     painter.drawLine(QPointF(pxp1, py2), QPointF(pxp1, py1));
 
-    // draw nearest
-    if (nearestData_.i >= 0) {
+    // draw x value
+    {
       double px, py;
 
-      windowToPixel(0.0, nearestData_.x, px, py);
+      windowToPixel(0.0, mouseData_.movePos.x(), px, py);
 
-      painter.setPen(nearestPen);
+      painter.setPen(Qt::white);
 
       painter.drawLine(QPointF(pxp1, py), QPointF(pxp2, py));
+    }
+
+    // draw nearest
+    if (pal->colorType() == CQColorsPalette::ColorType::DEFINED) {
+      if (nearestData_.i >= 0) {
+        double px, py;
+
+        windowToPixel(0.0, nearestData_.x, px, py);
+
+        painter.setPen(nearestPen);
+
+        painter.drawLine(QPointF(pxp1, py), QPointF(pxp2, py));
+      }
     }
   }
 
@@ -790,20 +844,45 @@ paintEvent(QPaintEvent *)
         QColor c1 = c.second;
 
         if (pal->colorModel() == CQColorsPalette::ColorModel::HSV) {
-          drawSymbol(&painter, x, c1.hueF       (),
-                     (nearestData_.i == i && nearestData_.c == 0 ? nearestPen : redPen  ));
-          drawSymbol(&painter, x, c1.saturationF(),
-                     (nearestData_.i == i && nearestData_.c == 1 ? nearestPen : greenPen));
-          drawSymbol(&painter, x, c1.valueF     (),
-                     (nearestData_.i == i && nearestData_.c == 2 ? nearestPen : bluePen ));
+          drawSymbol(&painter, x, c1.hueF       (), redPen  );
+          drawSymbol(&painter, x, c1.saturationF(), greenPen);
+          drawSymbol(&painter, x, c1.valueF     (), bluePen );
         }
         else {
-          drawSymbol(&painter, x, c1.redF  (),
-                     (nearestData_.i == i && nearestData_.c == 0 ? nearestPen : redPen  ));
-          drawSymbol(&painter, x, c1.greenF(),
-                     (nearestData_.i == i && nearestData_.c == 1 ? nearestPen : greenPen));
-          drawSymbol(&painter, x, c1.blueF (),
-                     (nearestData_.i == i && nearestData_.c == 2 ? nearestPen : bluePen ));
+          drawSymbol(&painter, x, c1.redF  (), redPen  );
+          drawSymbol(&painter, x, c1.greenF(), greenPen);
+          drawSymbol(&painter, x, c1.blueF (), bluePen );
+        }
+
+        //---
+
+        if (nearestData_.i == i) {
+          auto rectAt = [&](double xc, double yc) {
+            double s = 5;
+
+            return QRectF(xc - s, yc - s, 2*s, 2*s);
+          };
+
+          auto drawEllipse = [&](double xc, double yc) {
+            double pxc, pyc;
+
+            windowToPixel(xc, yc, pxc, pyc);
+
+            painter.drawEllipse(rectAt(pxc, pyc));
+          };
+
+          painter.setPen(nearestPen);
+
+          if (pal->colorModel() == CQColorsPalette::ColorModel::HSV) {
+            if      (nearestData_.c == 0) drawEllipse(x, c1.hueF       ());
+            else if (nearestData_.c == 1) drawEllipse(x, c1.saturationF());
+            else if (nearestData_.c == 2) drawEllipse(x, c1.valueF     ());
+          }
+          else {
+            if      (nearestData_.c == 0) drawEllipse(x, c1.redF  ());
+            else if (nearestData_.c == 1) drawEllipse(x, c1.greenF());
+            else if (nearestData_.c == 2) drawEllipse(x, c1.blueF ());
+          }
         }
 
         ++i;

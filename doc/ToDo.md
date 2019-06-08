@@ -7,3 +7,4 @@
  + Min/Max, Negate controls on non-model data ?
  + Support indexed palette (1-N colors) with different color values
    + Interp or index select with wrap
+ + Edit x value on graph (reorder to keep x monotonic)

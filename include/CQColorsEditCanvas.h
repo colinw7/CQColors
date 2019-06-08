@@ -13,6 +13,7 @@ class CQColorsEditCanvas : public QFrame {
 
   Q_PROPERTY(bool      showPoints   READ isShowPoints   WRITE setShowPoints  )
   Q_PROPERTY(bool      showLines    READ isShowLines    WRITE setShowLines   )
+  Q_PROPERTY(bool      showGrayLine READ isShowGrayLine WRITE setShowGrayLine)
   Q_PROPERTY(bool      showBars     READ isShowBars     WRITE setShowBars    )
   Q_PROPERTY(bool      showColorBar READ isShowColorBar WRITE setShowColorBar)
   Q_PROPERTY(bool      gray         READ isGray         WRITE setGray        )
@@ -52,6 +53,7 @@ class CQColorsEditCanvas : public QFrame {
 
   bool isShowPoints  () const { return showPoints_  ; }
   bool isShowLines   () const { return showLines_   ; }
+  bool isShowGrayLine() const { return showGrayLine_; }
   bool isShowBars    () const { return showBars_    ; }
   bool isShowColorBar() const { return showColorBar_; }
   bool isGray        () const { return gray_        ; }
@@ -110,21 +112,20 @@ class CQColorsEditCanvas : public QFrame {
   void pixelToWindow(double px, double py, double &wx, double &wy) const;
 
  public slots:
-  void setShowPoints(bool b);
-  void setShowLines (bool b);
-  void setShowBars  (bool b);
-
+  void setShowPoints  (bool b);
+  void setShowLines   (bool b);
+  void setShowGrayLine(bool b);
+  void setShowBars    (bool b);
   void setShowColorBar(bool b);
+  void setGray        (bool b);
 
-  void setGray(bool b);
-
-  void setShowHueValue(bool b);
-  void setShowSaturationValue(bool b);
-  void setShowValueValue(bool b);
-  void setShowRedValue(bool b);
-  void setShowGreenValue(bool b);
-  void setShowBlueValue(bool b);
-  void setShowGrayValue(bool b);
+  void setShowHueValue();
+  void setShowSaturationValue();
+  void setShowValueValue();
+  void setShowRedValue();
+  void setShowGreenValue();
+  void setShowBlueValue();
+  void setShowGrayValue();
 
  private slots:
   void updateSlot();
@@ -146,11 +147,12 @@ class CQColorsEditCanvas : public QFrame {
   NearestData      nearestData_;                       //!< nearest data
   bool             showPoints_    { true };            //!< show points on plot
   bool             showLines_     { true };            //!< show lines on plot
+  bool             showGrayLine_  { true };            //!< show gray line on plot
   bool             showBars_      { false };           //!< show bars on plot
   bool             showColorBar_  { true };            //!< show color bar
   bool             gray_          { false };           //!< is gray
   ShowValue        showValue_     { ShowValue::GRAY }; //!< show value gray
-  QColor           nearestColor_  { Qt::yellow };      //!< nearest color
+  QColor           nearestColor_  { Qt::cyan };        //!< nearest color
 };
 
 #endif

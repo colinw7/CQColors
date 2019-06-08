@@ -1,5 +1,5 @@
-#ifndef CCubeHelix_
-#define CCubeHelix_
+#ifndef CCubeHelix_H
+#define CCubeHelix_H
 
 #include <COSNaN.h>
 
