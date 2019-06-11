@@ -18,6 +18,7 @@
 #include <QHeaderView>
 #include <QCheckBox>
 #include <QItemDelegate>
+#include <QPainter>
 #include <cassert>
 
 CQColorsEditControl::
@@ -95,7 +96,7 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
   // red, green, blue function combos
   CQGroupBox *functionGroupBox = CQUtil::makeLabelWidget<CQGroupBox>("Function", "function");
 
-  functionGroupBox->setContentsMargins(2, fm.height() + 2, 0, 0);
+  //functionGroupBox->setContentsMargins(2, fm.height() + 2, 0, 0);
 
   QGridLayout *functionGroupLayout = CQUtil::makeLayout<QGridLayout>(functionGroupBox, 0, 2);
 
@@ -120,7 +121,7 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
   // red, green, blue negative check boxes
   CQGroupBox *negateGroupBox = CQUtil::makeLabelWidget<CQGroupBox>("Negate", "negate");
 
-  negateGroupBox->setContentsMargins(2, fm.height() + 2, 0, 0);
+  //negateGroupBox->setContentsMargins(2, fm.height() + 2, 0, 0);
 
   QHBoxLayout *negateGroupLayout = CQUtil::makeLayout<QHBoxLayout>(negateGroupBox, 0, 2);
 
@@ -144,7 +145,7 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
   // red, green, blue min/max edits
   CQGroupBox *rangeGroupBox = CQUtil::makeLabelWidget<CQGroupBox>("Range", "range");
 
-  rangeGroupBox->setContentsMargins(2, fm.height() + 2, 0, 0);
+  //rangeGroupBox->setContentsMargins(2, fm.height() + 2, 0, 0);
 
   QHBoxLayout *rangeGroupLayout = CQUtil::makeLayout<QHBoxLayout>(rangeGroupBox, 0, 2);
 
@@ -1121,6 +1122,10 @@ class CQColorsEditDefinedColorsDelegate : public QItemDelegate {
              const QModelIndex &ind) const;
 
  private:
+  void drawColor(QPainter *painter, const QStyleOptionViewItem &option,
+                 const QColor &color, const QModelIndex &index) const;
+
+ private:
   CQColorsEditDefinedColors *colors_;
 };
 
@@ -1144,6 +1149,8 @@ CQColorsEditDefinedColors(QWidget *parent) :
   QHeaderView *header = horizontalHeader();
 
   header->setStretchLastSection(true) ;
+
+  //setSizeAdjustPolicy(QTableWidget::AdjustToContents);
 }
 
 void
@@ -1314,5 +1321,42 @@ paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &
   QTableWidgetItem *item = colors_->item(ind.row(), ind.column());
   assert(item);
 
-  QItemDelegate::paint(painter, option, ind);
+  if (ind.column() == 1) {
+    const CQColorsEditDefinedColors::RealColor &realColor = colors_->realColor(ind.row());
+
+    drawColor(painter, option, realColor.c, ind);
+  }
+  else
+    QItemDelegate::paint(painter, option, ind);
+}
+
+void
+CQColorsEditDefinedColorsDelegate::
+drawColor(QPainter *painter, const QStyleOptionViewItem &option,
+          const QColor &color, const QModelIndex &index) const
+{
+  QItemDelegate::drawBackground(painter, option, index);
+
+  QRect rect = option.rect;
+
+  rect.setWidth(option.rect.height());
+
+  rect.adjust(0, 1, -3, -2);
+
+  painter->fillRect(rect, QBrush(color));
+
+  painter->setPen(QColor(0,0,0)); // TODO: contrast border
+
+  painter->drawRect(rect);
+
+//QFontMetrics fm(painter->font());
+
+  int x = rect.right() + 2;
+//int y = rect.top() + fm.ascent();
+
+  QRect rect1;
+
+  rect1.setCoords(x, option.rect.top(), option.rect.right(), option.rect.bottom());
+
+  QItemDelegate::drawDisplay(painter, option, rect1, color.name());
 }

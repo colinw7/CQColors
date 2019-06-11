@@ -81,6 +81,8 @@ class CQColorsEditCanvas : public QFrame {
 
   QSize sizeHint() const override;
 
+  QSize minimumSizeHint() const override;
+
  private:
   struct NearestData {
     int    i = -1;

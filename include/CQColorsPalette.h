@@ -332,16 +332,33 @@ class CQColorsPalette : public QObject {
  public:
   //! interpolate between two RGB colors
   static QColor interpRGB(const QColor &c1, const QColor &c2, double f) {
-    return QColor::fromRgbF(interpValue(c1.redF  (), c2.redF  (), f),
-                            interpValue(c1.greenF(), c2.greenF(), f),
-                            interpValue(c1.blueF (), c2.blueF (), f));
+    qreal r1, g1, b1, a1;
+    qreal r2, g2, b2, a2;
+
+    c1.getRgbF(&r1, &g1, &b1, &a1);
+    c2.getRgbF(&r2, &g2, &b2, &a2);
+
+    return QColor::fromRgbF(interpValue(r1, r2, f),
+                            interpValue(g1, g2, f),
+                            interpValue(b1, b2, f));
   }
 
   //! interpolate between two HSV colors
   static QColor interpHSV(const QColor &c1, const QColor &c2, double f) {
-    return QColor::fromHsvF(interpValue(c1.hueF       (), c2.hueF       (), f),
-                            interpValue(c1.saturationF(), c2.saturationF(), f),
-                            interpValue(c1.valueF     (), c2.valueF     (), f));
+    qreal h1, s1, v1, a1;
+    qreal h2, s2, v2, a2;
+
+    c1.getHsvF(&h1, &s1, &v1, &a1);
+    c2.getHsvF(&h2, &s2, &v2, &a2);
+
+    // fix invalid hue (gray)
+    if      (h1 < 0 && h2 < 0) { h1 = 0.0; h2 = 0.0; }
+    else if (h1 < 0)           { h1 = h2; }
+    else if (h2 < 0)           { h2 = h1; }
+
+    return QColor::fromHsvF(interpValue(h1, h2, f),
+                            interpValue(s1, s2, f),
+                            interpValue(v1, v2, f));
   }
 
  protected:

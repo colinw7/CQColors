@@ -242,36 +242,38 @@ contextMenuEvent(QContextMenuEvent *e)
 
   //---
 
-  CQColorsPalette *pal = this->palette();
+  if (! isGray()) {
+    CQColorsPalette *pal = this->palette();
 
-  if (pal) {
-    QMenu *valueMenu = addSubMenu(menu, "Bar Value");
+    if (pal) {
+      QMenu *valueMenu = addSubMenu(menu, "Bar Value");
 
-    QActionGroup *valueActionGroup = createActionGroup(valueMenu);
+      QActionGroup *valueActionGroup = createActionGroup(valueMenu);
 
-    if (pal->colorModel() == CQColorsPalette::ColorModel::HSV) {
-      addGroupCheckAction(valueActionGroup, "Hue"       , showValue() == ShowValue::HUE,
-                          SLOT(setShowHueValue()));
-      addGroupCheckAction(valueActionGroup, "Saturation", showValue() == ShowValue::SATURATION,
-                          SLOT(setShowSaturationValue()));
-      addGroupCheckAction(valueActionGroup, "Value"     , showValue() == ShowValue::VALUE,
-                          SLOT(setShowValueValue()));
+      if (pal->colorModel() == CQColorsPalette::ColorModel::HSV) {
+        addGroupCheckAction(valueActionGroup, "Hue"       , showValue() == ShowValue::HUE,
+                            SLOT(setShowHueValue()));
+        addGroupCheckAction(valueActionGroup, "Saturation", showValue() == ShowValue::SATURATION,
+                            SLOT(setShowSaturationValue()));
+        addGroupCheckAction(valueActionGroup, "Value"     , showValue() == ShowValue::VALUE,
+                            SLOT(setShowValueValue()));
+      }
+      else {
+        addGroupCheckAction(valueActionGroup, "Red"  , showValue() == ShowValue::RED,
+                            SLOT(setShowRedValue()));
+        addGroupCheckAction(valueActionGroup, "Green", showValue() == ShowValue::GREEN,
+                            SLOT(setShowGreenValue()));
+        addGroupCheckAction(valueActionGroup, "Blue" , showValue() == ShowValue::BLUE,
+                            SLOT(setShowBlueValue()));
+      }
+
+      addGroupCheckAction(valueActionGroup, "Gray", showValue() == ShowValue::GRAY,
+                          SLOT(setShowGrayValue()));
+
+      valueActionGroup->setExclusive(true);
+
+      valueMenu->addActions(valueActionGroup->actions());
     }
-    else {
-      addGroupCheckAction(valueActionGroup, "Red"  , showValue() == ShowValue::RED,
-                          SLOT(setShowRedValue()));
-      addGroupCheckAction(valueActionGroup, "Green", showValue() == ShowValue::GREEN,
-                          SLOT(setShowGreenValue()));
-      addGroupCheckAction(valueActionGroup, "Blue" , showValue() == ShowValue::BLUE,
-                          SLOT(setShowBlueValue()));
-    }
-
-    addGroupCheckAction(valueActionGroup, "Gray", showValue() == ShowValue::GRAY,
-                        SLOT(setShowGrayValue()));
-
-    valueActionGroup->setExclusive(true);
-
-    valueMenu->addActions(valueActionGroup->actions());
   }
 
   //---
@@ -930,10 +932,14 @@ drawAxis(QPainter *painter)
 
   QString yLabel;
 
-  if (pal && pal->colorModel() == CQColorsPalette::ColorModel::HSV)
-    yLabel = "HSV Value";
+  if (! isGray()) {
+    if (pal && pal->colorModel() == CQColorsPalette::ColorModel::HSV)
+      yLabel = "HSV Value";
+    else
+      yLabel = "RGB Value";
+  }
   else
-    yLabel = "RGB Value";
+    yLabel = "Gray Value";
 
   double tw1 = fm.width(yLabel);
 
@@ -946,10 +952,7 @@ drawAxis(QPainter *painter)
 
   painter->setTransform(t);
 
-  if (pal && pal->colorModel() == CQColorsPalette::ColorModel::HSV)
-    painter->drawText(QPointF(0, 0), "HSV Value");
-  else
-    painter->drawText(QPointF(0, 0), "RGB Value");
+  painter->drawText(QPointF(0, 0), yLabel);
 
   painter->restore();
 }
@@ -1014,4 +1017,11 @@ CQColorsEditCanvas::
 sizeHint() const
 {
   return QSize(600, 600);
+}
+
+QSize
+CQColorsEditCanvas::
+minimumSizeHint() const
+{
+  return QSize(100, 100);
 }
