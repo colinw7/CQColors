@@ -376,8 +376,8 @@ class CQColorsPalette : public QObject {
     std::string fn;
   };
 
-  QString      name_;                               //!< name
-  QString      desc_;                               //!< description
+  QString      name_; //!< name
+  QString      desc_; //!< description
 
   // Color Calculation Type
   ColorType    colorType_     { ColorType::MODEL }; //!< color type
@@ -386,44 +386,42 @@ class CQColorsPalette : public QObject {
   ColorModel   colorModel_    { ColorModel::RGB };  //!< color model
 
   // Model
-  int          rModel_        { 7 };                //!< red model number
-  int          gModel_        { 5 };                //!< green model number
-  int          bModel_        { 15 };               //!< blue model number
-  bool         gray_          { false };            //!< is gray
-  bool         redNegative_   { false };            //!< is red negated
-  bool         greenNegative_ { false };            //!< is green negated
-  bool         blueNegative_  { false };            //!< is blue negated
-  double       redMin_        { 0.0 };              //!< red minimum
-  double       redMax_        { 1.0 };              //!< red maximum
-  double       greenMin_      { 0.0 };              //!< green minimum
-  double       greenMax_      { 1.0 };              //!< green maximum
-  double       blueMin_       { 0.0 };              //!< blue minimum
-  double       blueMax_       { 1.0 };              //!< blue maximum
+  int          rModel_        { 7 };     //!< red model number
+  int          gModel_        { 5 };     //!< green model number
+  int          bModel_        { 15 };    //!< blue model number
+  bool         gray_          { false }; //!< is gray
+  bool         redNegative_   { false }; //!< is red negated
+  bool         greenNegative_ { false }; //!< is green negated
+  bool         blueNegative_  { false }; //!< is blue negated
+  double       redMin_        { 0.0 };   //!< red minimum
+  double       redMax_        { 1.0 };   //!< red maximum
+  double       greenMin_      { 0.0 };   //!< green minimum
+  double       greenMax_      { 1.0 };   //!< green maximum
+  double       blueMin_       { 0.0 };   //!< blue minimum
+  double       blueMax_       { 1.0 };   //!< blue maximum
 
   // Functions
-  ColorFn       rf_;                                //!< red color tcl function
-  ColorFn       gf_;                                //!< green color tcl function
-  ColorFn       bf_;                                //!< blue color tcl function
+  ColorFn       rf_;                       //!< red color tcl function
+  ColorFn       gf_;                       //!< green color tcl function
+  ColorFn       bf_;                       //!< blue color tcl function
+  CQTcl*        qtcl_         { nullptr }; //!< qtcl pointer for functions
 
   // CubeHelix
-  CCubeHelix*   cubeHelix_    { nullptr };          //!< cube helix data
-  bool          cubeNegative_ { false };            //!< is cube helix negated
+  CCubeHelix*   cubeHelix_    { nullptr }; //!< cube helix data
+  bool          cubeNegative_ { false };   //!< is cube helix negated
 
   // Defined
-  DefinedColors definedColors_;                     //!< array of defined colors
-  ColorMap      definedValueColors_;                //!< map of defined colors by value
-  double        definedMin_          { 0.0 };       //!< colors min value (for scaling)
-  double        definedMax_          { 0.0 };       //!< colors max value (for scaling)
-  bool          definedDistinct_     { false };     //!< prefer use distinct colors
+  DefinedColors definedColors_;                 //!< array of defined colors
+  ColorMap      definedValueColors_;            //!< map of defined colors by value
+  double        definedMin_          { 0.0 };   //!< colors min value (for scaling)
+  double        definedMax_          { 0.0 };   //!< colors max value (for scaling)
+  bool          definedDistinct_     { false }; //!< prefer use distinct colors
+  int           defaultNumColors_    { 100 };   //!< default number of colors for interp
 
-  // Misc
-  int           defaultNumColors_     { 100 };      //!< default number of colors
 #if 0
-  double        gamma_         { 1.5 };             //!< gamma value
+  // Misc
+  double        gamma_ { 1.5 }; //!< gamma value
 #endif
-
-  // Tcl
-  CQTcl*        qtcl_          { nullptr };         //!< qtcl pointer
 };
 
 using CQColorsPaletteP = std::unique_ptr<CQColorsPalette>;

@@ -43,14 +43,16 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   //---
 
-  QFrame *colorTypeFrame = createColorTypeCombo("Type", &colorType_);
+  if (! canvas_->isGray()) {
+    QFrame *colorTypeFrame = createColorTypeCombo("Type", &colorType_);
 
-  if (pal)
-    colorType_->setType(pal->colorType());
+    if (pal)
+      colorType_->setType(pal->colorType());
 
-  connect(colorType_, SIGNAL(currentIndexChanged(int)), this, SLOT(colorTypeChanged(int)));
+    connect(colorType_, SIGNAL(currentIndexChanged(int)), this, SLOT(colorTypeChanged(int)));
 
-  controlLayout->addWidget(colorTypeFrame);
+    controlLayout->addWidget(colorTypeFrame);
+  }
 
   //---
 
@@ -65,13 +67,15 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   //---
 
-  distinctCheck_ = CQUtil::makeLabelWidget<QCheckBox>("Distinct", "distinct");
+  if (! canvas_->isGray()) {
+    distinctCheck_ = CQUtil::makeLabelWidget<QCheckBox>("Distinct", "distinct");
 
-  distinctCheck_->setChecked(isDistinct());
+    distinctCheck_->setChecked(isDistinct());
 
-  connect(distinctCheck_, SIGNAL(stateChanged(int)), this, SLOT(distinctChanged(int)));
+    connect(distinctCheck_, SIGNAL(stateChanged(int)), this, SLOT(distinctChanged(int)));
 
-  controlLayout->addWidget(distinctCheck_);
+    controlLayout->addWidget(distinctCheck_);
+  }
 
   //---
 
@@ -84,6 +88,46 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
   //---
 
   stack_ = CQUtil::makeWidget<QStackedWidget>("stack");
+
+  //---
+
+  QFrame *definedFrame = CQUtil::makeWidget<QFrame>("definedFrame");
+
+  QVBoxLayout *definedFrameLayout = CQUtil::makeLayout<QVBoxLayout>(definedFrame, 2, 2);
+
+  definedColors_ = new CQColorsEditDefinedColors;
+
+  if (pal)
+    definedColors_->updateColors(pal);
+
+  definedFrameLayout->addWidget(definedColors_);
+
+  connect(definedColors_, SIGNAL(colorsChanged()), this, SLOT(colorsChanged()));
+
+  QFrame *definedButtonsFrame = CQUtil::makeWidget<QFrame>("definedButtonsFrame");
+
+  QHBoxLayout *definedButtonsLayout = CQUtil::makeLayout<QHBoxLayout>(definedButtonsFrame, 2, 2);
+
+  addColorButton_    = CQUtil::makeLabelWidget<QPushButton>("Add"   , "add"   );
+  removeColorButton_ = CQUtil::makeLabelWidget<QPushButton>("Remove", "remove");
+  loadColorsButton_  = CQUtil::makeLabelWidget<QPushButton>("Load"  , "load"  );
+  saveColorsButton_  = CQUtil::makeLabelWidget<QPushButton>("Save"  , "save"  );
+
+  definedButtonsLayout->addWidget(addColorButton_);
+  definedButtonsLayout->addWidget(removeColorButton_);
+  definedButtonsLayout->addStretch(1);
+  definedButtonsLayout->addWidget(loadColorsButton_);
+  definedButtonsLayout->addWidget(saveColorsButton_);
+  definedButtonsLayout->addStretch(3);
+
+  connect(addColorButton_   , SIGNAL(clicked()), this, SLOT(addColorSlot()));
+  connect(removeColorButton_, SIGNAL(clicked()), this, SLOT(removeColorSlot()));
+  connect(loadColorsButton_ , SIGNAL(clicked()), this, SLOT(loadColorsSlot()));
+  connect(saveColorsButton_ , SIGNAL(clicked()), this, SLOT(saveColorsSlot()));
+
+  definedFrameLayout->addWidget(definedButtonsFrame);
+
+  stack_->addWidget(definedFrame);
 
   //---
 
@@ -195,46 +239,6 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   //---
 
-  QFrame *definedFrame = CQUtil::makeWidget<QFrame>("definedFrame");
-
-  QVBoxLayout *definedFrameLayout = CQUtil::makeLayout<QVBoxLayout>(definedFrame, 2, 2);
-
-  definedColors_ = new CQColorsEditDefinedColors;
-
-  if (pal)
-    definedColors_->updateColors(pal);
-
-  definedFrameLayout->addWidget(definedColors_);
-
-  connect(definedColors_, SIGNAL(colorsChanged()), this, SLOT(colorsChanged()));
-
-  QFrame *definedButtonsFrame = CQUtil::makeWidget<QFrame>("definedButtonsFrame");
-
-  QHBoxLayout *definedButtonsLayout = CQUtil::makeLayout<QHBoxLayout>(definedButtonsFrame, 2, 2);
-
-  addColorButton_    = CQUtil::makeLabelWidget<QPushButton>("Add"   , "add"   );
-  removeColorButton_ = CQUtil::makeLabelWidget<QPushButton>("Remove", "remove");
-  loadColorsButton_  = CQUtil::makeLabelWidget<QPushButton>("Load"  , "load"  );
-  saveColorsButton_  = CQUtil::makeLabelWidget<QPushButton>("Save"  , "save"  );
-
-  definedButtonsLayout->addWidget(addColorButton_);
-  definedButtonsLayout->addWidget(removeColorButton_);
-  definedButtonsLayout->addStretch(1);
-  definedButtonsLayout->addWidget(loadColorsButton_);
-  definedButtonsLayout->addWidget(saveColorsButton_);
-  definedButtonsLayout->addStretch(3);
-
-  connect(addColorButton_   , SIGNAL(clicked()), this, SLOT(addColorSlot()));
-  connect(removeColorButton_, SIGNAL(clicked()), this, SLOT(removeColorSlot()));
-  connect(loadColorsButton_ , SIGNAL(clicked()), this, SLOT(loadColorsSlot()));
-  connect(saveColorsButton_ , SIGNAL(clicked()), this, SLOT(saveColorsSlot()));
-
-  definedFrameLayout->addWidget(definedButtonsFrame);
-
-  stack_->addWidget(definedFrame);
-
-  //---
-
   QFrame *functionsFrame = CQUtil::makeWidget<QFrame>("functionsFrame");
 
   QGridLayout *functionsGridLayout = CQUtil::makeLayout<QGridLayout>(functionsFrame, 2, 2);
@@ -314,7 +318,8 @@ updateState()
   setColorType (pal->colorType ());
   setColorModel(pal->colorModel());
 
-  distinctCheck_->setChecked(pal->isDistinct());
+  if (distinctCheck_)
+    distinctCheck_->setChecked(pal->isDistinct());
 
   setRedModel  (pal->redModel  ());
   setGreenModel(pal->greenModel());
@@ -346,6 +351,8 @@ void
 CQColorsEditControl::
 colorTypeChanged(int)
 {
+  assert(colorType_);
+
   setColorType(colorType_->type());
 }
 
@@ -353,6 +360,8 @@ void
 CQColorsEditControl::
 distinctChanged(int)
 {
+  assert(distinctCheck_);
+
   setDistinct(distinctCheck_->isChecked());
 }
 
@@ -408,22 +417,17 @@ updateColorType()
 {
   CQColorsPalette::ColorType colorType = this->colorType();
 
-  if      (colorType == CQColorsPalette::ColorType::MODEL) {
-    colorType_->setCurrentIndex(0);
-    stack_    ->setCurrentIndex(0);
-  }
-  else if (colorType == CQColorsPalette::ColorType::DEFINED) {
-    colorType_->setCurrentIndex(1);
-    stack_    ->setCurrentIndex(1);
-  }
-  else if (colorType == CQColorsPalette::ColorType::FUNCTIONS) {
-    colorType_->setCurrentIndex(2);
-    stack_    ->setCurrentIndex(2);
-  }
-  else if (colorType == CQColorsPalette::ColorType::CUBEHELIX) {
-    colorType_->setCurrentIndex(3);
-    stack_    ->setCurrentIndex(3);
-  }
+  int ind = 0;
+
+  if      (colorType == CQColorsPalette::ColorType::DEFINED  ) ind = 0;
+  else if (colorType == CQColorsPalette::ColorType::MODEL    ) ind = 1;
+  else if (colorType == CQColorsPalette::ColorType::FUNCTIONS) ind = 2;
+  else if (colorType == CQColorsPalette::ColorType::CUBEHELIX) ind = 3;
+
+  if (colorType_)
+    colorType_->setCurrentIndex(ind);
+
+  stack_->setCurrentIndex(ind);
 }
 
 void
@@ -776,7 +780,8 @@ readFile(const QString &fileName)
 
   definedColors_->updateColors(pal);
 
-  distinctCheck_->setChecked(pal->isDistinct());
+  if (distinctCheck_)
+    distinctCheck_->setChecked(pal->isDistinct());
 }
 
 void
@@ -1011,8 +1016,8 @@ CQColorsEditColorType(QWidget *parent) :
 {
   setObjectName("colorType");
 
-  addItem("Model"     , QVariant(static_cast<int>(CQColorsPalette::ColorType::MODEL    )));
   addItem("Defined"   , QVariant(static_cast<int>(CQColorsPalette::ColorType::DEFINED  )));
+  addItem("Model"     , QVariant(static_cast<int>(CQColorsPalette::ColorType::MODEL    )));
   addItem("Functions" , QVariant(static_cast<int>(CQColorsPalette::ColorType::FUNCTIONS)));
   addItem("Cube Helix", QVariant(static_cast<int>(CQColorsPalette::ColorType::CUBEHELIX)));
 }
