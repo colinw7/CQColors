@@ -20,6 +20,8 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QVBoxLayout>
+#include <QItemDelegate>
+#include <QPainter>
 
 #include <set>
 
@@ -39,6 +41,68 @@ addGridLabelWidget(QGridLayout *playout, const QString &label, QWidget *widget, 
 
 }
 #endif
+
+//---
+
+class CQColorsItemDelegate : public QItemDelegate {
+ public:
+  CQColorsItemDelegate(QListWidget *list) :
+   QItemDelegate(list), list_(list) {
+  }
+
+  void paint(QPainter *painter, const QStyleOptionViewItem &option,
+             const QModelIndex &ind) const {
+    if (ind.column() == 0) {
+      QListWidgetItem *item = list_->item(ind.row());
+      assert(item);
+
+      QString name = item->text();
+
+      CQColorsPalette *palette = CQColorsMgrInst->getNamedPalette(name);
+      assert(palette);
+
+      QItemDelegate::drawBackground(painter, option, ind);
+
+      QRect rect = imageRect(option.rect);
+
+      QImage image = palette->getGradientImage(rect.size());
+
+      painter->drawImage(rect, image);
+
+      int x = rect.right() + 2;
+
+      QRect rect1;
+
+      rect1.setCoords(x, option.rect.top(), option.rect.right(), option.rect.bottom());
+
+      QItemDelegate::drawDisplay(painter, option, rect1, name);
+    }
+    else
+      QItemDelegate::paint(painter, option, ind);
+  }
+
+  QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &ind) const {
+    QSize s = QItemDelegate::sizeHint(option, ind);
+
+    if (ind.column() == 0)
+      s = QSize(imageRect(option.rect).width() + s.width() + 2, s.height());
+
+    return s;
+  }
+
+  QRect imageRect(const QRect &rect) const {
+    QRect rect1 = rect;
+
+    rect1.setWidth(2*rect1.height());
+
+    rect1.adjust(0, 1, -3, -2);
+
+    return rect1;
+  }
+
+ private:
+  QListWidget *list_ { nullptr };
+};
 
 //---
 
@@ -94,6 +158,10 @@ CQColorsEditList(QWidget *parent) :
   currentList_ = CQUtil::makeWidget<QListWidget>("currentList");
 
   currentList_->setToolTip("List of Theme Palettes");
+
+  CQColorsItemDelegate *currentDelegate = new CQColorsItemDelegate(currentList_);
+
+  currentList_->setItemDelegate(currentDelegate);
 
   currentGroupLayout->addWidget(currentList_);
 
@@ -152,6 +220,10 @@ CQColorsEditList(QWidget *parent) :
   allList_ = CQUtil::makeWidget<QListWidget>("allList");
 
   allList_->setToolTip("List of Unused Palettes");
+
+  CQColorsItemDelegate *allDelegate = new CQColorsItemDelegate(allList_);
+
+  allList_->setItemDelegate(allDelegate);
 
   allGroupLayout->addWidget(allList_);
 

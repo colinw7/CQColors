@@ -3,6 +3,7 @@
 #include <CQTclUtil.h>
 #include <CMathUtil.h>
 #include <QLinearGradient>
+#include <QPainter>
 
 CQColorsPalette::
 CQColorsPalette()
@@ -119,6 +120,8 @@ assign(const CQColorsPalette &palette)
   //---
 
   emit colorsChanged();
+
+  gradientImageDirty_ = true;
 }
 
 CQColorsPalette *
@@ -339,6 +342,8 @@ setDefinedColors(const ColorMap &cmap)
     addDefinedColor(c.first, c.second);
 
   emit colorsChanged();
+
+  gradientImageDirty_ = true;
 }
 
 void
@@ -353,6 +358,8 @@ setDefinedColors(const DefinedColors &colors)
     addDefinedColor(c.v, c.c);
 
   emit colorsChanged();
+
+  gradientImageDirty_ = true;
 }
 
 double
@@ -844,6 +851,46 @@ unset()
 #if 0
   gamma_ = 1.5;
 #endif
+}
+
+QImage
+CQColorsPalette::
+getGradientImage(const QSize &size)
+{
+  if (gradientImage_.isNull() || gradientImage_.size() != size) {
+    gradientImage_ = QImage(size, QImage::Format_ARGB32_Premultiplied);
+
+    gradientImageDirty_ = true;
+  }
+
+  if (gradientImageDirty_) {
+    gradientImage_.fill(QColor(0,0,0,0));
+
+    int w = size.width ();
+    int h = size.height();
+
+    if (w > 1) {
+      QPainter painter(&gradientImage_);
+
+      for (int i = 0; i < w; ++i) {
+        double x = i/(w - 1.0);
+
+        QColor c = getColor(x);
+
+        QPen pen(c);
+
+        painter.setPen(pen);
+
+        painter.drawLine(i, 0, i, h - 1);
+      }
+
+      painter.end();
+    }
+
+    gradientImageDirty_ = false;
+  }
+
+  return gradientImage_;
 }
 
 void

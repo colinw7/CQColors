@@ -4,6 +4,8 @@
 #include <QObject>
 #include <QColor>
 #include <QStringList>
+#include <QImage>
+
 #include <string>
 #include <map>
 #include <memory>
@@ -299,6 +301,10 @@ class CQColorsPalette : public QObject {
   //! save file containing defined colors
   bool saveFile(const std::string &filename);
 
+  //---
+
+  QImage getGradientImage(const QSize &size);
+
  private:
   bool readFileLines(const QStringList &lines);
 
@@ -422,6 +428,9 @@ class CQColorsPalette : public QObject {
   // Misc
   double        gamma_ { 1.5 }; //!< gamma value
 #endif
+
+  QImage gradientImage_;               //!< gradient image (of size)
+  bool   gradientImageDirty_ { true }; //!< is gradient image invalid
 };
 
 using CQColorsPaletteP = std::unique_ptr<CQColorsPalette>;
