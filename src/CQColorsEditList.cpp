@@ -51,7 +51,7 @@ class CQColorsItemDelegate : public QItemDelegate {
   }
 
   void paint(QPainter *painter, const QStyleOptionViewItem &option,
-             const QModelIndex &ind) const {
+             const QModelIndex &ind) const override {
     if (ind.column() == 0) {
       QListWidgetItem *item = list_->item(ind.row());
       assert(item);
@@ -81,7 +81,7 @@ class CQColorsItemDelegate : public QItemDelegate {
       QItemDelegate::paint(painter, option, ind);
   }
 
-  QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &ind) const {
+  QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &ind) const override {
     QSize s = QItemDelegate::sizeHint(option, ind);
 
     if (ind.column() == 0)

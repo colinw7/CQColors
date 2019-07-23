@@ -22,65 +22,6 @@ addNamedPalettes()
   addNamedPalette("chromajs" );
   addNamedPalette("distinct1");
   addNamedPalette("distinct2");
-
-#if 0
-  addNamedPalette("default" );
-  addNamedPalette("palette1");
-  addNamedPalette("palette2");
-
-  // multi-color
-  addNamedPalette("accent"  );
-  addNamedPalette("brbg"    );
-  addNamedPalette("dark2"   );
-  addNamedPalette("inferno" );
-  addNamedPalette("jet"     );
-  addNamedPalette("magma"   );
-  addNamedPalette("paired"  );
-  addNamedPalette("parula"  );
-  addNamedPalette("pastel1" );
-  addNamedPalette("pastel2" );
-  addNamedPalette("plasma"  );
-  addNamedPalette("pubugn"  );
-  addNamedPalette("rdylbu"  );
-  addNamedPalette("rdylgn"  );
-  addNamedPalette("set1"    );
-  addNamedPalette("set2"    );
-  addNamedPalette("set3"    );
-  addNamedPalette("spectral");
-  addNamedPalette("viridis" );
-  addNamedPalette("whylrd"  );
-  addNamedPalette("ylgnbu"  );
-
-  // two-color
-  addNamedPalette("gnpu"    );
-  addNamedPalette("moreland");
-  addNamedPalette("piyg"    );
-  addNamedPalette("prgn"    );
-  addNamedPalette("puor"    );
-  addNamedPalette("purd"    );
-  addNamedPalette("rdbu"    );
-  addNamedPalette("rdgy"    );
-  addNamedPalette("rdpu"    );
-
-  // gradient
-  addNamedPalette("reds"    );
-  addNamedPalette("greens"  );
-  addNamedPalette("blues"   );
-  addNamedPalette("oranges" );
-  addNamedPalette("purples" );
-  addNamedPalette("greys"   );
-  addNamedPalette("bugn"    );
-  addNamedPalette("bupu"    );
-  addNamedPalette("chromajs");
-  addNamedPalette("gnbu"    );
-  addNamedPalette("orrd"    );
-  addNamedPalette("pubu"    );
-  addNamedPalette("sand"    );
-  addNamedPalette("ylgn"    );
-  addNamedPalette("ylorbr"  );
-  addNamedPalette("ylorrd"  );
-  addNamedPalette("ylrd"    );
-#endif
 }
 
 CQColorsTheme::
