@@ -25,6 +25,10 @@ CQColorsDefThemes.cpp \
 CQColorsEditCanvas.cpp \
 CQColorsEditControl.cpp \
 CQColorsEditList.cpp \
+CQColorsEditColorModel.cpp \
+CQColorsEditColorType.cpp \
+CQColorsEditDefinedColors.cpp \
+CQColorsEditModel.cpp \
 
 HEADERS += \
 ../include/CQColorsDefPalettes.h \
@@ -36,8 +40,13 @@ HEADERS += \
 ../include/CQColorsEditCanvas.h \
 ../include/CQColorsEditControl.h \
 ../include/CQColorsEditList.h \
+../include/CQColorsEditColorModel.h \
+../include/CQColorsEditColorType.h \
+../include/CQColorsEditDefinedColors.h \
+../include/CQColorsEditModel.h \
 \
 ../include/CCubeHelix.h \
+../include/COrderedMap.h \
 
 DESTDIR     = ../lib
 OBJECTS_DIR = ../obj

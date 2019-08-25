@@ -71,6 +71,7 @@ addNamedPalette(const QString &name, CQColorsPalette *palette)
 
   PaletteData paletteData;
 
+  paletteData.ind      = namedPalettes_.size();
   paletteData.current  = palette;
   paletteData.original = palette->dup();
 
@@ -86,6 +87,38 @@ CQColorsMgr::
 getNamedPalette(const QString &name) const
 {
   auto p = namedPalettes_.find(name);
+
+  if (p == namedPalettes_.end())
+    return nullptr;
+
+  const PaletteData &paletteData = (*p).second;
+
+  return paletteData.current;
+}
+
+int
+CQColorsMgr::
+getNamedPaletteInd(const QString &name) const
+{
+  auto p = namedPalettes_.find(name);
+
+  if (p == namedPalettes_.end())
+    return -1;
+
+  const PaletteData &paletteData = (*p).second;
+
+  return paletteData.ind;
+}
+
+CQColorsPalette *
+CQColorsMgr::
+getIndPalette(int ind) const
+{
+  if (ind < 0) return nullptr;
+
+  auto p = namedPalettes_.begin();
+
+  std::advance(p, ind);
 
   if (p == namedPalettes_.end())
     return nullptr;

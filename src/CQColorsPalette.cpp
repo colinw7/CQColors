@@ -566,7 +566,7 @@ getColor(double x, bool scale) const
 
 double
 CQColorsPalette::
-interpModel(int ind, double x) const
+interpModel(int ind, double x)
 {
   if (ind < 0)
     return interpModel(-ind, 1 - x);

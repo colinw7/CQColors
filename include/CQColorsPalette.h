@@ -248,9 +248,10 @@ class CQColorsPalette : public QObject {
   //! interpolate color at x (if scaled then input x has been adjusted to min/max range)
   QColor getColor(double x, bool scale=false) const;
 
- private:
+  //---
+
   //! interpolate color for model ind and x value
-  double interpModel(int ind, double x) const;
+  static double interpModel(int ind, double x);
 
   //---
 

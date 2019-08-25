@@ -28,6 +28,8 @@ class CQColorsMgr : public QObject {
   void addNamedPalette(const QString &name, CQColorsPalette *palette);
 
   CQColorsPalette *getNamedPalette(const QString &name) const;
+  int getNamedPaletteInd(const QString &name) const;
+  CQColorsPalette *getIndPalette(int ind) const;
 
   void getPaletteNames(QStringList &names) const;
 
@@ -69,6 +71,7 @@ class CQColorsMgr : public QObject {
 
  private:
   struct PaletteData {
+    int              ind      { -1 };
     CQColorsPalette *original { nullptr };
     CQColorsPalette *current  { nullptr };
   };
