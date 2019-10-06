@@ -46,7 +46,6 @@ HEADERS += \
 ../include/CQColorsEditModel.h \
 \
 ../include/CCubeHelix.h \
-../include/COrderedMap.h \
 
 DESTDIR     = ../lib
 OBJECTS_DIR = ../obj
