@@ -88,6 +88,8 @@ class CQColorsEditControl : public QFrame {
   void updateState();
 
  private slots:
+  void updateDefinedState();
+
   void colorTypeChanged(int);
   void colorModelChanged(int);
 

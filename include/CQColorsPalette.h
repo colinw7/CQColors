@@ -213,6 +213,9 @@ class CQColorsPalette : public QObject {
     return definedColors_[i].v;
   }
 
+  // is existing defned color
+  bool isDefinedColor(double v) const;
+
   // add new defined color
   void addDefinedColor(double v, const QColor &c);
 

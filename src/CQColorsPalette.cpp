@@ -292,13 +292,20 @@ setRgbModel(int r, int g, int b)
   bModel_ = b;
 }
 
+bool
+CQColorsPalette::
+isDefinedColor(double v) const
+{
+  return (definedValueColors_.find(v) != definedValueColors_.end());
+}
+
 void
 CQColorsPalette::
 addDefinedColor(double v, const QColor &c)
 {
-  definedColors_.push_back(DefinedColor(v, c));
+  assert(! isDefinedColor(v));
 
-  assert(definedValueColors_.find(v) == definedValueColors_.end());
+  definedColors_.push_back(DefinedColor(v, c));
 
   definedValueColors_[v] = c;
 

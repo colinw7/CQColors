@@ -97,6 +97,8 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   definedColors_ = new CQColorsEditDefinedColors;
 
+  connect(definedColors_, SIGNAL(itemSelectionChanged()), this, SLOT(updateDefinedState()));
+
   if (pal)
     definedColors_->updateColors(pal);
 
@@ -304,6 +306,8 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   //---
 
+  updateDefinedState();
+
   updateColorType ();
   updateColorModel();
 }
@@ -345,6 +349,13 @@ updateState()
   //---
 
   definedColors_->updateColors(pal);
+}
+
+void
+CQColorsEditControl::
+updateDefinedState()
+{
+  removeColorButton_->setEnabled(! definedColors_->selectedItems().empty());
 }
 
 void
@@ -671,11 +682,13 @@ addColorSlot()
   double x = 0.5;
   QColor c = QColor(127, 127, 127);
 
+  int nc = colors.size();
+
   int row1 = -1;
 
-  if      (row + 1 < int(colors.size()))
+  if      (row + 1 < nc)
     row1 = row;
-  else if (row < int(colors.size()) && row > 0)
+  else if (row < nc && row > 0)
     row1 = row - 1;
 
   if (row1 >= 0) {
@@ -692,12 +705,28 @@ addColorSlot()
 
     x = (x1 + x2)/2;
 
-    if      (pal->colorModel() == CQColorsPalette::ColorModel::RGB)
-      c = CQColorsPalette::interpRGB(c1, c2, 0.5);
-    else if (pal->colorModel() == CQColorsPalette::ColorModel::HSV)
+    if (pal->colorModel() == CQColorsPalette::ColorModel::HSV)
       c = CQColorsPalette::interpHSV(c1, c2, 0.5);
     else
       c = CQColorsPalette::interpRGB(c1, c2, 0.5);
+  }
+  else {
+    if (nc == 1) {
+      auto p = colors.begin();
+
+      double        x1 = (*p).first;
+      const QColor &c1 = (*p).second;
+
+      if (x1 != 1.0)
+        x = (x1 + 1.0)/2;
+
+      QColor c2 = QColor(255, 255, 255);
+
+      if (pal->colorModel() == CQColorsPalette::ColorModel::HSV)
+        c = CQColorsPalette::interpHSV(c1, c2, 0.5);
+      else
+        c = CQColorsPalette::interpRGB(c1, c2, 0.5);
+    }
   }
 
   pal->addDefinedColor(x, c);
@@ -725,11 +754,13 @@ removeColorSlot()
 
   CQColorsPalette::ColorMap colors1;
 
-  int nc = colors.size();
+  int i = 0;
 
-  for (int i = 0; i < nc; ++i) {
+  for (const auto &pc : colors) {
     if (i != row)
-      colors1[i] = colors[i];
+      colors1[pc.first] = pc.second;
+
+    ++i;
   }
 
   pal->setDefinedColors(colors1);
