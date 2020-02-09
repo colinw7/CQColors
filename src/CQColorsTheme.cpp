@@ -42,6 +42,8 @@ void
 CQColorsTheme::
 setPalette(int i, CQColorsPalette *palette)
 {
+  assert(palette);
+
   // validate destination position
   int n = palettes_.size();
   assert(i >= 0 && i < n);
@@ -102,7 +104,10 @@ void
 CQColorsTheme::
 setNamedPalette(int i, const QString &name)
 {
-  setPalette(i, CQColorsMgrInst->getNamedPalette(name));
+  CQColorsPalette *palette = CQColorsMgrInst->getNamedPalette(name);
+  assert(palette);
+
+  setPalette(i, palette);
 }
 
 void
