@@ -237,6 +237,10 @@ class CQColorsPalette : public QObject {
   bool isDistinct() const { return definedDistinct_; }
   void setDistinct(bool b) { definedDistinct_ = b; }
 
+  // are defined colors inverted
+  bool isInverted() const { return definedInverted_; }
+  void setInverted(bool b) { definedInverted_ = b; }
+
   //---
 
   // get/set default value for number of colors
@@ -426,6 +430,7 @@ class CQColorsPalette : public QObject {
   double        definedMin_          { 0.0 };   //!< colors min value (for scaling)
   double        definedMax_          { 0.0 };   //!< colors max value (for scaling)
   bool          definedDistinct_     { false }; //!< prefer use distinct colors
+  bool          definedInverted_     { false }; //!< invert color order
   int           defaultNumColors_    { 100 };   //!< default number of colors for interp
 
 #if 0

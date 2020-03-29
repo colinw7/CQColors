@@ -45,6 +45,10 @@ class CQColorsEditControl : public QFrame {
   bool isDistinct() const;
   void setDistinct(bool b);
 
+  //! get/set inverted
+  bool isInverted() const;
+  void setInverted(bool b);
+
   //! get/set red model
   int redModel() const;
   void setRedModel(int mode);
@@ -94,6 +98,7 @@ class CQColorsEditControl : public QFrame {
   void colorModelChanged(int);
 
   void distinctChanged(int);
+  void invertedChanged(int);
 
   void modelChanged(int);
 
@@ -140,6 +145,7 @@ class CQColorsEditControl : public QFrame {
   CQColorsEditColorType*     colorType_           { nullptr };
   CQColorsEditColorModel*    colorModel_          { nullptr };
   QCheckBox*                 distinctCheck_       { nullptr };
+  QCheckBox*                 invertedCheck_       { nullptr };
   QStackedWidget*            stack_               { nullptr };
   QLabel*                    redModelLabel_       { nullptr };
   CQColorsEditModel*         redModelCombo_       { nullptr };

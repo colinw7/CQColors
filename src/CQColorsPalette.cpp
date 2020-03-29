@@ -100,6 +100,7 @@ assign(const CQColorsPalette &palette)
   definedMax_ = palette.definedMax_;
 
   definedDistinct_ = palette.definedDistinct_;
+  definedInverted_ = palette.definedInverted_;
 
   // Misc
   defaultNumColors_ = palette.defaultNumColors_;
@@ -341,7 +342,7 @@ void
 CQColorsPalette::
 setDefinedColors(const ColorMap &cmap)
 {
-  setColorType(CQColorsPalette::ColorType::DEFINED);
+  setColorType(ColorType::DEFINED);
 
   resetDefinedColors();
 
@@ -357,7 +358,7 @@ void
 CQColorsPalette::
 setDefinedColors(const DefinedColors &colors)
 {
-  setColorType(CQColorsPalette::ColorType::DEFINED);
+  setColorType(ColorType::DEFINED);
 
   resetDefinedColors();
 
@@ -396,6 +397,9 @@ getColor(int i, int n, WrapMode wrapMode) const
 
     if (nc <= 0)
       return QColor();
+
+    if (definedInverted_)
+      i = n - 1 - i;
 
     if      (wrapMode == WrapMode::REPEAT) {
       while (i < 0)
@@ -461,6 +465,9 @@ getColor(double x, bool scale) const
 
     if (scale)
       x = mapDefinedColorX(x);
+
+    if (definedInverted_)
+      x = 1.0 - x;
 
     auto p = definedValueColors_.begin();
 
@@ -763,7 +770,7 @@ readFileLines(const QStringList &lines)
 
   //---
 
-  setColorType(CQColorsPalette::ColorType::DEFINED);
+  setColorType(ColorType::DEFINED);
 
   resetDefinedColors();
 

@@ -422,6 +422,9 @@ nearestDefinedColor(const QPointF &p, NearestData &nearestData)
   for (const auto &c : pal->definedValueColors()) {
     double x = pal->mapDefinedColorX(c.first);
 
+    if (pal->isInverted())
+      x = 1.0 - x;
+
     const QColor &c1 = c.second;
 
     if (! isGray()) {
@@ -614,6 +617,9 @@ paintEvent(QPaintEvent *)
 
     for (int i = 0; i < nx; ++i) {
       double x = pal->mapDefinedColorX(pal->definedColorValue(i));
+
+      if (pal->isInverted())
+        x = 1.0 - x;
 
       xvalues[i] = x;
     }
@@ -811,9 +817,11 @@ paintEvent(QPaintEvent *)
 
     // draw x value
     {
+      double mx = mouseData_.movePos.x();
+
       double px, py;
 
-      windowToPixel(0.0, mouseData_.movePos.x(), px, py);
+      windowToPixel(0.0, mx, px, py);
 
       painter.setPen(Qt::white);
 
@@ -823,6 +831,8 @@ paintEvent(QPaintEvent *)
     // draw nearest
     if (pal->colorType() == CQColorsPalette::ColorType::DEFINED) {
       if (nearestData_.i >= 0) {
+        double nx = nearestData_.x;
+
         double px, py;
 
         windowToPixel(0.0, nearestData_.x, px, py);
@@ -842,7 +852,11 @@ paintEvent(QPaintEvent *)
       int i = 0;
 
       for (const auto &c : pal->definedValueColors()) {
-        double x  = pal->mapDefinedColorX(c.first);
+        double x = pal->mapDefinedColorX(c.first);
+
+        if (pal->isInverted())
+          x = 1.0 - x;
+
         QColor c1 = c.second;
 
         if (pal->colorModel() == CQColorsPalette::ColorModel::HSV) {

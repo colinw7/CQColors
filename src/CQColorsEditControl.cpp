@@ -33,13 +33,13 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   //---
 
-  QVBoxLayout *layout = CQUtil::makeLayout<QVBoxLayout>(this, 2, 2);
+  auto *layout = CQUtil::makeLayout<QVBoxLayout>(this, 2, 2);
 
   CQColorsPalette *pal = canvas_->palette();
 
   //---
 
-  QHBoxLayout *controlLayout = CQUtil::makeLayout<QHBoxLayout>(2, 2);
+  auto *controlLayout = CQUtil::makeLayout<QHBoxLayout>(2, 2);
 
   //---
 
@@ -75,6 +75,16 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
     connect(distinctCheck_, SIGNAL(stateChanged(int)), this, SLOT(distinctChanged(int)));
 
     controlLayout->addWidget(distinctCheck_);
+
+    //---
+
+    invertedCheck_ = CQUtil::makeLabelWidget<QCheckBox>("Inverted", "inverted");
+
+    invertedCheck_->setChecked(isInverted());
+
+    connect(invertedCheck_, SIGNAL(stateChanged(int)), this, SLOT(invertedChanged(int)));
+
+    controlLayout->addWidget(invertedCheck_);
   }
 
   //---
@@ -91,9 +101,8 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   //---
 
-  QFrame *definedFrame = CQUtil::makeWidget<QFrame>("definedFrame");
-
-  QVBoxLayout *definedFrameLayout = CQUtil::makeLayout<QVBoxLayout>(definedFrame, 2, 2);
+  auto *definedFrame       = CQUtil::makeWidget<QFrame>("definedFrame");
+  auto *definedFrameLayout = CQUtil::makeLayout<QVBoxLayout>(definedFrame, 2, 2);
 
   definedColors_ = new CQColorsEditDefinedColors;
 
@@ -106,9 +115,8 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   connect(definedColors_, SIGNAL(colorsChanged()), this, SLOT(colorsChanged()));
 
-  QFrame *definedButtonsFrame = CQUtil::makeWidget<QFrame>("definedButtonsFrame");
-
-  QHBoxLayout *definedButtonsLayout = CQUtil::makeLayout<QHBoxLayout>(definedButtonsFrame, 2, 2);
+  auto *definedButtonsFrame  = CQUtil::makeWidget<QFrame>("definedButtonsFrame");
+  auto *definedButtonsLayout = CQUtil::makeLayout<QHBoxLayout>(definedButtonsFrame, 2, 2);
 
   addColorButton_    = CQUtil::makeLabelWidget<QPushButton>("Add"   , "add"   );
   removeColorButton_ = CQUtil::makeLabelWidget<QPushButton>("Remove", "remove");
@@ -133,18 +141,16 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   //---
 
-  QFrame *modelFrame = CQUtil::makeWidget<QFrame>("modelFrame");
-
-  QVBoxLayout *modelLayout = CQUtil::makeLayout<QVBoxLayout>(modelFrame, 2, 2);
+  auto *modelFrame  = CQUtil::makeWidget<QFrame>("modelFrame");
+  auto *modelLayout = CQUtil::makeLayout<QVBoxLayout>(modelFrame, 2, 2);
 
   //---
 
   // red, green, blue function combos
-  CQGroupBox *functionGroupBox = CQUtil::makeLabelWidget<CQGroupBox>("Function", "function");
+  auto *functionGroupBox    = CQUtil::makeLabelWidget<CQGroupBox>("Function", "function");
+  auto *functionGroupLayout = CQUtil::makeLayout<QGridLayout>(functionGroupBox, 0, 2);
 
   //functionGroupBox->setContentsMargins(2, fm.height() + 2, 0, 0);
-
-  QGridLayout *functionGroupLayout = CQUtil::makeLayout<QGridLayout>(functionGroupBox, 0, 2);
 
   modelLayout->addWidget(functionGroupBox);
 
@@ -165,11 +171,10 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
   //---
 
   // red, green, blue negative check boxes
-  CQGroupBox *negateGroupBox = CQUtil::makeLabelWidget<CQGroupBox>("Negate", "negate");
+  auto *negateGroupBox    = CQUtil::makeLabelWidget<CQGroupBox>("Negate", "negate");
+  auto *negateGroupLayout = CQUtil::makeLayout<QHBoxLayout>(negateGroupBox, 0, 2);
 
   //negateGroupBox->setContentsMargins(2, fm.height() + 2, 0, 0);
-
-  QHBoxLayout *negateGroupLayout = CQUtil::makeLayout<QHBoxLayout>(negateGroupBox, 0, 2);
 
   modelLayout->addWidget(negateGroupBox);
 
@@ -189,15 +194,14 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
   //---
 
   // red, green, blue min/max edits
-  CQGroupBox *rangeGroupBox = CQUtil::makeLabelWidget<CQGroupBox>("Range", "range");
+  auto *rangeGroupBox    = CQUtil::makeLabelWidget<CQGroupBox>("Range", "range");
+  auto *rangeGroupLayout = CQUtil::makeLayout<QHBoxLayout>(rangeGroupBox, 0, 2);
 
   //rangeGroupBox->setContentsMargins(2, fm.height() + 2, 0, 0);
 
-  QHBoxLayout *rangeGroupLayout = CQUtil::makeLayout<QHBoxLayout>(rangeGroupBox, 0, 2);
-
   modelLayout->addWidget(rangeGroupBox);
 
-  QGridLayout *rangeGridLayout = CQUtil::makeLayout<QGridLayout>(2, 2);
+  auto *rangeGridLayout = CQUtil::makeLayout<QGridLayout>(2, 2);
 
   redMinMaxLabel_   = CQUtil::makeLabelWidget<QLabel>("R", "r");
   greenMinMaxLabel_ = CQUtil::makeLabelWidget<QLabel>("G", "g");
@@ -241,9 +245,8 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   //---
 
-  QFrame *functionsFrame = CQUtil::makeWidget<QFrame>("functionsFrame");
-
-  QGridLayout *functionsGridLayout = CQUtil::makeLayout<QGridLayout>(functionsFrame, 2, 2);
+  auto *functionsFrame      = CQUtil::makeWidget<QFrame>("functionsFrame");
+  auto *functionsGridLayout = CQUtil::makeLayout<QGridLayout>(functionsFrame, 2, 2);
 
   createFunctionEdit(functionsGridLayout, 0, "R", &redFunctionLabel_  , &redFunctionEdit_  );
   createFunctionEdit(functionsGridLayout, 1, "G", &greenFunctionLabel_, &greenFunctionEdit_);
@@ -265,9 +268,8 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   //---
 
-  QFrame *cubeFrame = CQUtil::makeWidget<QFrame>("cubeFrame");
-
-  QGridLayout *cubeGridLayout = CQUtil::makeLayout<QGridLayout>(cubeFrame, 2, 2);
+  auto *cubeFrame      = CQUtil::makeWidget<QFrame>("cubeFrame");
+  auto *cubeGridLayout = CQUtil::makeLayout<QGridLayout>(cubeFrame, 2, 2);
 
   createRealEdit(cubeGridLayout, 0, "Start"     , &cubeStart_     );
   createRealEdit(cubeGridLayout, 1, "Cycles"    , &cubeCycles_    );
@@ -325,6 +327,9 @@ updateState()
   if (distinctCheck_)
     distinctCheck_->setChecked(pal->isDistinct());
 
+  if (invertedCheck_)
+    invertedCheck_->setChecked(pal->isInverted());
+
   setRedModel  (pal->redModel  ());
   setGreenModel(pal->greenModel());
   setBlueModel (pal->blueModel ());
@@ -376,6 +381,15 @@ distinctChanged(int)
   setDistinct(distinctCheck_->isChecked());
 }
 
+void
+CQColorsEditControl::
+invertedChanged(int)
+{
+  assert(invertedCheck_);
+
+  setInverted(invertedCheck_->isChecked());
+}
+
 CQColorsPalette::ColorType
 CQColorsEditControl::
 colorType() const
@@ -418,6 +432,28 @@ setDistinct(bool b)
   if (! pal) return;
 
   pal->setDistinct(b);
+
+  emit stateChanged();
+}
+
+bool
+CQColorsEditControl::
+isInverted() const
+{
+  CQColorsPalette *pal = canvas_->palette();
+  if (! pal) return false;
+
+  return pal->isInverted();
+}
+
+void
+CQColorsEditControl::
+setInverted(bool b)
+{
+  CQColorsPalette *pal = canvas_->palette();
+  if (! pal) return;
+
+  pal->setInverted(b);
 
   emit stateChanged();
 }
@@ -813,6 +849,9 @@ readFile(const QString &fileName)
 
   if (distinctCheck_)
     distinctCheck_->setChecked(pal->isDistinct());
+
+  if (invertedCheck_)
+    invertedCheck_->setChecked(pal->isInverted());
 }
 
 void
@@ -953,13 +992,12 @@ QFrame *
 CQColorsEditControl::
 createColorTypeCombo(const QString &label, CQColorsEditColorType **type)
 {
-  QFrame *frame = CQUtil::makeWidget<QFrame>("frame");
-
-  QHBoxLayout *layout = CQUtil::makeLayout<QHBoxLayout>(frame, 2, 2);
+  auto *frame  = CQUtil::makeWidget<QFrame>("frame");
+  auto *layout = CQUtil::makeLayout<QHBoxLayout>(frame, 2, 2);
 
   *type = new CQColorsEditColorType;
 
-  QLabel *colorLabel = CQUtil::makeLabelWidget<QLabel>(label, "labe;");
+  auto *colorLabel = CQUtil::makeLabelWidget<QLabel>(label, "labe;");
 
   layout->addWidget(colorLabel);
   layout->addWidget(*type);
@@ -972,13 +1010,12 @@ QFrame *
 CQColorsEditControl::
 createColorModelCombo(const QString &label, CQColorsEditColorModel **model)
 {
-  QFrame *frame = CQUtil::makeWidget<QFrame>("frame");
-
-  QHBoxLayout *layout = CQUtil::makeLayout<QHBoxLayout>(frame, 2, 2);
+  auto *frame  = CQUtil::makeWidget<QFrame>("frame");
+  auto *layout = CQUtil::makeLayout<QHBoxLayout>(frame, 2, 2);
 
   *model = new CQColorsEditColorModel;
 
-  QLabel *colorLabel = CQUtil::makeLabelWidget<QLabel>(label, "label");
+  auto *colorLabel = CQUtil::makeLabelWidget<QLabel>(label, "label");
 
   layout->addWidget(colorLabel);
   layout->addWidget(*model);
@@ -1030,7 +1067,7 @@ createRealEdit(QGridLayout *grid, int row, int col, bool stretch,
 {
   *edit = CQUtil::makeWidget<CQRealSpin>("spin");
 
-  QLabel *editLabel = CQUtil::makeLabelWidget<QLabel>(label, "label");
+  auto *editLabel = CQUtil::makeLabelWidget<QLabel>(label, "label");
 
   grid->addWidget(editLabel, row, col);
   grid->addWidget(*edit    , row, col + 1);
