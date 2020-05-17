@@ -835,7 +835,7 @@ paintEvent(QPaintEvent *)
 
         double px, py;
 
-        windowToPixel(0.0, nearestData_.x, px, py);
+        windowToPixel(0.0, nx, px, py);
 
         painter.setPen(nearestPen);
 
