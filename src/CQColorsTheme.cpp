@@ -22,6 +22,7 @@ addNamedPalettes()
   addNamedPalette("chromajs" );
   addNamedPalette("distinct1");
   addNamedPalette("distinct2");
+  addNamedPalette("red_green");
 }
 
 CQColorsTheme::

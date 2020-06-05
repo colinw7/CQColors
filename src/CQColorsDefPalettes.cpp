@@ -1476,9 +1476,9 @@ class CQColorsPalettePurples : public CQColorsDefinedPalette {
   }
 };
 
-class CQColorsPaletteRdbu : public CQColorsDefinedPalette {
+class CQColorsPaletteRedBlue : public CQColorsDefinedPalette {
  public:
-  CQColorsPaletteRdbu() {
+  CQColorsPaletteRedBlue() {
     addDefinedColor(0.0, QColor("#B2182B"));
     addDefinedColor(1.0, QColor("#D6604D"));
     addDefinedColor(2.0, QColor("#F4A582"));
@@ -1487,6 +1487,22 @@ class CQColorsPaletteRdbu : public CQColorsDefinedPalette {
     addDefinedColor(5.0, QColor("#92C5DE"));
     addDefinedColor(6.0, QColor("#4393C3"));
     addDefinedColor(7.0, QColor("#2166AC"));
+  }
+};
+
+class CQColorsPaletteRedGreen : public CQColorsDefinedPalette {
+ public:
+  CQColorsPaletteRedGreen() {
+    int n = 0;
+
+    addRGBColor(n++, 0.918181, 0.094118, 0.132219);
+    addRGBColor(n++, 0.912047, 0.376471, 0.148028);
+    addRGBColor(n++, 0.867491, 0.605676, 0.163867);
+    addRGBColor(n++, 0.813397, 0.762829, 0.172946);
+    addRGBColor(n++, 0.697124, 0.861631, 0.183108);
+    addRGBColor(n++, 0.508003, 0.928130, 0.190311);
+    addRGBColor(n++, 0.309102, 0.965438, 0.200290);
+    addRGBColor(n++, 0.069825, 0.980972, 0.209415);
   }
 };
 
@@ -2167,7 +2183,8 @@ addPalettes(CQColorsMgr *mgr)
   mgr->addNamedPalette("pink_yellowgreen", new CQColorsPalettePiyg    );
   mgr->addNamedPalette("orange_purple"   , new CQColorsPalettePuor    );
   mgr->addNamedPalette("red_gray"        , new CQColorsPaletteRdgy    );
-  mgr->addNamedPalette("red_blue"        , new CQColorsPaletteRdbu    );
+  mgr->addNamedPalette("red_blue"        , new CQColorsPaletteRedBlue );
+  mgr->addNamedPalette("red_green"       , new CQColorsPaletteRedGreen);
   mgr->addNamedPalette("red_yellow_blue" , new CQColorsPaletteRdylbu  );
 //mgr->addNamedPalette("red_yellow_green", new CQColorsPaletteRdylgn  ); // same as spectral
   mgr->addNamedPalette("spectral"        , new CQColorsPaletteSpectral);
