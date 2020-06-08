@@ -106,17 +106,17 @@ class CQColorsPaletteBrbg : public CQColorsDefinedPalette {
   }
 };
 
-class CQColorsPaletteBugn : public CQColorsDefinedPalette {
+class CQColorsPaletteDarkGreens : public CQColorsDefinedPalette {
  public:
-  CQColorsPaletteBugn() {
-    addDefinedColor(0.0, QColor("#F7FCFD"));
-    addDefinedColor(1.0, QColor("#E5F5F9"));
-    addDefinedColor(2.0, QColor("#CCECE6"));
-    addDefinedColor(3.0, QColor("#99D8C9"));
-    addDefinedColor(4.0, QColor("#66C2A4"));
-    addDefinedColor(5.0, QColor("#41AE76"));
-    addDefinedColor(6.0, QColor("#238B45"));
-    addDefinedColor(7.0, QColor("#005824"));
+  CQColorsPaletteDarkGreens() {
+    addDefinedColor(0.0, QColor("#F4FFF9"));
+    addDefinedColor(1.0, QColor("#DFF5EB"));
+    addDefinedColor(2.0, QColor("#C2E9B5"));
+    addDefinedColor(3.0, QColor("#99D8B4"));
+    addDefinedColor(4.0, QColor("#6EC48D"));
+    addDefinedColor(5.0, QColor("#47AC66"));
+    addDefinedColor(6.0, QColor("#238E40"));
+    addDefinedColor(7.0, QColor("#00671B"));
   }
 };
 
@@ -1420,17 +1420,17 @@ class CQColorsPalettePubugn : public CQColorsDefinedPalette {
   }
 };
 
-class CQColorsPalettePubu : public CQColorsDefinedPalette {
+class CQColorsPaletteDarkBlues : public CQColorsDefinedPalette {
  public:
-  CQColorsPalettePubu() {
-    addDefinedColor(0.0, QColor("#FFF7FB"));
-    addDefinedColor(1.0, QColor("#ECE7F2"));
-    addDefinedColor(2.0, QColor("#D0D1E6"));
-    addDefinedColor(3.0, QColor("#A6BDDB"));
-    addDefinedColor(4.0, QColor("#74A9CF"));
-    addDefinedColor(5.0, QColor("#3690C0"));
-    addDefinedColor(6.0, QColor("#0570B0"));
-    addDefinedColor(7.0, QColor("#034E7B"));
+  CQColorsPaletteDarkBlues() {
+    addDefinedColor(0.0, QColor("#F6FCFF"));
+    addDefinedColor(1.0, QColor("#E4E7F2"));
+    addDefinedColor(2.0, QColor("#CBD7E6"));
+    addDefinedColor(3.0, QColor("#A6BFDB"));
+    addDefinedColor(4.0, QColor("#74A2CF"));
+    addDefinedColor(5.0, QColor("#4883C0"));
+    addDefinedColor(6.0, QColor("#245DAA"));
+    addDefinedColor(7.0, QColor("#0A398C"));
   }
 };
 
@@ -2146,71 +2146,74 @@ CQColorsDefPalettes::
 addPalettes(CQColorsMgr *mgr)
 {
   // basic palettes
-  mgr->addNamedPalette("default", new CQColorsDefaultPalette);
-
+  mgr->addNamedPalette("default" , new CQColorsDefaultPalette);
   mgr->addNamedPalette("palette1", new CQColorsPalette1);
   mgr->addNamedPalette("palette2", new CQColorsPalette2);
 
-  // multi-color
+  // distinct palettes
+  mgr->addNamedPalette("distinct1", new CQColorsPaletteDistinct1);
+  mgr->addNamedPalette("distinct2", new CQColorsPaletteDistinct2);
+
+  // multi-color/color sets
   mgr->addNamedPalette("set1"   , new CQColorsPaletteSet1   );
   mgr->addNamedPalette("set2"   , new CQColorsPaletteSet2   );
   mgr->addNamedPalette("set3"   , new CQColorsPaletteSet3   );
   mgr->addNamedPalette("pastel1", new CQColorsPalettePastel1);
   mgr->addNamedPalette("pastel2", new CQColorsPalettePastel2);
 
-  // distinct
-  mgr->addNamedPalette("distinct1", new CQColorsPaletteDistinct1);
-  mgr->addNamedPalette("distinct2", new CQColorsPaletteDistinct2);
-
-  // more multi-color
-  mgr->addNamedPalette("dark2"    , new CQColorsPaletteDark2   );
-  mgr->addNamedPalette("paired"   , new CQColorsPalettePaired  );
-  mgr->addNamedPalette("accent"   , new CQColorsPaletteAccent  );
-  mgr->addNamedPalette("jet"      , new CQColorsPaletteJet     );
-  mgr->addNamedPalette("rgb_range", new CQColorsPaletteRGBRange);
-  mgr->addNamedPalette("viridis"  , new CQColorsPaletteViridis );
-  mgr->addNamedPalette("parula"   , new CQColorsPaletteParula  );
-  mgr->addNamedPalette("moreland" , new CQColorsPaletteMoreland);
-  mgr->addNamedPalette("sand"     , new CQColorsPaletteSand    );
+  // mutli-color/spectrum
   mgr->addNamedPalette("plasma"   , new CQColorsPalettePlasma  );
 //mgr->addNamedPalette("inferno"  , new CQColorsPaletteInferno ); // same as magma
   mgr->addNamedPalette("magma"    , new CQColorsPaletteMagma   );
+  mgr->addNamedPalette("spectral" , new CQColorsPaletteSpectral);
+  mgr->addNamedPalette("viridis"  , new CQColorsPaletteViridis );
+  mgr->addNamedPalette("rgb_range", new CQColorsPaletteRGBRange);
+  mgr->addNamedPalette("jet"      , new CQColorsPaletteJet     );
+  mgr->addNamedPalette("accent"   , new CQColorsPaletteAccent  );
+  mgr->addNamedPalette("paired"   , new CQColorsPalettePaired  );
+  mgr->addNamedPalette("dark2"    , new CQColorsPaletteDark2   );
+
+  // more multi-color
+  mgr->addNamedPalette("parula"  , new CQColorsPaletteParula  ); // blue green yellow
+  mgr->addNamedPalette("moreland", new CQColorsPaletteMoreland); // blue white red
+  mgr->addNamedPalette("sand"    , new CQColorsPaletteSand    );
 
   // two-color (ish)
   mgr->addNamedPalette("green_purple"    , new CQColorsPaletteGnpu    );
   mgr->addNamedPalette("purple_green"    , new CQColorsPalettePrgn    );
   mgr->addNamedPalette("brown_bluegreen" , new CQColorsPaletteBrbg    );
-  mgr->addNamedPalette("pink_yellowgreen", new CQColorsPalettePiyg    );
+  mgr->addNamedPalette("pink_white_green", new CQColorsPalettePiyg    );
   mgr->addNamedPalette("orange_purple"   , new CQColorsPalettePuor    );
   mgr->addNamedPalette("red_gray"        , new CQColorsPaletteRdgy    );
   mgr->addNamedPalette("red_blue"        , new CQColorsPaletteRedBlue );
   mgr->addNamedPalette("red_green"       , new CQColorsPaletteRedGreen);
   mgr->addNamedPalette("red_yellow_blue" , new CQColorsPaletteRdylbu  );
 //mgr->addNamedPalette("red_yellow_green", new CQColorsPaletteRdylgn  ); // same as spectral
-  mgr->addNamedPalette("spectral"        , new CQColorsPaletteSpectral);
 
-  // gradient (ish)
-  mgr->addNamedPalette("greys"            , new CQColorsPaletteGreys  );
-  mgr->addNamedPalette("greens"           , new CQColorsPaletteGreens );
-  mgr->addNamedPalette("yellow_green"     , new CQColorsPaletteYlgn   );
-  mgr->addNamedPalette("yellow_green_blue", new CQColorsPaletteYlgnbu );
-  mgr->addNamedPalette("green_blue"       , new CQColorsPaletteGnbu   );
-  mgr->addNamedPalette("blue_green"       , new CQColorsPaletteBugn   );
-  mgr->addNamedPalette("purple_blue"      , new CQColorsPalettePubu   );
-  mgr->addNamedPalette("purple_blue_green", new CQColorsPalettePubugn );
-  mgr->addNamedPalette("blues"            , new CQColorsPaletteBlues  );
-  mgr->addNamedPalette("blue_purple"      , new CQColorsPaletteBupu   );
-  mgr->addNamedPalette("purples"          , new CQColorsPalettePurples);
-  mgr->addNamedPalette("purple_red"       , new CQColorsPalettePurd   );
-  mgr->addNamedPalette("red_purple"       , new CQColorsPaletteRdpu   );
-  mgr->addNamedPalette("reds"             , new CQColorsPaletteReds   );
-  mgr->addNamedPalette("orange_red"       , new CQColorsPaletteOrrd   );
-  mgr->addNamedPalette("oranges"          , new CQColorsPaletteOranges);
+  // single color gradients (white->color)
+  mgr->addNamedPalette("greys"      , new CQColorsPaletteGreys     );
+  mgr->addNamedPalette("reds"       , new CQColorsPaletteReds      );
+  mgr->addNamedPalette("greens"     , new CQColorsPaletteGreens    );
+  mgr->addNamedPalette("blues"      , new CQColorsPaletteBlues     );
+  mgr->addNamedPalette("oranges"    , new CQColorsPaletteOranges   );
+  mgr->addNamedPalette("purples"    , new CQColorsPalettePurples   );
+  mgr->addNamedPalette("pinks"      , new CQColorsPaletteRdpu      );
+  mgr->addNamedPalette("dark_blues" , new CQColorsPaletteDarkBlues );
+  mgr->addNamedPalette("dark_greens", new CQColorsPaletteDarkGreens);
+
+  // more gradients
+  mgr->addNamedPalette("yellow_green"     , new CQColorsPaletteYlgn    );
+  mgr->addNamedPalette("yellow_green_blue", new CQColorsPaletteYlgnbu  );
+  mgr->addNamedPalette("white_green_blue" , new CQColorsPaletteGnbu    );
+  mgr->addNamedPalette("purple_blue_green", new CQColorsPalettePubugn  );
+  mgr->addNamedPalette("white_blue_purple", new CQColorsPaletteBupu    );
+  mgr->addNamedPalette("white_purple_red" , new CQColorsPalettePurd    );
+  mgr->addNamedPalette("yellow_red"       , new CQColorsPaletteChromajs);
+  mgr->addNamedPalette("orange_red"       , new CQColorsPaletteOrrd    ); // very simiar to oranges
 
   // three color
   mgr->addNamedPalette("yellow_orange_brown", new CQColorsPaletteYlorbr  );
   mgr->addNamedPalette("yellow_orange_red"  , new CQColorsPaletteYlorrd  );
   mgr->addNamedPalette("white_yellow_red"   , new CQColorsPaletteWhylrd  );
-  mgr->addNamedPalette("chromajs"           , new CQColorsPaletteChromajs);
-  mgr->addNamedPalette("yellow_red"         , new CQColorsPaletteYlrd    );
+  mgr->addNamedPalette("yellow_dark_red"    , new CQColorsPaletteYlrd    );
 }

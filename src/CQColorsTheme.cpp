@@ -19,7 +19,7 @@ addNamedPalettes()
   addNamedPalette("set2"     );
   addNamedPalette("set3"     );
   addNamedPalette("plasma"   );
-  addNamedPalette("chromajs" );
+  addNamedPalette("moreland" );
   addNamedPalette("distinct1");
   addNamedPalette("distinct2");
   addNamedPalette("red_green");
