@@ -74,6 +74,15 @@ setPalette(CQColorsPalette *palette)
 
 void
 CQColorsEditCanvas::
+setShowValue(const ShowValue &s)
+{
+  showValue_ = s;
+
+  update();
+}
+
+void
+CQColorsEditCanvas::
 enterEvent(QEvent *)
 {
 }
@@ -341,63 +350,49 @@ void
 CQColorsEditCanvas::
 setShowHueValue()
 {
-  showValue_ = ShowValue::HUE;
-
-  update();
+  setShowValue(ShowValue::HUE);
 }
 
 void
 CQColorsEditCanvas::
 setShowSaturationValue()
 {
-  showValue_ = ShowValue::SATURATION;
-
-  update();
+  setShowValue(ShowValue::SATURATION);
 }
 
 void
 CQColorsEditCanvas::
 setShowValueValue()
 {
-  showValue_ = ShowValue::VALUE;
-
-  update();
+  setShowValue(ShowValue::VALUE);
 }
 
 void
 CQColorsEditCanvas::
 setShowRedValue()
 {
-  showValue_ = ShowValue::RED;
-
-  update();
+  setShowValue(ShowValue::RED);
 }
 
 void
 CQColorsEditCanvas::
 setShowGreenValue()
 {
-  showValue_ = ShowValue::GREEN;
-
-  update();
+  setShowValue(ShowValue::GREEN);
 }
 
 void
 CQColorsEditCanvas::
 setShowBlueValue()
 {
-  showValue_ = ShowValue::BLUE;
-
-  update();
+  setShowValue(ShowValue::BLUE);
 }
 
 void
 CQColorsEditCanvas::
 setShowGrayValue()
 {
-  showValue_ = ShowValue::GRAY;
-
-  update();
+  setShowValue(ShowValue::GRAY);
 }
 
 void

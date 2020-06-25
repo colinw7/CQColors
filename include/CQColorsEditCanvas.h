@@ -59,7 +59,7 @@ class CQColorsEditCanvas : public QFrame {
   bool isGray        () const { return gray_        ; }
 
   ShowValue showValue() const { return showValue_; }
-  void setShowValue(const ShowValue &s) { showValue_ = s; }
+  void setShowValue(const ShowValue &s);
 
   const QColor &nearestColor() const { return nearestColor_; }
   void setNearestColor(const QColor &v) { nearestColor_ = v; }
