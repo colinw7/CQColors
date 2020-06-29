@@ -111,7 +111,7 @@ class CQColorsPaletteDarkGreens : public CQColorsDefinedPalette {
   CQColorsPaletteDarkGreens() {
     addDefinedColor(0.0, QColor("#F4FFF9"));
     addDefinedColor(1.0, QColor("#DFF5EB"));
-    addDefinedColor(2.0, QColor("#C2E9B5"));
+    addDefinedColor(2.0, QColor("#C2E9D3"));
     addDefinedColor(3.0, QColor("#99D8B4"));
     addDefinedColor(4.0, QColor("#6EC48D"));
     addDefinedColor(5.0, QColor("#47AC66"));
