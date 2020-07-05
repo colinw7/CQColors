@@ -31,7 +31,7 @@ namespace {
 void
 addGridLabelWidget(QGridLayout *playout, const QString &label, QWidget *widget, int &row)
 {
-  QLabel *qlabel = CQUtil::makeLabelWidget<QLabel>(label, "label" + label);
+  auto *qlabel = CQUtil::makeLabelWidget<QLabel>(label, "label" + label);
 
   playout->addWidget(qlabel, row, 0);
   playout->addWidget(widget, row, 1);
@@ -110,18 +110,17 @@ CQColorsEditList::
 CQColorsEditList(QWidget *parent) :
  QFrame(parent)
 {
-  QVBoxLayout *layout = CQUtil::makeLayout<QVBoxLayout>(this, 2, 2);
+  auto *layout = CQUtil::makeLayout<QVBoxLayout>(this, 2, 2);
 
   //----
 
   // themes combo frame
-  QFrame *themeFrame = CQUtil::makeWidget<QFrame>("themeFrame");
+  auto *themeFrame  = CQUtil::makeWidget<QFrame>("themeFrame");
+  auto *themeLayout = CQUtil::makeLayout<QHBoxLayout>(themeFrame, 2, 2);
 
   layout->addWidget(themeFrame);
 
-  QHBoxLayout *themeLayout = CQUtil::makeLayout<QHBoxLayout>(themeFrame, 2, 2);
-
-  QLabel *themesLabel = CQUtil::makeLabelWidget<QLabel>("Theme", "themesLabel");
+  auto *themesLabel = CQUtil::makeLabelWidget<QLabel>("Theme", "themesLabel");
 
   themeLayout->addWidget(themesLabel);
 
@@ -137,19 +136,16 @@ CQColorsEditList(QWidget *parent) :
 
   //----
 
-  QFrame *listFrame = CQUtil::makeWidget<QFrame>("listFrame");
-
-  QHBoxLayout *listLayout = CQUtil::makeLayout<QHBoxLayout>(listFrame, 2, 2);
+  auto *listFrame  = CQUtil::makeWidget<QFrame>("listFrame");
+  auto *listLayout = CQUtil::makeLayout<QHBoxLayout>(listFrame, 2, 2);
 
   layout->addWidget(listFrame);
 
   //----
 
   // list of palettes for current theme
-  CQGroupBox *currentGroup =
-    CQUtil::makeLabelWidget<CQGroupBox>("Palettes", "currentGroup");
-
-  QVBoxLayout *currentGroupLayout = CQUtil::makeLayout<QVBoxLayout>(currentGroup, 2, 2);
+  auto *currentGroup       = CQUtil::makeLabelWidget<CQGroupBox>("Palettes", "currentGroup");
+  auto *currentGroupLayout = CQUtil::makeLayout<QVBoxLayout>(currentGroup, 2, 2);
 
   listLayout->addWidget(currentGroup);
 
@@ -159,7 +155,7 @@ CQColorsEditList(QWidget *parent) :
 
   currentList_->setToolTip("List of Theme Palettes");
 
-  CQColorsItemDelegate *currentDelegate = new CQColorsItemDelegate(currentList_);
+  auto *currentDelegate = new CQColorsItemDelegate(currentList_);
 
   currentList_->setItemDelegate(currentDelegate);
 
@@ -168,14 +164,13 @@ CQColorsEditList(QWidget *parent) :
   //----
 
   // control frame (move up/down, transfer left/right)
-  QFrame *buttonsFrame = CQUtil::makeWidget<QFrame>("buttonsFrame");
+  auto *buttonsFrame  = CQUtil::makeWidget<QFrame>("buttonsFrame");
+  auto *controlLayout = CQUtil::makeLayout<QVBoxLayout>(buttonsFrame, 2, 2);
 
   listLayout->addWidget(buttonsFrame);
 
-  QVBoxLayout *controlLayout = CQUtil::makeLayout<QVBoxLayout>(buttonsFrame, 2, 2);
-
   auto addToolButton = [&](const QString &name, const QString &iconName, const char *slotName) {
-    QToolButton *button = CQUtil::makeWidget<QToolButton>(name);
+    auto *button = CQUtil::makeWidget<QToolButton>(name);
 
     button->setIcon(CQPixmapCacheInst->getIcon(iconName));
 
@@ -208,10 +203,8 @@ CQColorsEditList(QWidget *parent) :
   //----
 
   // list of unused palettes
-  CQGroupBox *allGroup =
-    CQUtil::makeLabelWidget<CQGroupBox>("Unused Palettes", "allGroup");
-
-  QVBoxLayout *allGroupLayout = CQUtil::makeLayout<QVBoxLayout>(allGroup, 2, 2);
+  auto *allGroup       = CQUtil::makeLabelWidget<CQGroupBox>("Unused Palettes", "allGroup");
+  auto *allGroupLayout = CQUtil::makeLayout<QVBoxLayout>(allGroup, 2, 2);
 
   listLayout->addWidget(allGroup);
 
@@ -221,7 +214,7 @@ CQColorsEditList(QWidget *parent) :
 
   allList_->setToolTip("List of Unused Palettes");
 
-  CQColorsItemDelegate *allDelegate = new CQColorsItemDelegate(allList_);
+  auto *allDelegate = new CQColorsItemDelegate(allList_);
 
   allList_->setItemDelegate(allDelegate);
 
@@ -229,20 +222,19 @@ CQColorsEditList(QWidget *parent) :
 
   //---
 
-  QFrame *dataFrame = CQUtil::makeWidget<QFrame>("dataFrame");
-
-  QHBoxLayout *dataLayout = CQUtil::makeLayout<QHBoxLayout>(dataFrame);
+  auto *dataFrame  = CQUtil::makeWidget<QFrame>("dataFrame");
+  auto *dataLayout = CQUtil::makeLayout<QHBoxLayout>(dataFrame);
 
   layout->addWidget(dataFrame);
 
-  QFrame *colorsFrame = CQUtil::makeWidget<QFrame>("colorsFrame");
+  auto *colorsFrame = CQUtil::makeWidget<QFrame>("colorsFrame");
 
   dataLayout->addWidget(colorsFrame);
 
   //---
 
 #if 0
-  QGridLayout *colorsLayout = CQUtil::makeLayout<QGridLayout>(colorsFrame, 2, 2);
+  auto *colorsLayout = CQUtil::makeLayout<QGridLayout>(colorsFrame, 2, 2);
 
   int row = 0;
 

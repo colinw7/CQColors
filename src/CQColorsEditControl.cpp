@@ -600,7 +600,7 @@ void
 CQColorsEditControl::
 modelChanged(int model)
 {
-  CQColorsEditModel *me = qobject_cast<CQColorsEditModel *>(sender());
+  auto *me = qobject_cast<CQColorsEditModel *>(sender());
   assert(me);
 
   CQColorsPalette *pal = canvas_->palette();
@@ -653,7 +653,7 @@ void
 CQColorsEditControl::
 modelRangeValueChanged(double r)
 {
-  CQRealSpin *rs = qobject_cast<CQRealSpin *>(sender());
+  auto *rs = qobject_cast<CQRealSpin *>(sender());
   assert(rs);
 
   CQColorsPalette *pal = canvas_->palette();
@@ -910,7 +910,7 @@ void
 CQColorsEditControl::
 functionChanged()
 {
-  CQLineEdit *le = qobject_cast<CQLineEdit *>(sender());
+  auto *le = qobject_cast<CQLineEdit *>(sender());
   assert(le);
 
   CQColorsPalette *pal = canvas_->palette();
@@ -972,7 +972,7 @@ void
 CQColorsEditControl::
 cubeValueChanged(double r)
 {
-  CQRealSpin *rs = qobject_cast<CQRealSpin *>(sender());
+  auto *rs = qobject_cast<CQRealSpin *>(sender());
   assert(rs);
 
   CQColorsPalette *pal = canvas_->palette();

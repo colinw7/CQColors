@@ -58,7 +58,7 @@ CQColorsEditDefinedColors(QWidget *parent) :
 
   QHeaderView *header = horizontalHeader();
 
-  header->setStretchLastSection(true) ;
+  header->setStretchLastSection(true);
 
   //setSizeAdjustPolicy(QTableWidget::AdjustToContents);
 }
@@ -79,10 +79,10 @@ updateColors(CQColorsPalette *canvas)
     realColors_.emplace_back(c.first, c.second.rgba());
 
   for (int r = 0; r < numRealColors(); ++r) {
-    const RealColor &realColor = this->realColor(r);
+    const auto &realColor = this->realColor(r);
 
-    QTableWidgetItem *item1 = new QTableWidgetItem(QString("%1").arg(realColor.r));
-    QTableWidgetItem *item2 = new QTableWidgetItem(realColor.c.name());
+    auto *item1 = new QTableWidgetItem(QString("%1").arg(realColor.r));
+    auto *item2 = new QTableWidgetItem(realColor.c.name());
 
     setItem(r, 0, item1);
     setItem(r, 1, item2);
@@ -102,8 +102,8 @@ setRealColor(int r, const RealColor &realColor)
 {
   realColors_[r] = realColor;
 
-  //QTableWidgetItem *item1 = new QTableWidgetItem(QString("%1").arg(realColor.r));
-  //QTableWidgetItem *item2 = new QTableWidgetItem(realColor.c.name());
+  //auto *item1 = new QTableWidgetItem(QString("%1").arg(realColor.r));
+  //auto *item2 = new QTableWidgetItem(realColor.c.name());
 
   //setItem(r, 0, item1);
   //setItem(r, 1, item2);
@@ -159,12 +159,12 @@ setEditorData(QWidget *w, const QModelIndex &ind) const
   const CQColorsEditDefinedColors::RealColor &realColor = colors_->realColor(ind.row());
 
   if       (ind.column() == 0) {
-    CQRealSpin *edit = qobject_cast<CQRealSpin *>(w);
+    auto *edit = qobject_cast<CQRealSpin *>(w);
 
     edit->setValue(realColor.r);
   }
   else if (ind.column() == 1) {
-    CQColorChooser *edit = qobject_cast<CQColorChooser *>(w);
+    auto *edit = qobject_cast<CQColorChooser *>(w);
 
     const QColor &c = realColor.c;
 
@@ -185,7 +185,7 @@ setModelData(QWidget *w, QAbstractItemModel *model, const QModelIndex &ind) cons
   CQColorsEditDefinedColors::RealColor realColor = colors_->realColor(ind.row());
 
   if       (ind.column() == 0) {
-    CQRealSpin *edit = qobject_cast<CQRealSpin *>(w);
+    auto *edit = qobject_cast<CQRealSpin *>(w);
 
     double r = edit->value();
 
@@ -194,7 +194,7 @@ setModelData(QWidget *w, QAbstractItemModel *model, const QModelIndex &ind) cons
     realColor.r = r;
   }
   else if (ind.column() == 1) {
-    CQColorChooser *edit = qobject_cast<CQColorChooser *>(w);
+    auto *edit = qobject_cast<CQColorChooser *>(w);
 
     realColor.c = edit->color();
 

@@ -193,7 +193,7 @@ contextMenuEvent(QContextMenuEvent *e)
   //---
 
   auto addSubMenu = [](QMenu *menu, const QString &name) {
-    QMenu *subMenu = new QMenu(name, menu);
+    auto *subMenu = new QMenu(name, menu);
 
     menu->addMenu(subMenu);
 
@@ -201,7 +201,7 @@ contextMenuEvent(QContextMenuEvent *e)
   };
 
   auto addCheckAction = [&](QMenu *menu, const QString &name, bool checked, const char *slotName) {
-    QAction *action = new QAction(name, menu);
+    auto *action = new QAction(name, menu);
 
     action->setCheckable(true);
     action->setChecked(checked);
@@ -219,9 +219,9 @@ contextMenuEvent(QContextMenuEvent *e)
 
   auto addGroupCheckAction = [&](QActionGroup *group, const QString &name, bool checked,
                                  const char *slotName) {
-    QMenu *menu = qobject_cast<QMenu *>(group->parent());
+    auto *menu = qobject_cast<QMenu *>(group->parent());
 
-    QAction *action = new QAction(name, menu);
+    auto *action = new QAction(name, menu);
 
     action->setCheckable(true);
     action->setChecked(checked);
@@ -238,7 +238,7 @@ contextMenuEvent(QContextMenuEvent *e)
   addCheckAction(menu, "Lines", isShowLines(), SLOT(setShowLines(bool)));
 
   if (! isGray())
-    addCheckAction(menu, "Bars"  , isShowBars(), SLOT(setShowBars(bool)));
+    addCheckAction(menu, "Bars", isShowBars(), SLOT(setShowBars(bool)));
 
   addCheckAction(menu, "Points", isShowPoints(), SLOT(setShowPoints(bool)));
 

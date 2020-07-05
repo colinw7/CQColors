@@ -861,7 +861,7 @@ unset()
   if (cubeHelix_)
     cubeHelix_->reset();
 
-  // Gammer
+  // Gamma
 #if 0
   gamma_ = 1.5;
 #endif
