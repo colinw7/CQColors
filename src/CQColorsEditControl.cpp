@@ -27,7 +27,7 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 {
   setObjectName("paletteControl");
 
-  setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
+  setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
   QFontMetricsF fm(font());
 
@@ -35,7 +35,7 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   auto *layout = CQUtil::makeLayout<QVBoxLayout>(this, 2, 2);
 
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
 
   //---
 
@@ -44,7 +44,7 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
   //---
 
   if (! canvas_->isGray()) {
-    QFrame *colorTypeFrame = createColorTypeCombo("Type", &colorType_);
+    auto *colorTypeFrame = createColorTypeCombo("Type", &colorType_);
 
     if (pal)
       colorType_->setType(pal->colorType());
@@ -56,7 +56,7 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   //---
 
-  QFrame *colorModelFrame = createColorModelCombo("Color", &colorModel_);
+  auto *colorModelFrame = createColorModelCombo("Color", &colorModel_);
 
   if (pal)
     colorModel_->setModel(pal->colorModel());
@@ -103,6 +103,8 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   auto *definedFrame       = CQUtil::makeWidget<QFrame>("definedFrame");
   auto *definedFrameLayout = CQUtil::makeLayout<QVBoxLayout>(definedFrame, 2, 2);
+
+  definedFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
 
   definedColors_ = new CQColorsEditDefinedColors;
 
@@ -298,7 +300,7 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
   //---
 
   layout->addWidget(stack_);
-  layout->addStretch(1);
+//layout->addStretch(1);
 
   //---
 
@@ -318,7 +320,7 @@ void
 CQColorsEditControl::
 updateState()
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   setColorType (pal->colorType ());
@@ -394,7 +396,7 @@ CQColorsPalette::ColorType
 CQColorsEditControl::
 colorType() const
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return CQColorsPalette::ColorType::NONE;
 
   return pal->colorType();
@@ -404,7 +406,7 @@ void
 CQColorsEditControl::
 setColorType(CQColorsPalette::ColorType colorType)
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   pal->setColorType(colorType);
@@ -418,7 +420,7 @@ bool
 CQColorsEditControl::
 isDistinct() const
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return false;
 
   return pal->isDistinct();
@@ -428,7 +430,7 @@ void
 CQColorsEditControl::
 setDistinct(bool b)
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   pal->setDistinct(b);
@@ -440,7 +442,7 @@ bool
 CQColorsEditControl::
 isInverted() const
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return false;
 
   return pal->isInverted();
@@ -450,7 +452,7 @@ void
 CQColorsEditControl::
 setInverted(bool b)
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   pal->setInverted(b);
@@ -462,7 +464,7 @@ void
 CQColorsEditControl::
 updateColorType()
 {
-  CQColorsPalette::ColorType colorType = this->colorType();
+  auto colorType = this->colorType();
 
   int ind = 0;
 
@@ -488,7 +490,7 @@ CQColorsPalette::ColorModel
 CQColorsEditControl::
 colorModel() const
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return CQColorsPalette::ColorModel::NONE;
 
   return pal->colorModel();
@@ -498,7 +500,7 @@ void
 CQColorsEditControl::
 setColorModel(CQColorsPalette::ColorModel colorModel)
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   pal->setColorModel(colorModel);
@@ -512,7 +514,7 @@ void
 CQColorsEditControl::
 updateColorModel()
 {
-  CQColorsPalette::ColorModel colorModel = this->colorModel();
+  auto colorModel = this->colorModel();
 
   if      (colorModel == CQColorsPalette::ColorModel::RGB) {
     colorModel_->setCurrentIndex(0);
@@ -603,7 +605,7 @@ modelChanged(int model)
   auto *me = qobject_cast<CQColorsEditModel *>(sender());
   assert(me);
 
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   if      (me == redModelCombo_  ) pal->setRedModel  (model);
@@ -617,7 +619,7 @@ void
 CQColorsEditControl::
 modelRNegativeChecked(int state)
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   pal->setRedNegative(state);
@@ -629,7 +631,7 @@ void
 CQColorsEditControl::
 modelGNegativeChecked(int state)
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   pal->setGreenNegative(state);
@@ -641,7 +643,7 @@ void
 CQColorsEditControl::
 modelBNegativeChecked(int state)
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   pal->setBlueNegative(state);
@@ -656,7 +658,7 @@ modelRangeValueChanged(double r)
   auto *rs = qobject_cast<CQRealSpin *>(sender());
   assert(rs);
 
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   if      (rs == redMin_  ) pal->setRedMin  (r);
@@ -673,7 +675,7 @@ void
 CQColorsEditControl::
 cubeNegativeChecked(int state)
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   pal->setCubeNegative(state);
@@ -685,13 +687,13 @@ void
 CQColorsEditControl::
 colorsChanged()
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   pal->resetDefinedColors();
 
   for (int i = 0; i < definedColors_->numRealColors(); ++i) {
-    const CQColorsEditDefinedColors::RealColor &realColor = definedColors_->realColor(i);
+    const auto &realColor = definedColors_->realColor(i);
 
     pal->addDefinedColor(realColor.r, realColor.c);
   }
@@ -703,20 +705,20 @@ void
 CQColorsEditControl::
 addColorSlot()
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   int row = 0;
 
-  QList<QTableWidgetItem *> selectedItems = definedColors_->selectedItems();
+  auto selectedItems = definedColors_->selectedItems();
 
   if (selectedItems.length())
     row = selectedItems[0]->row();
 
-  const CQColorsPalette::ColorMap &colors = pal->definedValueColors();
+  const auto &colors = pal->definedValueColors();
 
   double x = 0.5;
-  QColor c = QColor(127, 127, 127);
+  auto   c = QColor(127, 127, 127);
 
   int nc = colors.size();
 
@@ -732,12 +734,12 @@ addColorSlot()
 
     std::advance(p, row1);
 
-    double        x1 = (*p).first;
-    const QColor &c1 = (*p).second;
+    double      x1 = (*p).first;
+    const auto &c1 = (*p).second;
 
     ++p;
-    double        x2 = (*p).first;
-    const QColor &c2 = (*p).second;
+    double      x2 = (*p).first;
+    const auto &c2 = (*p).second;
 
     x = (x1 + x2)/2;
 
@@ -750,13 +752,13 @@ addColorSlot()
     if (nc == 1) {
       auto p = colors.begin();
 
-      double        x1 = (*p).first;
-      const QColor &c1 = (*p).second;
+      double      x1 = (*p).first;
+      const auto &c1 = (*p).second;
 
       if (x1 != 1.0)
         x = (x1 + 1.0)/2;
 
-      QColor c2 = QColor(255, 255, 255);
+      auto c2 = QColor(255, 255, 255);
 
       if (pal->colorModel() == CQColorsPalette::ColorModel::HSV)
         c = CQColorsPalette::interpHSV(c1, c2, 0.5);
@@ -776,17 +778,17 @@ void
 CQColorsEditControl::
 removeColorSlot()
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
-  QList<QTableWidgetItem *> selectedItems = definedColors_->selectedItems();
+  auto selectedItems = definedColors_->selectedItems();
 
   if (! selectedItems.length())
     return;
 
   int row = selectedItems[0]->row();
 
-  CQColorsPalette::ColorMap colors = pal->definedValueColors();
+  auto colors = pal->definedValueColors();
 
   CQColorsPalette::ColorMap colors1;
 
@@ -810,9 +812,9 @@ void
 CQColorsEditControl::
 loadColorsSlot()
 {
-  QString dir = QDir::current().dirName();
+  auto dir = QDir::current().dirName();
 
-  QString fileName = QFileDialog::getOpenFileName(this, "Open Palette File", dir, "Files (*.pal)");
+  auto fileName = QFileDialog::getOpenFileName(this, "Open Palette File", dir, "Files (*.pal)");
 
   if (! fileName.length())
     return;
@@ -826,9 +828,9 @@ void
 CQColorsEditControl::
 saveColorsSlot()
 {
-  QString dir = QDir::current().dirName() + "/colors.pal";
+  auto dir = QDir::current().dirName() + "/colors.pal";
 
-  QString fileName = QFileDialog::getSaveFileName(this, "Save Palette File", dir, "Files (*.pal)");
+  auto fileName = QFileDialog::getSaveFileName(this, "Save Palette File", dir, "Files (*.pal)");
 
   if (! fileName.length())
     return;
@@ -840,7 +842,7 @@ void
 CQColorsEditControl::
 readFile(const QString &fileName)
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   pal->readFile(fileName.toStdString());
@@ -858,7 +860,7 @@ void
 CQColorsEditControl::
 saveFile(const QString &fileName)
 {
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   pal->saveFile(fileName.toStdString());
@@ -913,7 +915,7 @@ functionChanged()
   auto *le = qobject_cast<CQLineEdit *>(sender());
   assert(le);
 
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   if      (le == redFunctionEdit_)
@@ -975,7 +977,7 @@ cubeValueChanged(double r)
   auto *rs = qobject_cast<CQRealSpin *>(sender());
   assert(rs);
 
-  CQColorsPalette *pal = canvas_->palette();
+  auto *pal = canvas_->palette();
   if (! pal) return;
 
   if      (rs == cubeStart_)

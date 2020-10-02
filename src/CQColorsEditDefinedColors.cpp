@@ -47,8 +47,7 @@ CQColorsEditDefinedColors(QWidget *parent) :
 
   verticalHeader()->hide();
 
-  CQColorsEditDefinedColorsDelegate *delegate =
-    new CQColorsEditDefinedColorsDelegate(this);
+  auto *delegate = new CQColorsEditDefinedColorsDelegate(this);
 
   setItemDelegate(delegate);
   setEditTriggers(QAbstractItemView::AllEditTriggers);
@@ -56,7 +55,7 @@ CQColorsEditDefinedColors(QWidget *parent) :
   setSelectionMode(QAbstractItemView::SingleSelection);
   setSelectionBehavior(QAbstractItemView::SelectRows);
 
-  QHeaderView *header = horizontalHeader();
+  auto *header = horizontalHeader();
 
   header->setStretchLastSection(true);
 
@@ -123,20 +122,20 @@ QWidget *
 CQColorsEditDefinedColorsDelegate::
 createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &ind) const
 {
-  QTableWidgetItem *item = colors_->item(ind.row(), ind.column());
+  auto *item = colors_->item(ind.row(), ind.column());
   assert(item);
 
-  const CQColorsEditDefinedColors::RealColor &realColor = colors_->realColor(ind.row());
+  const auto &realColor = colors_->realColor(ind.row());
 
   if       (ind.column() == 0) {
-    CQRealSpin *edit = CQUtil::makeWidget<CQRealSpin>(parent, "spin");
+    auto *edit = CQUtil::makeWidget<CQRealSpin>(parent, "spin");
 
     edit->setValue(realColor.r);
 
     return edit;
   }
   else if (ind.column() == 1) {
-    CQColorChooser *edit = CQUtil::makeWidget<CQColorChooser>(parent, "color");
+    auto *edit = CQUtil::makeWidget<CQColorChooser>(parent, "color");
 
     edit->setStyles(CQColorChooser::Text | CQColorChooser::ColorButton);
 
@@ -153,10 +152,10 @@ void
 CQColorsEditDefinedColorsDelegate::
 setEditorData(QWidget *w, const QModelIndex &ind) const
 {
-  QTableWidgetItem *item = colors_->item(ind.row(), ind.column());
+  auto *item = colors_->item(ind.row(), ind.column());
   assert(item);
 
-  const CQColorsEditDefinedColors::RealColor &realColor = colors_->realColor(ind.row());
+  const auto &realColor = colors_->realColor(ind.row());
 
   if       (ind.column() == 0) {
     auto *edit = qobject_cast<CQRealSpin *>(w);
@@ -166,7 +165,7 @@ setEditorData(QWidget *w, const QModelIndex &ind) const
   else if (ind.column() == 1) {
     auto *edit = qobject_cast<CQColorChooser *>(w);
 
-    const QColor &c = realColor.c;
+    const auto &c = realColor.c;
 
     edit->setColor(c);
   }
@@ -179,10 +178,10 @@ void
 CQColorsEditDefinedColorsDelegate::
 setModelData(QWidget *w, QAbstractItemModel *model, const QModelIndex &ind) const
 {
-  QTableWidgetItem *item = colors_->item(ind.row(), ind.column());
+  auto *item = colors_->item(ind.row(), ind.column());
   assert(item);
 
-  CQColorsEditDefinedColors::RealColor realColor = colors_->realColor(ind.row());
+  auto realColor = colors_->realColor(ind.row());
 
   if       (ind.column() == 0) {
     auto *edit = qobject_cast<CQRealSpin *>(w);
@@ -210,7 +209,7 @@ QSize
 CQColorsEditDefinedColorsDelegate::
 sizeHint(const QStyleOptionViewItem &option, const QModelIndex &ind) const
 {
-  QTableWidgetItem *item = colors_->item(ind.row(), ind.column());
+  auto *item = colors_->item(ind.row(), ind.column());
   assert(item);
 
   return QItemDelegate::sizeHint(option, ind);
@@ -228,11 +227,11 @@ void
 CQColorsEditDefinedColorsDelegate::
 paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &ind) const
 {
-  QTableWidgetItem *item = colors_->item(ind.row(), ind.column());
+  auto *item = colors_->item(ind.row(), ind.column());
   assert(item);
 
   if (ind.column() == 1) {
-    const CQColorsEditDefinedColors::RealColor &realColor = colors_->realColor(ind.row());
+    const auto &realColor = colors_->realColor(ind.row());
 
     drawColor(painter, option, realColor.c, ind);
   }
@@ -247,7 +246,7 @@ drawColor(QPainter *painter, const QStyleOptionViewItem &option,
 {
   QItemDelegate::drawBackground(painter, option, index);
 
-  QRect rect = option.rect;
+  auto rect = option.rect;
 
   rect.setWidth(option.rect.height());
 

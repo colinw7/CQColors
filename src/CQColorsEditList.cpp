@@ -53,19 +53,19 @@ class CQColorsItemDelegate : public QItemDelegate {
   void paint(QPainter *painter, const QStyleOptionViewItem &option,
              const QModelIndex &ind) const override {
     if (ind.column() == 0) {
-      QListWidgetItem *item = list_->item(ind.row());
+      auto *item = list_->item(ind.row());
       assert(item);
 
-      QString name = item->text();
+      auto name = item->text();
 
-      CQColorsPalette *palette = CQColorsMgrInst->getNamedPalette(name);
+      auto *palette = CQColorsMgrInst->getNamedPalette(name);
       assert(palette);
 
       QItemDelegate::drawBackground(painter, option, ind);
 
-      QRect rect = imageRect(option.rect);
+      auto rect = imageRect(option.rect);
 
-      QImage image = palette->getGradientImage(rect.size());
+      auto image = palette->getGradientImage(rect.size());
 
       painter->drawImage(rect, image);
 
@@ -82,16 +82,19 @@ class CQColorsItemDelegate : public QItemDelegate {
   }
 
   QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &ind) const override {
-    QSize s = QItemDelegate::sizeHint(option, ind);
+    auto s = QItemDelegate::sizeHint(option, ind);
 
-    if (ind.column() == 0)
-      s = QSize(imageRect(option.rect).width() + s.width() + 2, s.height());
+    if (ind.column() == 0) {
+      auto irect = imageRect(QRect(0, 0, s.width(), s.height()));
+
+      s = QSize(irect.width() + s.width() + 2, s.height());
+    }
 
     return s;
   }
 
   QRect imageRect(const QRect &rect) const {
-    QRect rect1 = rect;
+    auto rect1 = rect;
 
     rect1.setWidth(2*rect1.height());
 
@@ -179,11 +182,11 @@ CQColorsEditList(QWidget *parent) :
     return button;
   };
 
-  QToolButton *upTopButton = addToolButton("upTop", "UP_TOP", SLOT(upTopSlot()));
-  QToolButton *upButton    = addToolButton("up"   , "UP"    , SLOT(upSlot   ()));
-  QToolButton *downButton  = addToolButton("down" , "DOWN"  , SLOT(downSlot ()));
-  QToolButton *leftButton  = addToolButton("left" , "LEFT"  , SLOT(leftSlot ()));
-  QToolButton *rightButton = addToolButton("right", "RIGHT" , SLOT(rightSlot()));
+  auto *upTopButton = addToolButton("upTop", "UP_TOP", SLOT(upTopSlot()));
+  auto *upButton    = addToolButton("up"   , "UP"    , SLOT(upSlot   ()));
+  auto *downButton  = addToolButton("down" , "DOWN"  , SLOT(downSlot ()));
+  auto *leftButton  = addToolButton("left" , "LEFT"  , SLOT(leftSlot ()));
+  auto *rightButton = addToolButton("right", "RIGHT" , SLOT(rightSlot()));
 
   upTopButton->setToolTip("Move palette to top of theme list");
   upButton   ->setToolTip("Move palette up in theme list");
@@ -307,7 +310,7 @@ updateLists()
 
   //---
 
-  CQColorsTheme *theme = currentTheme();
+  auto *theme = currentTheme();
   if (! theme) return;
 
   //---
@@ -321,7 +324,7 @@ updateLists()
   QStringList names;
 
   for (int i = 0; i < n; ++i) {
-    const QString &name = theme->palette(i)->name();
+    const auto &name = theme->palette(i)->name();
 
     names << name;
 
@@ -342,7 +345,7 @@ updateLists()
   QStringList otherNames;
 
   for (int i = 0; i < allNames.length(); ++i) {
-    const QString &name = allNames[i];
+    const auto &name = allNames[i];
 
     if (stringSet.find(name) == stringSet.end())
       otherNames << name;
@@ -358,7 +361,7 @@ void
 CQColorsEditList::
 updateData()
 {
-  CQColorsTheme *theme = currentTheme();
+  auto *theme = currentTheme();
   if (! theme) return;
 
 #if 0
@@ -380,7 +383,7 @@ void
 CQColorsEditList::
 upSlot(bool top)
 {
-  CQColorsTheme *theme = currentTheme();
+  auto *theme = currentTheme();
   if (! theme) return;
 
   //---
@@ -400,10 +403,10 @@ upSlot(bool top)
 
   int row0 = (! top ? row1 - 1 : 0);
 
-  QListWidgetItem *item0 = currentList_->item(row0);
+  auto *item0 = currentList_->item(row0);
 
-  QString name0 = item0->text();
-  QString name1 = item1->text();
+  auto name0 = item0->text();
+  auto name1 = item1->text();
 
   item0->setText(name1);
   item1->setText(name0);
@@ -425,7 +428,7 @@ void
 CQColorsEditList::
 downSlot()
 {
-  CQColorsTheme *theme = currentTheme();
+  auto *theme = currentTheme();
   if (! theme) return;
 
   //---
@@ -445,10 +448,10 @@ downSlot()
 
   int row2 = row1 + 1;
 
-  QListWidgetItem *item2 = currentList_->item(row2);
+  auto *item2 = currentList_->item(row2);
 
-  QString name1 = item1->text();
-  QString name2 = item2->text();
+  auto name1 = item1->text();
+  auto name2 = item2->text();
 
   item1->setText(name2);
   item2->setText(name1);
@@ -470,7 +473,7 @@ void
 CQColorsEditList::
 leftSlot()
 {
-  CQColorsTheme *theme = currentTheme();
+  auto *theme = currentTheme();
   if (! theme) return;
 
   //---
@@ -485,7 +488,7 @@ leftSlot()
 
   connectSlots(false);
 
-  QString name = item->text();
+  auto name = item->text();
 
   item = allList_->takeItem(row);
 
@@ -516,7 +519,7 @@ void
 CQColorsEditList::
 rightSlot()
 {
-  CQColorsTheme *theme = currentTheme();
+  auto *theme = currentTheme();
   if (! theme) return;
 
   //---
@@ -537,7 +540,7 @@ rightSlot()
 
   connectSlots(false);
 
-  QString name = item->text();
+  auto name = item->text();
 
   item = currentList_->takeItem(row);
 
@@ -568,7 +571,7 @@ CQColorsEditList::
 selectColorSlot(const QColor &c)
 {
 #if 0
-  CQColorsTheme *theme = currentTheme();
+  auto *theme = currentTheme();
   if (! theme) return;
 
   theme->setSelectColor(c);
@@ -582,7 +585,7 @@ CQColorsEditList::
 insideColorSlot(const QColor &c)
 {
 #if 0
-  CQColorsTheme *theme = currentTheme();
+  auto *theme = currentTheme();
   if (! theme) return;
 
   theme->setInsideColor(c);
@@ -598,7 +601,7 @@ getCurrentItem(QListWidgetItem* &item, int &row) const
   item = nullptr;
   row  = -1;
 
-  QList<QListWidgetItem *> selected = currentList_->selectedItems();
+  auto selected = currentList_->selectedItems();
   if (! selected.length()) return false;
 
   item = selected[0];
@@ -615,7 +618,7 @@ getAllItem(QListWidgetItem* &item, int &row) const
   item = nullptr;
   row  = -1;
 
-  QList<QListWidgetItem *> selected = allList_->selectedItems();
+  auto selected = allList_->selectedItems();
   if (! selected.length()) return false;
 
   item = selected[0];
@@ -629,9 +632,9 @@ CQColorsTheme *
 CQColorsEditList::
 currentTheme() const
 {
-  QString name = themesCombo_->currentText();
+  auto name = themesCombo_->currentText();
 
-  CQColorsTheme *theme = CQColorsMgrInst->getNamedTheme(name);
+  auto *theme = CQColorsMgrInst->getNamedTheme(name);
 
   return theme;
 }

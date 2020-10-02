@@ -98,7 +98,7 @@ void
 CQColorsEditCanvas::
 mousePressEvent(QMouseEvent *me)
 {
-  CQColorsPalette *pal = this->palette();
+  auto *pal = this->palette();
 
   if (! pal)
     return;
@@ -126,7 +126,7 @@ void
 CQColorsEditCanvas::
 mouseMoveEvent(QMouseEvent *me)
 {
-  CQColorsPalette *pal = this->palette();
+  auto *pal = this->palette();
 
   if (! pal)
     return;
@@ -136,12 +136,12 @@ mouseMoveEvent(QMouseEvent *me)
   //---
 
   if (mouseData_.movePos.x() >= 0.0 && mouseData_.movePos.x() <= 1.0) {
-    QColor bg = pal->getColor(mouseData_.movePos.x());
-    QColor fg = Util::bwColor(bg);
+    auto bg = pal->getColor(mouseData_.movePos.x());
+    auto fg = Util::bwColor(bg);
 
     tipText_->setText(QString("%1,%2").arg(mouseData_.movePos.x()).arg(mouseData_.movePos.y()));
 
-    QPalette palette = tipText_->palette();
+    auto palette = tipText_->palette();
 
     palette.setColor(tipText_->backgroundRole(), bg);
     palette.setColor(tipText_->foregroundRole(), fg);
@@ -188,7 +188,7 @@ void
 CQColorsEditCanvas::
 contextMenuEvent(QContextMenuEvent *e)
 {
-  QMenu *menu = CQUtil::makeWidget<QMenu>("menu");
+  auto *menu = CQUtil::makeWidget<QMenu>("menu");
 
   //---
 
@@ -252,12 +252,12 @@ contextMenuEvent(QContextMenuEvent *e)
   //---
 
   if (! isGray()) {
-    CQColorsPalette *pal = this->palette();
+    auto *pal = this->palette();
 
     if (pal) {
-      QMenu *valueMenu = addSubMenu(menu, "Bar Value");
+      auto *valueMenu = addSubMenu(menu, "Bar Value");
 
-      QActionGroup *valueActionGroup = createActionGroup(valueMenu);
+      auto *valueActionGroup = createActionGroup(valueMenu);
 
       if (pal->colorModel() == CQColorsPalette::ColorModel::HSV) {
         addGroupCheckAction(valueActionGroup, "Hue"       , showValue() == ShowValue::HUE,
@@ -407,7 +407,7 @@ nearestDefinedColor(const QPointF &p, NearestData &nearestData)
   nearestData.c     = 0;
   nearestData.color = QColor();
 
-  CQColorsPalette *pal = this->palette();
+  auto *pal = this->palette();
 
   if (! pal)
     return;
@@ -420,7 +420,7 @@ nearestDefinedColor(const QPointF &p, NearestData &nearestData)
     if (pal->isInverted())
       x = 1.0 - x;
 
-    const QColor &c1 = c.second;
+    const auto &c1 = c.second;
 
     if (! isGray()) {
       double y[3];
@@ -470,12 +470,12 @@ void
 CQColorsEditCanvas::
 moveNearestDefinedColor(const NearestData &nearestData, double dy)
 {
-  CQColorsPalette *pal = this->palette();
+  auto *pal = this->palette();
 
   if (! pal)
     return;
 
-  QColor newColor = nearestData.color;
+  auto newColor = nearestData.color;
 
   if (pal->colorModel() == CQColorsPalette::ColorModel::HSV) {
     double h = newColor.hueF       ();
@@ -576,7 +576,7 @@ paintEvent(QPaintEvent *)
 
   //---
 
-  CQColorsPalette *pal = this->palette();
+  auto *pal = this->palette();
 
   if (! pal)
     return;
@@ -646,7 +646,7 @@ paintEvent(QPaintEvent *)
 
       //---
 
-      QColor c = pal->definedColor(i);
+      auto c = pal->definedColor(i);
 
       double px1, px2, py1;
 
@@ -700,7 +700,7 @@ paintEvent(QPaintEvent *)
 
       pixelToWindow(x, 0, wx, wy);
 
-      QColor c = pal->getColor(wx);
+      auto c = pal->getColor(wx);
 
       double x2 = wx;
 
@@ -775,7 +775,7 @@ paintEvent(QPaintEvent *)
 
         pixelToWindow(0, y, wx, wy);
 
-        QColor c = pal->getColor(wy);
+        auto c = pal->getColor(wy);
 
         QPen pen(c); pen.setWidth(0);
 
@@ -792,7 +792,7 @@ paintEvent(QPaintEvent *)
       double y = py1;
 
       for (int i = 0; i < nc; ++i, y -= dy) {
-        QColor c = pal->definedColor(i);
+        auto c = pal->definedColor(i);
 
         QBrush brush(c);
 
@@ -852,7 +852,7 @@ paintEvent(QPaintEvent *)
         if (pal->isInverted())
           x = 1.0 - x;
 
-        QColor c1 = c.second;
+        auto c1 = c.second;
 
         if (pal->colorModel() == CQColorsPalette::ColorModel::HSV) {
           drawSymbol(&painter, x, c1.hueF       (), redPen  );
@@ -937,7 +937,7 @@ drawAxis(QPainter *painter)
 
   //---
 
-  CQColorsPalette *pal = this->palette();
+  auto *pal = this->palette();
 
   QString yLabel;
 
@@ -954,7 +954,7 @@ drawAxis(QPainter *painter)
 
   painter->save();
 
-  QTransform t = painter->transform();
+  auto t = painter->transform();
 
   t.translate(px1 - 8, (py1 + py2 + tw1)/2);
   t.rotate(-90);
