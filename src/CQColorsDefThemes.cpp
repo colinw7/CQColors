@@ -11,9 +11,9 @@ class CQColorsThemeDefault : public CQColorsTheme {
 
     addNamedPalettes();
 
-    movePalette("set2"    , 0);
-    movePalette("palette1", 1);
-    movePalette("palette2", 2);
+    moveNamedPalette("set2"    , 0);
+    moveNamedPalette("palette1", 1);
+    moveNamedPalette("palette2", 2);
   }
 };
 
@@ -26,9 +26,9 @@ class CQColorsTheme1 : public CQColorsTheme {
 
     addNamedPalettes();
 
-    movePalette("palette1", 0);
-    movePalette("palette2", 1);
-    movePalette("set2"    , 2);
+    moveNamedPalette("palette1", 0);
+    moveNamedPalette("palette2", 1);
+    moveNamedPalette("set2"    , 2);
   }
 };
 
@@ -41,9 +41,9 @@ class CQColorsTheme2 : public CQColorsTheme {
 
     addNamedPalettes();
 
-    movePalette("palette2", 0);
-    movePalette("palette1", 1);
-    movePalette("set2"    , 2);
+    moveNamedPalette("palette2", 0);
+    moveNamedPalette("palette1", 1);
+    moveNamedPalette("set2"    , 2);
   }
 };
 

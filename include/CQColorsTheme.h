@@ -45,7 +45,7 @@ class CQColorsTheme : public QObject {
   void setNamedPalette(int i, const QString &name);
 
   //! move palette to new position
-  void movePalette(const QString &name, int pos);
+  void moveNamedPalette(const QString &name, int pos);
 
   //! get position of named palette
   int paletteInd(const QString &name) const;

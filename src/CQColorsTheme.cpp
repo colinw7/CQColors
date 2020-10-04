@@ -74,6 +74,9 @@ void
 CQColorsTheme::
 addNamedPalette(const QString &name)
 {
+  int pos = paletteInd(name);
+  if (pos >= 0) return;
+
   CQColorsPalette *palette = CQColorsMgrInst->getNamedPalette(name);
   assert(palette);
 
@@ -105,15 +108,20 @@ void
 CQColorsTheme::
 setNamedPalette(int i, const QString &name)
 {
+  int pos = paletteInd(name);
+
   CQColorsPalette *palette = CQColorsMgrInst->getNamedPalette(name);
   assert(palette);
 
-  setPalette(i, palette);
+  if (pos < 0)
+    setPalette(i, palette);
+  else
+    moveNamedPalette(name, i);
 }
 
 void
 CQColorsTheme::
-movePalette(const QString &name, int pos)
+moveNamedPalette(const QString &name, int pos)
 {
   // validate destination position
   int n = palettes_.size();

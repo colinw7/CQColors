@@ -411,8 +411,8 @@ upSlot(bool top)
   item0->setText(name1);
   item1->setText(name0);
 
-  theme->movePalette(name0, row1);
-  theme->movePalette(name1, row0);
+  theme->moveNamedPalette(name0, row1);
+  theme->moveNamedPalette(name1, row0);
 
   item0 = currentList_->item(row0);
 
@@ -456,8 +456,8 @@ downSlot()
   item1->setText(name2);
   item2->setText(name1);
 
-  theme->movePalette(name1, row2);
-  theme->movePalette(name2, row1);
+  theme->moveNamedPalette(name1, row2);
+  theme->moveNamedPalette(name2, row1);
 
   item2 = currentList_->item(row2);
 
