@@ -74,8 +74,8 @@ void
 CQColorsTheme::
 addNamedPalette(const QString &name)
 {
-  int pos = paletteInd(name);
-  if (pos >= 0) return;
+  if (hasNamedPalette(name))
+    return;
 
   auto *palette = CQColorsMgrInst->getNamedPalette(name);
   assert(palette);
@@ -83,6 +83,15 @@ addNamedPalette(const QString &name)
   palettes_.push_back(palette);
 
   emit themeChanged();
+}
+
+bool
+CQColorsTheme::
+hasNamedPalette(const QString &name) const
+{
+  int pos = paletteInd(name);
+
+  return (pos >= 0);
 }
 
 void

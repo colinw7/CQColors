@@ -38,6 +38,9 @@ class CQColorsTheme : public QObject {
   //! add named palette
   void addNamedPalette(const QString &name);
 
+  //! check if has named paletted
+  bool hasNamedPalette(const QString &name) const;
+
   //! remove named palette
   void removeNamedPalette(const QString &name);
 

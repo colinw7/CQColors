@@ -188,7 +188,7 @@ void
 CQColorsEditCanvas::
 contextMenuEvent(QContextMenuEvent *e)
 {
-  auto *menu = CQUtil::makeWidget<QMenu>("menu");
+  auto *menu = CQUtil::makeWidget<QMenu>(this, "menu");
 
   //---
 
@@ -700,7 +700,7 @@ paintEvent(QPaintEvent *)
 
       pixelToWindow(x, 0, wx, wy);
 
-      auto c = pal->getColor(wx);
+      auto c = pal->getColor(std::min(std::max(wx, 0.0), 1.0));
 
       double x2 = wx;
 

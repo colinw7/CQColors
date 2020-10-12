@@ -203,13 +203,17 @@ class CQColorsPalette : public QObject {
 
   // get defined color
   const QColor &definedColor(int i) const {
-    assert(i >= 0 && i < int(definedColors_.size()));
+    int nc = definedColors_.size();
+    assert(i >= 0 && i < nc);
+    if (isInverted()) i = nc - 1 - i;
     return definedColors_[i].c;
   }
 
   // get defined color value
   double definedColorValue(int i) const {
-    assert(i >= 0 && i < int(definedColors_.size()));
+    int nc = definedColors_.size();
+    assert(i >= 0 && i < nc);
+    if (isInverted()) i = nc - 1 - i;
     return definedColors_[i].v;
   }
 

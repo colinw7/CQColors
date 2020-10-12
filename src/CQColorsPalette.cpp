@@ -422,7 +422,7 @@ getColor(int i, int n, WrapMode wrapMode) const
     if (nc <= 0)
       return QColor();
 
-    if (definedInverted_)
+    if (isInverted())
       i = n - 1 - i;
 
     if      (wrapMode == WrapMode::REPEAT) {
@@ -490,7 +490,7 @@ getColor(double x, bool scale) const
     if (scale)
       x = mapDefinedColorX(x);
 
-    if (definedInverted_)
+    if (isInverted())
       x = 1.0 - x;
 
     auto p = definedValueColors_.begin();

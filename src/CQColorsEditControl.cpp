@@ -27,7 +27,7 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 {
   setObjectName("paletteControl");
 
-  setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+  setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
   QFontMetricsF fm(font());
 
@@ -39,38 +39,44 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   //---
 
-  auto *controlLayout = CQUtil::makeLayout<QHBoxLayout>(2, 2);
-
-  //---
-
   if (! canvas_->isGray()) {
+    auto *controlFrame  = CQUtil::makeWidget<QFrame>("controlFrame");
+    auto *controlLayout = CQUtil::makeLayout<QHBoxLayout>(controlFrame, 2, 2);
+
+    controlFrame->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Fixed);
+
+    //---
+
     auto *colorTypeFrame = createColorTypeCombo("Type", &colorType_);
 
     if (pal)
       colorType_->setType(pal->colorType());
 
+    colorType_->setToolTip("Color Type");
+
     connect(colorType_, SIGNAL(currentIndexChanged(int)), this, SLOT(colorTypeChanged(int)));
 
     controlLayout->addWidget(colorTypeFrame);
-  }
 
-  //---
+    //---
 
-  auto *colorModelFrame = createColorModelCombo("Color", &colorModel_);
+    auto *colorModelFrame = createColorModelCombo("Color", &colorModel_);
 
-  if (pal)
-    colorModel_->setModel(pal->colorModel());
+    if (pal)
+      colorModel_->setModel(pal->colorModel());
 
-  connect(colorModel_, SIGNAL(currentIndexChanged(int)), this, SLOT(colorModelChanged(int)));
+    colorModel_->setToolTip("Color Model");
 
-  controlLayout->addWidget(colorModelFrame);
+    connect(colorModel_, SIGNAL(currentIndexChanged(int)), this, SLOT(colorModelChanged(int)));
 
-  //---
+    controlLayout->addWidget(colorModelFrame);
 
-  if (! canvas_->isGray()) {
+    //---
+
     distinctCheck_ = CQUtil::makeLabelWidget<QCheckBox>("Distinct", "distinct");
 
     distinctCheck_->setChecked(isDistinct());
+    distinctCheck_->setToolTip("Palette uses distinct (non-interpolated) colors");
 
     connect(distinctCheck_, SIGNAL(stateChanged(int)), this, SLOT(distinctChanged(int)));
 
@@ -81,19 +87,20 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
     invertedCheck_ = CQUtil::makeLabelWidget<QCheckBox>("Inverted", "inverted");
 
     invertedCheck_->setChecked(isInverted());
+    invertedCheck_->setToolTip("Invert order of colors");
 
     connect(invertedCheck_, SIGNAL(stateChanged(int)), this, SLOT(invertedChanged(int)));
 
     controlLayout->addWidget(invertedCheck_);
+
+    //---
+
+    controlLayout->addStretch(1);
+
+    //---
+
+    layout->addWidget(controlFrame);
   }
-
-  //---
-
-  controlLayout->addStretch(1);
-
-  //---
-
-  layout->addLayout(controlLayout);
 
   //---
 
@@ -124,6 +131,11 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
   removeColorButton_ = CQUtil::makeLabelWidget<QPushButton>("Remove", "remove");
   loadColorsButton_  = CQUtil::makeLabelWidget<QPushButton>("Load"  , "load"  );
   saveColorsButton_  = CQUtil::makeLabelWidget<QPushButton>("Save"  , "save"  );
+
+  addColorButton_   ->setToolTip("Add new color");
+  removeColorButton_->setToolTip("Removed selected color");
+  loadColorsButton_ ->setToolTip("Load colors from file");
+  saveColorsButton_ ->setToolTip("Save colors to file");
 
   definedButtonsLayout->addWidget(addColorButton_);
   definedButtonsLayout->addWidget(removeColorButton_);
@@ -517,7 +529,8 @@ updateColorModel()
   auto colorModel = this->colorModel();
 
   if      (colorModel == CQColorsPalette::ColorModel::RGB) {
-    colorModel_->setCurrentIndex(0);
+    if (colorModel_)
+      colorModel_->setCurrentIndex(0);
 
     redModelLabel_  ->setText("R");
     greenModelLabel_->setText("G");
@@ -536,7 +549,8 @@ updateColorModel()
     blueFunctionLabel_ ->setText("B");
   }
   else if (colorModel == CQColorsPalette::ColorModel::HSV) {
-    colorModel_->setCurrentIndex(1);
+    if (colorModel_)
+      colorModel_->setCurrentIndex(1);
 
     redModelLabel_  ->setText("H");
     greenModelLabel_->setText("S");
@@ -999,7 +1013,7 @@ createColorTypeCombo(const QString &label, CQColorsEditColorType **type)
 
   *type = new CQColorsEditColorType;
 
-  auto *colorLabel = CQUtil::makeLabelWidget<QLabel>(label, "labe;");
+  auto *colorLabel = CQUtil::makeLabelWidget<QLabel>(label, "label");
 
   layout->addWidget(colorLabel);
   layout->addWidget(*type);
@@ -1016,6 +1030,8 @@ createColorModelCombo(const QString &label, CQColorsEditColorModel **model)
   auto *layout = CQUtil::makeLayout<QHBoxLayout>(frame, 2, 2);
 
   *model = new CQColorsEditColorModel;
+
+  (*model)->setToolTip("Color Model");
 
   auto *colorLabel = CQUtil::makeLabelWidget<QLabel>(label, "label");
 
