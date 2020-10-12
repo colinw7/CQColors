@@ -235,11 +235,11 @@ class CQColorsPalette : public QObject {
 
   // are defined colors meant to be used as distinct values
   bool isDistinct() const { return definedDistinct_; }
-  void setDistinct(bool b) { definedDistinct_ = b; }
+  void setDistinct(bool b);
 
   // are defined colors inverted
   bool isInverted() const { return definedInverted_; }
-  void setInverted(bool b) { definedInverted_ = b; }
+  void setInverted(bool b);
 
   //---
 

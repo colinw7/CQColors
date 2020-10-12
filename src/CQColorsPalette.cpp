@@ -388,6 +388,30 @@ unmapDefinedColorX(double x) const
   return x*d + definedMin_;
 }
 
+void
+CQColorsPalette::
+setDistinct(bool b)
+{
+  definedDistinct_ = b;
+
+  emit colorsChanged();
+
+  gradientImageDirty_ = true;
+}
+
+void
+CQColorsPalette::
+setInverted(bool b)
+{
+  definedInverted_ = b;
+
+  emit colorsChanged();
+
+  gradientImageDirty_ = true;
+}
+
+//---
+
 QColor
 CQColorsPalette::
 getColor(int i, int n, WrapMode wrapMode) const
