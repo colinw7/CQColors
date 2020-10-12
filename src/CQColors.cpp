@@ -53,7 +53,7 @@ createPalette(const QString &name)
 {
   assert(! getNamedPalette(name));
 
-  CQColorsPalette *palette = new CQColorsPalette;
+  auto *palette = new CQColorsPalette;
 
   addNamedPalette(name, palette);
 
@@ -156,7 +156,7 @@ createTheme(const QString &name)
 {
   assert(! getNamedTheme(name));
 
-  CQColorsTheme *theme = new CQColorsTheme;
+  auto *theme = new CQColorsTheme;
 
   theme->setDesc(name);
 
@@ -205,7 +205,7 @@ void
 CQColorsMgr::
 themeChangedSlot()
 {
-  CQColorsTheme *theme = qobject_cast<CQColorsTheme *>(sender());
+  auto *theme = qobject_cast<CQColorsTheme *>(sender());
 
   if (theme)
     emit themeChanged(theme->name());
@@ -217,7 +217,7 @@ void
 CQColorsMgr::
 paletteChangedSlot()
 {
-  CQColorsPalette *palette = qobject_cast<CQColorsPalette *>(sender());
+  auto *palette = qobject_cast<CQColorsPalette *>(sender());
 
   if (palette)
     emit paletteChanged(palette->name());

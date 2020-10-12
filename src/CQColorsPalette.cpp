@@ -129,7 +129,7 @@ CQColorsPalette *
 CQColorsPalette::
 dup() const
 {
-  CQColorsPalette *palette = new CQColorsPalette;
+  auto *palette = new CQColorsPalette;
 
   palette->assign(*this);
 
@@ -143,7 +143,7 @@ CQColorsPalette::
 qtcl() const
 {
   if (! qtcl_) {
-    CQColorsPalette *th = const_cast<CQColorsPalette *>(this);
+    auto *th = const_cast<CQColorsPalette *>(this);
 
     th->qtcl_ = new CQTcl;
 
@@ -272,7 +272,7 @@ CQColorsPalette::
 cubeHelix() const
 {
   if (! cubeHelix_) {
-    CQColorsPalette *th = const_cast<CQColorsPalette *>(this);
+    auto *th = const_cast<CQColorsPalette *>(this);
 
     th->cubeHelix_ = new CCubeHelix;
   }
@@ -561,7 +561,7 @@ getColor(double x, bool scale) const
   else if (colorType() == ColorType::FUNCTIONS) {
     double r = 0.0, g = 0.0, b = 0.0;
 
-    CQTcl *qtcl = this->qtcl();
+    auto *qtcl = this->qtcl();
 
     qtcl->createVar("gray", x);
 
@@ -843,7 +843,7 @@ bool
 CQColorsPalette::
 saveFile(const std::string &filename)
 {
-  FILE *fp = fopen(filename.c_str(), "w");
+  auto *fp = fopen(filename.c_str(), "w");
   if (! fp) return false;
 
   for (int i = 0; i < numDefinedColors(); ++i) {

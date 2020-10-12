@@ -61,7 +61,7 @@ setNamedPalettes(const QStringList &names)
   palettes_.clear();
 
   for (int i = 0; i < names.length(); ++i) {
-    CQColorsPalette *palette = CQColorsMgrInst->getNamedPalette(names[i]);
+    auto *palette = CQColorsMgrInst->getNamedPalette(names[i]);
     assert(palette);
 
     palettes_.push_back(palette);
@@ -77,7 +77,7 @@ addNamedPalette(const QString &name)
   int pos = paletteInd(name);
   if (pos >= 0) return;
 
-  CQColorsPalette *palette = CQColorsMgrInst->getNamedPalette(name);
+  auto *palette = CQColorsMgrInst->getNamedPalette(name);
   assert(palette);
 
   palettes_.push_back(palette);
@@ -110,7 +110,7 @@ setNamedPalette(int i, const QString &name)
 {
   int pos = paletteInd(name);
 
-  CQColorsPalette *palette = CQColorsMgrInst->getNamedPalette(name);
+  auto *palette = CQColorsMgrInst->getNamedPalette(name);
   assert(palette);
 
   if (pos < 0)
@@ -139,7 +139,7 @@ moveNamedPalette(const QString &name, int pos)
   //---
 
   // remove palette to move from list
-  CQColorsPalette *palette = palettes_[pos1];
+  auto *palette = palettes_[pos1];
 
   for (int i = pos1 + 1; i < n; ++i)
     palettes_[i - 1] = palettes_[i];
