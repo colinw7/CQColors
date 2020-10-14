@@ -472,7 +472,7 @@ getColor(int i, int n, WrapMode wrapMode) const
 
 QColor
 CQColorsPalette::
-getColor(double x, bool scale) const
+getColor(double x, bool scale, bool invert) const
 {
   if      (colorType() == ColorType::DEFINED) {
     if (definedColors_.empty()) {
@@ -489,6 +489,9 @@ getColor(double x, bool scale) const
 
     if (scale)
       x = mapDefinedColorX(x);
+
+    if (invert)
+      x = 1.0 - x;
 
     if (isInverted())
       x = 1.0 - x;

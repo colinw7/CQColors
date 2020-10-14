@@ -257,7 +257,7 @@ class CQColorsPalette : public QObject {
   QColor getColor(int i, int n=-1, WrapMode wrapMode=WrapMode::NONE) const;
 
   //! interpolate color at x (if scaled then input x has been adjusted to min/max range)
-  QColor getColor(double x, bool scale=false) const;
+  QColor getColor(double x, bool scale=false, bool invert=false) const;
 
   //---
 

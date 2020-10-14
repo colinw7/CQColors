@@ -113,6 +113,10 @@ CQColorsEditList::
 CQColorsEditList(QWidget *parent) :
  QFrame(parent)
 {
+  setObjectName("editList");
+
+  //---
+
   auto *layout = CQUtil::makeLayout<QVBoxLayout>(this, 2, 2);
 
   //----

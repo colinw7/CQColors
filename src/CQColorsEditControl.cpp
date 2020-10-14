@@ -178,6 +178,10 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
     setBlueModel (pal->blueModel ());
   }
 
+  redModelCombo_  ->setToolTip("Red function");
+  greenModelCombo_->setToolTip("Green function");
+  blueModelCombo_ ->setToolTip("Blue function");
+
   connect(redModelCombo_  , SIGNAL(currentIndexChanged(int)), this, SLOT(modelChanged(int)));
   connect(greenModelCombo_, SIGNAL(currentIndexChanged(int)), this, SLOT(modelChanged(int)));
   connect(blueModelCombo_ , SIGNAL(currentIndexChanged(int)), this, SLOT(modelChanged(int)));
@@ -195,6 +199,10 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
   modelRNegativeCheck_ = CQUtil::makeLabelWidget<QCheckBox>("R", "rnegative");
   modelGNegativeCheck_ = CQUtil::makeLabelWidget<QCheckBox>("G", "gnegative");
   modelBNegativeCheck_ = CQUtil::makeLabelWidget<QCheckBox>("B", "bnegative");
+
+  modelRNegativeCheck_->setToolTip("Negate result of Red function");
+  modelGNegativeCheck_->setToolTip("Negate result of Green function");
+  modelBNegativeCheck_->setToolTip("Negate result of Blue function");
 
   connect(modelRNegativeCheck_, SIGNAL(stateChanged(int)), this, SLOT(modelRNegativeChecked(int)));
   connect(modelGNegativeCheck_, SIGNAL(stateChanged(int)), this, SLOT(modelGNegativeChecked(int)));
@@ -241,6 +249,13 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
     blueMax_ ->setValue(pal->blueMax ());
   }
 
+  redMin_  ->setToolTip("Minimum Red value");
+  redMax_  ->setToolTip("Maximum Red value");
+  greenMin_->setToolTip("Minimum Green value");
+  greenMax_->setToolTip("Maximum Green value");
+  blueMin_ ->setToolTip("Minimum Blue value");
+  blueMax_ ->setToolTip("Maximum Blue value");
+
   rangeGroupLayout->addLayout(rangeGridLayout);
   rangeGroupLayout->addStretch(1);
 
@@ -266,6 +281,10 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
   createFunctionEdit(functionsGridLayout, 1, "G", &greenFunctionLabel_, &greenFunctionEdit_);
   createFunctionEdit(functionsGridLayout, 2, "B", &blueFunctionLabel_ , &blueFunctionEdit_ );
 
+  redFunctionEdit_  ->setToolTip("Red Function Expression");
+  greenFunctionEdit_->setToolTip("Green Function Expression");
+  blueFunctionEdit_ ->setToolTip("Blue Function Expression");
+
   functionsGridLayout->setRowStretch(3, 1);
 
   if (pal) {
@@ -289,7 +308,13 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
   createRealEdit(cubeGridLayout, 1, "Cycles"    , &cubeCycles_    );
   createRealEdit(cubeGridLayout, 2, "Saturation", &cubeSaturation_);
 
+  cubeStart_     ->setToolTip("Cube Helix Start Value");
+  cubeCycles_    ->setToolTip("Cube Helix Cycles Count");
+  cubeSaturation_->setToolTip("Cube Helix Saturation");
+
   cubeNegativeCheck_ = CQUtil::makeLabelWidget<QCheckBox>("Negative", "negative");
+
+  cubeNegativeCheck_->setToolTip("Negate Colors");
 
   connect(cubeNegativeCheck_, SIGNAL(stateChanged(int)), this, SLOT(cubeNegativeChecked(int)));
 
