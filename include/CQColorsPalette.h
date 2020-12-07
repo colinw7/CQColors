@@ -329,7 +329,8 @@ class CQColorsPalette : public QObject {
   //---
 
   //! set linear gradient
-  void setLinearGradient(QLinearGradient &lg, double a=1.0) const;
+  void setLinearGradient(QLinearGradient &lg, double a=1.0,
+                         double xmin=0.0, double xmax=1.0) const;
 
   //---
 

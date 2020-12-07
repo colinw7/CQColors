@@ -936,19 +936,21 @@ getGradientImage(const QSize &size)
 
 void
 CQColorsPalette::
-setLinearGradient(QLinearGradient &lg, double a) const
+setLinearGradient(QLinearGradient &lg, double a, double xmin, double xmax) const
 {
   int    n = 64;
-  double d = 1.0/n;
+  double d = (xmax - xmin)/(n - 1);
 
-  double x = 0.0;
+  double x = xmin;
 
   for (int i = 0; i < n; ++i) {
     QColor c = getColor(x);
 
     c.setAlphaF(a);
 
-    lg.setColorAt(x, c);
+    double x1 = 1.0*i/(n - 1);
+
+    lg.setColorAt(x1, c);
 
     x += d;
   }
