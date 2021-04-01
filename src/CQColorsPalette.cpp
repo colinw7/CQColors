@@ -498,14 +498,14 @@ getColor(double x, bool scale, bool invert) const
 
     auto p = definedValueColors_.begin();
 
-    double x1 = mapDefinedColorX((*p).first);
-    QColor c1 = (*p).second;
+    auto x1 = mapDefinedColorX((*p).first);
+    auto c1 = (*p).second;
 
     if (x <= x1) return c1;
 
     for (++p; p != definedValueColors_.end(); ++p) {
-      double x2 = mapDefinedColorX((*p).first);
-      QColor c2 = (*p).second;
+      auto x2 = mapDefinedColorX((*p).first);
+      auto c2 = (*p).second;
 
       if (x <= x2) {
         double m = (x - x1)/(x2 - x1);
@@ -789,7 +789,7 @@ CQColorsPalette::
 readFileLines(const QStringList &lines)
 {
   auto addWords = [](const QString &str, std::vector<QString> &words) {
-    QStringList strs = str.split(" ", QString::SkipEmptyParts);
+    auto strs = str.split(" ", QString::SkipEmptyParts);
 
     for (int i = 0; i < strs.length(); ++i)
       words.push_back(strs[i]);
@@ -852,7 +852,7 @@ saveFile(const std::string &filename)
   for (int i = 0; i < numDefinedColors(); ++i) {
     double x = definedColorValue(i);
 
-    const QColor &c = definedColor(i);
+    const auto &c = definedColor(i);
 
     fprintf(fp, "%lf %lf %lf %lf\n", x, c.redF(), c.greenF(), c.blueF());
   }
@@ -916,7 +916,7 @@ getGradientImage(const QSize &size)
       for (int i = 0; i < w; ++i) {
         double x = i/(w - 1.0);
 
-        QColor c = getColor(x);
+        auto c = getColor(x);
 
         QPen pen(c);
 
@@ -936,15 +936,27 @@ getGradientImage(const QSize &size)
 
 void
 CQColorsPalette::
-setLinearGradient(QLinearGradient &lg, double a, double xmin, double xmax) const
+setLinearGradient(QLinearGradient &lg, double a, double xmin, double xmax, bool enabled) const
 {
+  auto grayColor = [&](const QColor &c) {
+    int g = qGray(c.red(), c.green(), c.blue());
+
+    return QColor(g, g, g);
+  };
+
   int    n = 64;
   double d = (xmax - xmin)/(n - 1);
 
   double x = xmin;
 
   for (int i = 0; i < n; ++i) {
-    QColor c = getColor(x);
+    auto c = getColor(x);
+
+    if (! enabled) {
+      c = grayColor(c);
+
+      a *= 0.8;
+    }
 
     c.setAlphaF(a);
 
@@ -1007,7 +1019,7 @@ showGradient(std::ostream &os) const
     int i = 0;
 
     for (const auto &cc : colors()) {
-      const QColor &c = cc.second;
+      const auto &c = cc.second;
 
       os << i << ". gray=" << cc.first << ", ";
 
@@ -1048,7 +1060,7 @@ showPaletteValues(std::ostream &os, int n, bool is_float, bool is_int)
   double d = 1.0/(n - 1);
 
   for (int i = 0; i < n; ++i, x += d) {
-    QColor c = getColor(x);
+    auto c = getColor(x);
 
     os << "  ";
 
