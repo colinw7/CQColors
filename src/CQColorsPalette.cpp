@@ -944,6 +944,9 @@ setLinearGradient(QLinearGradient &lg, double a, double xmin, double xmax, bool 
     return QColor(g, g, g);
   };
 
+  if (! enabled)
+    a *= 0.8;
+
   int    n = 64;
   double d = (xmax - xmin)/(n - 1);
 
@@ -952,11 +955,8 @@ setLinearGradient(QLinearGradient &lg, double a, double xmin, double xmax, bool 
   for (int i = 0; i < n; ++i) {
     auto c = getColor(x);
 
-    if (! enabled) {
+    if (! enabled)
       c = grayColor(c);
-
-      a *= 0.8;
-    }
 
     c.setAlphaF(a);
 
