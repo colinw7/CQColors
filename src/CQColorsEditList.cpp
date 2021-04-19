@@ -3,16 +3,25 @@
 #include <CQColorsTheme.h>
 #include <CQColorsPalette.h>
 
-#include <CQPixmapCache.h>
+#include <CQIconButton.h>
 #include <CQGroupBox.h>
 #include <CQColorEdit.h>
 #include <CQUtil.h>
 
-#include <svg/up_top_svg.h>
-#include <svg/up_svg.h>
-#include <svg/down_svg.h>
-#include <svg/left_svg.h>
-#include <svg/right_svg.h>
+#include <svg/up_top_light_svg.h>
+#include <svg/up_top_dark_svg.h>
+
+#include <svg/up_light_svg.h>
+#include <svg/up_dark_svg.h>
+
+#include <svg/down_light_svg.h>
+#include <svg/down_dark_svg.h>
+
+#include <svg/left_light_svg.h>
+#include <svg/left_dark_svg.h>
+
+#include <svg/right_light_svg.h>
+#include <svg/right_dark_svg.h>
 
 #include <QComboBox>
 #include <QListWidget>
@@ -177,9 +186,9 @@ CQColorsEditList(QWidget *parent) :
   listLayout->addWidget(buttonsFrame);
 
   auto addToolButton = [&](const QString &name, const QString &iconName, const char *slotName) {
-    auto *button = CQUtil::makeWidget<QToolButton>(name);
+    auto *button = CQUtil::makeWidget<CQIconButton>(name);
 
-    button->setIcon(CQPixmapCacheInst->getIcon(iconName));
+    button->setIcon(iconName);
 
     connect(button, SIGNAL(clicked()), this, slotName);
 
