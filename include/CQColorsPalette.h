@@ -12,8 +12,12 @@
 #include <cmath>
 #include <cassert>
 
+#define CQCOLORS_TCL 1
+
 class CCubeHelix;
+#ifdef CQCOLORS_TCL
 class CQTcl;
+#endif
 class QLinearGradient;
 
 //---
@@ -385,7 +389,9 @@ class CQColorsPalette : public QObject {
 
   void initFunctions();
 
+#ifdef CQCOLORS_TCL
   CQTcl *qtcl() const;
+#endif
 
  signals:
   void colorsChanged();
@@ -423,7 +429,9 @@ class CQColorsPalette : public QObject {
   ColorFn       rf_;                       //!< red color tcl function
   ColorFn       gf_;                       //!< green color tcl function
   ColorFn       bf_;                       //!< blue color tcl function
+#ifdef CQCOLORS_TCL
   CQTcl*        qtcl_         { nullptr }; //!< qtcl pointer for functions
+#endif
 
   // CubeHelix
   CCubeHelix*   cubeHelix_    { nullptr }; //!< cube helix data

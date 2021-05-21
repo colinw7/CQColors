@@ -1,9 +1,13 @@
 #include <CQColorsPalette.h>
 #include <CCubeHelix.h>
+#ifdef CQCOLORS_TCL
 #include <CQTclUtil.h>
+#endif
 #include <CMathUtil.h>
 #include <QLinearGradient>
 #include <QPainter>
+
+#include <iostream>
 
 CQColorsPalette::
 CQColorsPalette()
@@ -32,7 +36,9 @@ CQColorsPalette::
 {
   delete cubeHelix_;
 
+#ifdef CQCOLORS_TCL
   delete qtcl_;
+#endif
 }
 
 #if 0
@@ -109,10 +115,12 @@ assign(const CQColorsPalette &palette)
   gamma_= palette.gamma_;
 #endif
 
+#ifdef CQCOLORS_TCL
   // Tcl
   delete qtcl_;
 
   qtcl_ = nullptr;
+#endif
 
   //---
 
@@ -138,6 +146,7 @@ dup() const
 
 //---
 
+#ifdef CQCOLORS_TCL
 CQTcl *
 CQColorsPalette::
 qtcl() const
@@ -152,6 +161,7 @@ qtcl() const
 
   return qtcl_;
 }
+#endif
 
 //---
 
@@ -564,6 +574,7 @@ getColor(double x, bool scale, bool invert) const
   else if (colorType() == ColorType::FUNCTIONS) {
     double r = 0.0, g = 0.0, b = 0.0;
 
+#ifdef CQCOLORS_TCL
     auto *qtcl = this->qtcl();
 
     qtcl->createVar("gray", x);
@@ -579,6 +590,7 @@ getColor(double x, bool scale, bool invert) const
 
     if (qtcl->evalExpr(bf_.fn.c_str(), res))
       b = CQTclUtil::toReal(res, ok);
+#endif
 
     //---
 
