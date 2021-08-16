@@ -3,7 +3,7 @@
 
 #include <CQColors.h>
 #include <CQColorsPalette.h>
-#include <QFrame>
+#include <QScrollArea>
 #include <QTableWidget>
 
 class CQColorsEditCanvas;
@@ -23,7 +23,7 @@ class QGridLayout;
 /*!
  * \brief Controls for colors edit customization
  */
-class CQColorsEditControl : public QFrame {
+class CQColorsEditControl : public QScrollArea {
   Q_OBJECT
 
   Q_PROPERTY(int redModel   READ redModel   WRITE setRedModel  )

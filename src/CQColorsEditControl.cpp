@@ -23,7 +23,7 @@
 
 CQColorsEditControl::
 CQColorsEditControl(CQColorsEditCanvas *canvas) :
- QFrame(0), canvas_(canvas)
+ QScrollArea(nullptr), canvas_(canvas)
 {
   setObjectName("paletteControl");
 
@@ -33,7 +33,11 @@ CQColorsEditControl(CQColorsEditCanvas *canvas) :
 
   //---
 
-  auto *layout = CQUtil::makeLayout<QVBoxLayout>(this, 2, 2);
+  auto *frame  = CQUtil::makeWidget<QFrame>("frame");
+  auto *layout = CQUtil::makeLayout<QVBoxLayout>(frame, 2, 2);
+
+  setWidget(frame);
+  setWidgetResizable(true);
 
   auto *pal = canvas_->palette();
 
