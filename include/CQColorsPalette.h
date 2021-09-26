@@ -58,7 +58,7 @@ class CQColorsPalette : public QObject {
     REFLECT
   };
 
-  using ColorMap = std::map<double,QColor>;
+  using ColorMap = std::map<double, QColor>;
 
   struct DefinedColor {
     double v { -1.0 };

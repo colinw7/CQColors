@@ -76,10 +76,10 @@ class CQColorsMgr : public QObject {
     CQColorsPalette *current  { nullptr };
   };
 
-//using ThemeMap      = std::map<QString,CQColorsTheme*>;
-  using ThemeMap      = COrderedMap<QString,CQColorsTheme*>;
-//using NamedPalettes = std::map<QString,PaletteData>;
-  using NamedPalettes = COrderedMap<QString,PaletteData>;
+//using ThemeMap      = std::map<QString, CQColorsTheme*>;
+  using ThemeMap      = COrderedMap<QString, CQColorsTheme*>;
+//using NamedPalettes = std::map<QString, PaletteData>;
+  using NamedPalettes = COrderedMap<QString, PaletteData>;
 
   NamedPalettes namedPalettes_; //!< named palettes
   ThemeMap      themes_;        //!< named themes

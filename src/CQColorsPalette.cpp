@@ -486,8 +486,8 @@ getColor(double x, bool scale, bool invert) const
 {
   if      (colorType() == ColorType::DEFINED) {
     if (definedColors_.empty()) {
-      QColor c1(0,0,0);
-      QColor c2(255,255,255);
+      QColor c1(Qt::black);
+      QColor c2(Qt::white);
 
       if      (colorModel() == ColorModel::RGB)
         return interpRGB(c1, c2, x);
@@ -917,7 +917,7 @@ getGradientImage(const QSize &size)
   }
 
   if (gradientImageDirty_) {
-    gradientImage_.fill(QColor(0,0,0,0));
+    gradientImage_.fill(Qt::transparent);
 
     int w = size.width ();
     int h = size.height();
