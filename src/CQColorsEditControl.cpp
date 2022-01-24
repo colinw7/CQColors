@@ -738,7 +738,12 @@ colorsChanged()
   for (int i = 0; i < definedColors_->numRealColors(); ++i) {
     const auto &realColor = definedColors_->realColor(i);
 
-    pal->addDefinedColor(realColor.r, realColor.c);
+    double r = realColor.r;
+
+    while (pal->isDefinedColor(r))
+      r += 0.01;
+
+    pal->addDefinedColor(r, realColor.c);
   }
 
   emit stateChanged();
