@@ -26,7 +26,7 @@ class CQColorsTheme : public QObject {
   void setDesc(const QString &s) { desc_ = s; }
 
   //! number of palettes
-  int numPalettes() const { return palettes_.size(); }
+  int numPalettes() const { return int(palettes_.size()); }
 
   //! get/set nth palette
   CQColorsPalette *palette(int i=0) const;

@@ -199,7 +199,7 @@ class CQColorsPalette : public QObject {
   // defined colors
 
   // get number of defined colors
-  int numDefinedColors() const { return definedColors_.size(); }
+  int numDefinedColors() const { return int(definedColors_.size()); }
 
   // get defined color
   const DefinedColors &definedColors() const { return definedColors_; }
@@ -207,18 +207,18 @@ class CQColorsPalette : public QObject {
 
   // get defined color
   const QColor &definedColor(int i) const {
-    int nc = definedColors_.size();
-    assert(i >= 0 && i < nc);
-    if (isInverted()) i = nc - 1 - i;
-    return definedColors_[i].c;
+    auto nc = definedColors_.size();
+    assert(i >= 0 && i < int(nc));
+    if (isInverted()) i = int(nc - 1 - size_t(i));
+    return definedColors_[size_t(i)].c;
   }
 
   // get defined color value
   double definedColorValue(int i) const {
-    int nc = definedColors_.size();
-    assert(i >= 0 && i < nc);
-    if (isInverted()) i = nc - 1 - i;
-    return definedColors_[i].v;
+    auto nc = definedColors_.size();
+    assert(i >= 0 && i < int(nc));
+    if (isInverted()) i = int(nc - 1 - size_t(i));
+    return definedColors_[size_t(i)].v;
   }
 
   // is existing defned color
