@@ -71,7 +71,7 @@ addNamedPalette(const QString &name, CQColorsPalette *palette)
 
   PaletteData paletteData;
 
-  paletteData.ind      = namedPalettes_.size();
+  paletteData.ind      = int(namedPalettes_.size());
   paletteData.current  = palette;
   paletteData.original = palette->dup();
 

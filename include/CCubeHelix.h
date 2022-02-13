@@ -78,7 +78,7 @@ class CCubeHelix {
       b = 1.0 - b;
     }
 
-    return QColor(255*r, 255*g, 255*b);
+    return QColor(int(255*r), int(255*g), int(255*b));
   }
 
  private:

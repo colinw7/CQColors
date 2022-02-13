@@ -34,9 +34,11 @@ CQColorsPalette *
 CQColorsTheme::
 palette(int i) const
 {
-  int i1 = i % palettes_.size();
+  assert(i >= 0);
 
-  return palettes_[i1];
+  int i1 = int(size_t(i) % palettes_.size());
+
+  return palettes_[size_t(i1)];
 }
 
 void
@@ -46,10 +48,10 @@ setPalette(int i, CQColorsPalette *palette)
   assert(palette);
 
   // validate destination position
-  int n = palettes_.size();
-  assert(i >= 0 && i < n);
+  auto n = palettes_.size();
+  assert(i >= 0 && size_t(i) < n);
 
-  palettes_[i] = palette;
+  palettes_[size_t(i)] = palette;
 
   emit themeChanged();
 }
@@ -60,8 +62,8 @@ setNamedPalettes(const QStringList &names)
 {
   palettes_.clear();
 
-  for (int i = 0; i < names.length(); ++i) {
-    auto *palette = CQColorsMgrInst->getNamedPalette(names[i]);
+  for (size_t i = 0; i < size_t(names.length()); ++i) {
+    auto *palette = CQColorsMgrInst->getNamedPalette(names[int(i)]);
     assert(palette);
 
     palettes_.push_back(palette);
@@ -101,9 +103,9 @@ removeNamedPalette(const QString &name)
   int pos = paletteInd(name);
   if (pos < 0) return;
 
-  int n = palettes_.size();
+  auto n = palettes_.size();
 
-  for (int i = pos + 1; i < n; ++i)
+  for (size_t i = size_t(pos + 1); i < n; ++i)
     palettes_[i - 1] = palettes_[i];
 
   palettes_.pop_back();
@@ -133,8 +135,8 @@ CQColorsTheme::
 moveNamedPalette(const QString &name, int pos)
 {
   // validate destination position
-  int n = palettes_.size();
-  assert(pos >= 0 && pos < n);
+  auto n = palettes_.size();
+  assert(pos >= 0 && size_t(pos) < n);
 
   //---
 
@@ -148,19 +150,19 @@ moveNamedPalette(const QString &name, int pos)
   //---
 
   // remove palette to move from list
-  auto *palette = palettes_[pos1];
+  auto *palette = palettes_[size_t(pos1)];
 
-  for (int i = pos1 + 1; i < n; ++i)
+  for (size_t i = size_t(pos1 + 1); i < n; ++i)
     palettes_[i - 1] = palettes_[i];
 
   palettes_[n - 1] = nullptr;
 
   //---
 
-  for (int i = n - 1; i > pos; --i)
+  for (size_t i = n - 1; i > size_t(pos); --i)
     palettes_[i] = palettes_[i - 1];
 
-  palettes_[pos] = palette;
+  palettes_[size_t(pos)] = palette;
 
   //---
 
@@ -171,11 +173,11 @@ int
 CQColorsTheme::
 paletteInd(const QString &name) const
 {
-  int n = palettes_.size();
+  auto n = palettes_.size();
 
-  for (int i = 0; i < n; ++i)
+  for (size_t i = 0; i < n; ++i)
     if (palettes_[i]->name() == name)
-      return i;
+      return int(i);
 
   return -1;
 }
@@ -189,15 +191,15 @@ shiftPalettes(int n)
 
   palettes.resize(n);
 
-  for (int i = 0; i < n; ++i)
+  for (size_t i = 0; i < n; ++i)
     palettes[i] = palettes_[i];
 
-  int n1 = palettes_.size() - n;
+  size_t n1 = palettes_.size() - n;
 
-  for (int i = 0; i < n1; ++i)
+  for (size_t i = 0; i < n1; ++i)
     palettes_[i] = palettes_[i + n];
 
-  for (int i = 0; i < n; ++i)
+  for (size_t i = 0; i < n; ++i)
     palettes_[i + n1] = palettes[i];
 
   emit themeChanged();

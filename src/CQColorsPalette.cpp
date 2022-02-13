@@ -341,7 +341,7 @@ setDefinedColor(int i, const QColor &c)
 {
   assert(i >= 0 && i < numDefinedColors());
 
-  DefinedColor &dc = definedColors_[i];
+  DefinedColor &dc = definedColors_[size_t(i)];
 
   dc.c = c;
 
@@ -426,8 +426,10 @@ QColor
 CQColorsPalette::
 getColor(int i, int n, WrapMode wrapMode) const
 {
+  assert(i >= 0);
+
   if      (colorType() == ColorType::DEFINED) {
-    int nc = definedColors_.size();
+    auto nc = definedColors_.size();
 
     if (nc <= 0)
       return QColor();
@@ -439,7 +441,7 @@ getColor(int i, int n, WrapMode wrapMode) const
       while (i < 0)
         i += nc;
 
-      while (i >= nc)
+      while (i >= int(nc))
         i -= nc;
     }
     else if (wrapMode == WrapMode::REFLECT) {
@@ -451,21 +453,21 @@ getColor(int i, int n, WrapMode wrapMode) const
         reflect = ! reflect;
       }
 
-      while (i >= nc) {
+      while (i >= int(nc)) {
         i -= nc;
 
         reflect = ! reflect;
       }
 
       if (reflect)
-        i = nc - 1 - i;
+        i = int(nc - 1 - size_t(i));
     }
     else {
-      if (i < 0 || i >= nc)
+      if (i < 0 || i >= int(nc))
         return QColor();
     }
 
-    return definedColors_[i].c;
+    return definedColors_[size_t(i)].c;
   }
   else {
     if (n < 0)
@@ -541,7 +543,7 @@ getColor(double x, bool scale, bool invert) const
       if (isRedNegative() || isGreenNegative() || isBlueNegative())
         g = 1.0 - g;
 
-      return QColor(255*g, 255*g, 255*g);
+      return QColor(int(255*g), int(255*g), int(255*g));
     }
 
     //---
@@ -743,7 +745,7 @@ bool fileToLines(const QString &filename, QStringList &lines) {
       return false;
 
     while (! feof(fp) && c != '\n') {
-      line += c;
+      line += char(c);
 
       c = fgetc(fp);
     }
@@ -824,7 +826,7 @@ readFileLines(const QStringList &lines)
 
     double x = i;
 
-    int j = 0;
+    size_t j = 0;
 
     if (words.size() >= 4) {
       bool ok;
@@ -846,7 +848,7 @@ readFileLines(const QStringList &lines)
     else
       continue;
 
-    addDefinedColor(x, QColor(255*r, 255*g, 255*b));
+    addDefinedColor(x, QColor(int(255*r), int(255*g), int(255*b)));
 
     ++i;
   }

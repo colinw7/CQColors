@@ -2112,10 +2112,10 @@ class CQColorsPaletteRGBRange : public CQColorsDefinedPalette {
 
     /* We want Blues, Greens then Reds in our Palette */
 
-    for (int i = 1; i < 85; ++i) {
+    for (size_t i = 1; i < 85; ++i) {
       i1 = 0;
-      i2 = 3*i;
-      i3 = 3*(86 - i);
+      i2 = int(3*i);
+      i3 = int(3*(86 - i));
 
       colors[i +   0] = QColor(i1, i2, i3);
       colors[i +  85] = QColor(i2, i3, i1);
@@ -2134,7 +2134,7 @@ class CQColorsPaletteRGBRange : public CQColorsDefinedPalette {
 
     int n = 0;
 
-    for (int i = 1; i < 256; ++i)
+    for (size_t i = 1; i < 256; ++i)
       addDefinedColor(n++, colors[i]);
   }
 };
