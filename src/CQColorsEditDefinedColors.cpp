@@ -3,6 +3,7 @@
 #include <CQRealSpin.h>
 #include <CQColorChooser.h>
 #include <CQUtil.h>
+#include <CSafeIndex.h>
 
 #include <QHeaderView>
 #include <QItemDelegate>
@@ -77,7 +78,7 @@ updateColors(CQColorsPalette *canvas)
   for (const auto &c : canvas->definedValueColors())
     realColors_.emplace_back(c.first, c.second.rgba());
 
-  for (int r = 0; r < numRealColors(); ++r) {
+  for (int r = 0; r < CUtil::toInt(numRealColors()); ++r) {
     const auto &realColor = this->realColor(r);
 
     auto *item1 = new QTableWidgetItem(QString("%1").arg(realColor.r));
@@ -92,14 +93,14 @@ const CQColorsEditDefinedColors::RealColor &
 CQColorsEditDefinedColors::
 realColor(int r) const
 {
-  return realColors_[r];
+  return CUtil::safeIndex(realColors_, r);
 }
 
 void
 CQColorsEditDefinedColors::
 setRealColor(int r, const RealColor &realColor)
 {
-  realColors_[r] = realColor;
+  CUtil::safeIndex(realColors_, r) = realColor;
 
   //auto *item1 = new QTableWidgetItem(QString("%1").arg(realColor.r));
   //auto *item2 = new QTableWidgetItem(realColor.c.name());

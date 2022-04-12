@@ -16,8 +16,13 @@ class QListWidgetItem;
 class CQColorsEditList : public QFrame {
   Q_OBJECT
 
+  Q_PROPERTY(QString themeName READ themeName WRITE setThemeName)
+
  public:
   CQColorsEditList(QWidget *parent=nullptr);
+
+  const QString &themeName() const { return themeName_; }
+  void setThemeName(const QString &name);
 
  public slots:
   void updateThemes();
@@ -49,6 +54,7 @@ class CQColorsEditList : public QFrame {
   void insideColorSlot(const QColor &c);
 
  private:
+  QString      themeName_;
   QComboBox*   themesCombo_     { nullptr }; //!< theme combo box
   QListWidget* currentList_     { nullptr }; //!< theme current palettes list
   QListWidget* allList_         { nullptr }; //!< theme unused palettes list

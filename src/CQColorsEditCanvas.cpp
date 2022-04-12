@@ -2,6 +2,7 @@
 #include <CQColors.h>
 #include <CQColorsPalette.h>
 #include <CQUtil.h>
+#include <CSafeIndex.h>
 
 #include <QLabel>
 #include <QMouseEvent>
@@ -604,14 +605,14 @@ paintEvent(QPaintEvent *)
   if (isShowBars()) {
     using XValues = std::vector<double>;
 
-    int nx = pal->numDefinedColors();
+    auto nx = CUtil::toSizeT(pal->numDefinedColors());
 
     XValues xvalues;
 
     xvalues.resize(nx);
 
-    for (int i = 0; i < nx; ++i) {
-      double x = pal->mapDefinedColorX(pal->definedColorValue(i));
+    for (size_t i = 0; i < nx; ++i) {
+      double x = pal->mapDefinedColorX(pal->definedColorValue(CUtil::toInt(i)));
 
       if (pal->isInverted())
         x = 1.0 - x;
@@ -629,7 +630,7 @@ paintEvent(QPaintEvent *)
 
     //---
 
-    for (int i = 0; i < nx; ++i) {
+    for (size_t i = 0; i < nx; ++i) {
       double xm = xvalues[i];
 
       double x1, x2;
@@ -646,7 +647,7 @@ paintEvent(QPaintEvent *)
 
       //---
 
-      auto c = pal->definedColor(i);
+      auto c = pal->definedColor(CUtil::toInt(i));
 
       double px1, px2, py1;
 

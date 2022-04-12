@@ -9,6 +9,7 @@
 #include <CQGroupBox.h>
 #include <CQLineEdit.h>
 #include <CQUtil.h>
+#include <CSafeIndex.h>
 
 #include <QVBoxLayout>
 #include <QHBoxLayout>
@@ -735,8 +736,8 @@ colorsChanged()
 
   pal->resetDefinedColors();
 
-  for (int i = 0; i < definedColors_->numRealColors(); ++i) {
-    const auto &realColor = definedColors_->realColor(i);
+  for (size_t i = 0; i < definedColors_->numRealColors(); ++i) {
+    const auto &realColor = definedColors_->realColor(CUtil::toInt(i));
 
     double r = realColor.r;
 
@@ -768,7 +769,7 @@ addColorSlot()
   double x = 0.5;
   auto   c = QColor(127, 127, 127);
 
-  int nc = colors.size();
+  auto nc = CUtil::toInt(colors.size());
 
   int row1 = -1;
 

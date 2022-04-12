@@ -25,7 +25,7 @@ class CQColorsEditDefinedColors : public QTableWidget {
 
   void updateColors(CQColorsPalette *palette);
 
-  int numRealColors() const { return realColors_.size(); }
+  size_t numRealColors() const { return realColors_.size(); }
 
   const RealColor &realColor(int i) const;
 

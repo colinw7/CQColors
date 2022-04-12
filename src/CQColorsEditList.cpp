@@ -275,8 +275,16 @@ CQColorsEditList(QWidget *parent) :
   connect(CQColorsMgrInst, SIGNAL(palettesChanged()), this, SLOT(updateLists()));
 
   updateThemes();
-  updateLists();
-  updateData();
+}
+
+void
+CQColorsEditList::
+setThemeName(const QString &name)
+{
+  int ind = themesCombo_->findText(name);
+
+  if (ind >= 0)
+    themesCombo_->setCurrentIndex(ind);
 }
 
 void
@@ -297,6 +305,8 @@ void
 CQColorsEditList::
 themesComboSlot(int)
 {
+  themeName_ = themesCombo_->currentText();
+
   updateLists();
   updateData();
 }
@@ -312,6 +322,8 @@ updateThemes()
   themesCombo_->clear();
 
   themesCombo_->addItems(names);
+
+  themesComboSlot(0);
 }
 
 void
@@ -645,9 +657,7 @@ CQColorsTheme *
 CQColorsEditList::
 currentTheme() const
 {
-  auto name = themesCombo_->currentText();
-
-  auto *theme = CQColorsMgrInst->getNamedTheme(name);
+  auto *theme = CQColorsMgrInst->getNamedTheme(themeName_);
 
   return theme;
 }

@@ -41,8 +41,8 @@ class CQColorsEditCanvas : public QFrame {
   };
 
  public:
-  CQColorsEditCanvas(QWidget *parent, CQColorsPalette *palette);
-  CQColorsEditCanvas(CQColorsPalette *palette, QWidget *parent=0);
+  CQColorsEditCanvas(QWidget *parent, CQColorsPalette *palette=nullptr);
+  CQColorsEditCanvas(CQColorsPalette *palette, QWidget *parent=nullptr);
 
  ~CQColorsEditCanvas();
 
