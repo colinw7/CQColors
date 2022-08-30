@@ -9,6 +9,7 @@
 #include <QMenu>
 #include <QAction>
 #include <QPainter>
+#include <QPainterPath>
 
 namespace Util {
   inline double rgbToGray(double r, double g, double b) {
@@ -927,7 +928,7 @@ drawAxis(QPainter *painter)
 
   QFontMetricsF fm(font());
 
-  double tw  = fm.width("X.X");
+  double tw  = fm.horizontalAdvance("X.X");
   double dty = (fm.ascent() - fm.descent())/2;
 
   painter->drawText(QPointF(px1 - tw - 4, py1 + dty), "0.0");
@@ -951,7 +952,7 @@ drawAxis(QPainter *painter)
   else
     yLabel = "Gray Value";
 
-  double tw1 = fm.width(yLabel);
+  double tw1 = fm.horizontalAdvance(yLabel);
 
   painter->save();
 

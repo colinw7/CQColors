@@ -803,7 +803,7 @@ CQColorsPalette::
 readFileLines(const QStringList &lines)
 {
   auto addWords = [](const QString &str, std::vector<QString> &words) {
-    auto strs = str.split(" ", QString::SkipEmptyParts);
+    auto strs = str.split(" ", Qt::SkipEmptyParts);
 
     for (int i = 0; i < strs.length(); ++i)
       words.push_back(strs[i]);
