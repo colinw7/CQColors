@@ -7,13 +7,13 @@ QT += widgets svg
 DEPENDPATH += .
 
 QMAKE_CXXFLAGS += \
--std=c++14 \
+-std=c++17 \
 -DCQCHARTS_FOLDED_MODEL \
 
 MOC_DIR = .moc
 
 CONFIG += staticlib
-CONFIG += c++14
+CONFIG += c++17
 
 SOURCES += \
 CQColors.cpp \

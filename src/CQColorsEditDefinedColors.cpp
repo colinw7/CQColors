@@ -255,7 +255,7 @@ drawColor(QPainter *painter, const QStyleOptionViewItem &option,
 
   painter->fillRect(rect, QBrush(color));
 
-  painter->setPen(QColor(0,0,0)); // TODO: contrast border
+  painter->setPen(QColor(0, 0, 0)); // TODO: contrast border
 
   painter->drawRect(rect);
 
