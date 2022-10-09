@@ -128,6 +128,13 @@ getIndPalette(int ind) const
   return paletteData.current;
 }
 
+uint
+CQColorsMgr::
+numPalettes() const
+{
+  return uint(namedPalettes_.size());
+}
+
 void
 CQColorsMgr::
 getPaletteNames(QStringList &names) const

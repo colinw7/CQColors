@@ -31,6 +31,7 @@ class CQColorsMgr : public QObject {
   int getNamedPaletteInd(const QString &name) const;
   CQColorsPalette *getIndPalette(int ind) const;
 
+  uint numPalettes() const;
   void getPaletteNames(QStringList &names) const;
 
   void resetPalette(const QString &name);
