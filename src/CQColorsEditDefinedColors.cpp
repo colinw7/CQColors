@@ -16,21 +16,22 @@ class CQColorsEditDefinedColorsDelegate : public QItemDelegate {
 
   // Override to create editor
   QWidget *createEditor(QWidget *parent, const QStyleOptionViewItem &option,
-                        const QModelIndex &ind) const;
+                        const QModelIndex &ind) const override;
 
   // Override to get content from editor
-  void setEditorData(QWidget *editor, const QModelIndex &ind) const;
+  void setEditorData(QWidget *editor, const QModelIndex &ind) const override;
 
   // Override to set editor from content
-  void setModelData(QWidget *editor, QAbstractItemModel *model, const QModelIndex &ind) const;
+  void setModelData(QWidget *editor, QAbstractItemModel *model,
+                    const QModelIndex &ind) const override;
 
-  QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &ind) const;
+  QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &ind) const override;
 
   void updateEditorGeometry(QWidget *editor, const QStyleOptionViewItem &option,
-                            const QModelIndex &ind) const;
+                            const QModelIndex &ind) const override;
 
   void paint(QPainter *painter, const QStyleOptionViewItem &option,
-             const QModelIndex &ind) const;
+             const QModelIndex &ind) const override;
 
  private:
   void drawColor(QPainter *painter, const QStyleOptionViewItem &option,
