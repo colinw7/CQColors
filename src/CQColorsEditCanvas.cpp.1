@@ -3,8 +3,6 @@
 #include <CQColorsPalette.h>
 #include <CQUtil.h>
 #include <CSafeIndex.h>
-#include <CMathGen.h>
-#include <CMathUtil.h>
 
 #include <QLabel>
 #include <QMouseEvent>
@@ -497,9 +495,9 @@ moveNearestDefinedColor(const NearestData &nearestData, double dy)
       v += dy;
     }
 
-    h = CMathGen::clamp(h, 0.0, 1.0);
-    s = CMathGen::clamp(s, 0.0, 1.0);
-    v = CMathGen::clamp(v, 0.0, 1.0);
+    h = CMathUtil::clamp(h, 0.0, 1.0);
+    s = CMathUtil::clamp(s, 0.0, 1.0);
+    v = CMathUtil::clamp(v, 0.0, 1.0);
 
     newColor.setHsvF(h, s, v);
   }
@@ -519,9 +517,9 @@ moveNearestDefinedColor(const NearestData &nearestData, double dy)
       b += dy;
     }
 
-    r = CMathGen::clamp(r, 0.0, 1.0);
-    g = CMathGen::clamp(g, 0.0, 1.0);
-    b = CMathGen::clamp(b, 0.0, 1.0);
+    r = CMathUtil::clamp(r, 0.0, 1.0);
+    g = CMathUtil::clamp(g, 0.0, 1.0);
+    b = CMathUtil::clamp(b, 0.0, 1.0);
 
     newColor.setRgbF(r, g, b);
   }
