@@ -1506,6 +1506,22 @@ class CQColorsPaletteRedGreen : public CQColorsDefinedPalette {
   }
 };
 
+class CQColorsPaletteGreenRed : public CQColorsDefinedPalette {
+ public:
+  CQColorsPaletteGreenRed() {
+    int n = 0;
+
+    addRGBColor(n++, 0.069825, 0.980972, 0.209415);
+    addRGBColor(n++, 0.309102, 0.965438, 0.200290);
+    addRGBColor(n++, 0.508003, 0.928130, 0.190311);
+    addRGBColor(n++, 0.697124, 0.861631, 0.183108);
+    addRGBColor(n++, 0.813397, 0.762829, 0.172946);
+    addRGBColor(n++, 0.867491, 0.605676, 0.163867);
+    addRGBColor(n++, 0.912047, 0.376471, 0.148028);
+    addRGBColor(n++, 0.918181, 0.094118, 0.132219);
+  }
+};
+
 class CQColorsPaletteRdgy : public CQColorsDefinedPalette {
  public:
   CQColorsPaletteRdgy() {
@@ -2187,6 +2203,7 @@ addPalettes(CQColorsMgr *mgr)
   mgr->addNamedPalette("red_gray"        , new CQColorsPaletteRdgy    );
   mgr->addNamedPalette("red_blue"        , new CQColorsPaletteRedBlue );
   mgr->addNamedPalette("red_green"       , new CQColorsPaletteRedGreen);
+  mgr->addNamedPalette("green_red"       , new CQColorsPaletteGreenRed);
   mgr->addNamedPalette("red_yellow_blue" , new CQColorsPaletteRdylbu  );
 //mgr->addNamedPalette("red_yellow_green", new CQColorsPaletteRdylgn  ); // same as spectral
 

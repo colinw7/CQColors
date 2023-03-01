@@ -22,7 +22,7 @@ addNamedPalettes()
   addNamedPalette("moreland" );
   addNamedPalette("distinct1");
   addNamedPalette("distinct2");
-  addNamedPalette("red_green");
+  addNamedPalette("green_red");
 }
 
 CQColorsTheme::
