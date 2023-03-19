@@ -21,7 +21,7 @@ class CQColorsEditDefinedColors : public QTableWidget {
   using RealColors = std::vector<RealColor>;
 
  public:
-  CQColorsEditDefinedColors(QWidget *parent=0);
+  CQColorsEditDefinedColors(QWidget *parent=nullptr);
 
   void updateColors(CQColorsPalette *palette);
 

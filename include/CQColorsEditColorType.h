@@ -9,7 +9,7 @@ class CQColorsEditColorType : public QComboBox {
   Q_OBJECT
 
  public:
-  CQColorsEditColorType(QWidget *parent=0);
+  CQColorsEditColorType(QWidget *parent=nullptr);
 
   CQColorsPalette::ColorType type() const;
 

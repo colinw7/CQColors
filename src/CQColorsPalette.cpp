@@ -757,7 +757,7 @@ bool fileToLines(const QString &filename, QStringList &lines) {
     if (fp)
       fclose(fp);
 
-    fp = 0;
+    fp = nullptr;
   };
 
   //---

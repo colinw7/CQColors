@@ -8,7 +8,7 @@ class CQColorsEditModel : public QComboBox {
   Q_OBJECT
 
  public:
-  CQColorsEditModel(QWidget *parent=0);
+  CQColorsEditModel(QWidget *parent=nullptr);
 };
 
 #endif
