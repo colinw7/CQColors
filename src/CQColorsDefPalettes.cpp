@@ -1550,6 +1550,20 @@ class CQColorsPaletteRdpu : public CQColorsDefinedPalette {
   }
 };
 
+class CQColorsPaletteLightPinks : public CQColorsDefinedPalette {
+ public:
+  CQColorsPaletteLightPinks() {
+    addDefinedColor(0.0, QColor("#FFF7F3"));
+    addDefinedColor(1.0, QColor("#FDE0EB"));
+    addDefinedColor(2.0, QColor("#FCCBE2"));
+    addDefinedColor(3.0, QColor("#FAB9D4"));
+    addDefinedColor(4.0, QColor("#F7A8C5"));
+    addDefinedColor(5.0, QColor("#F195B7"));
+    addDefinedColor(6.0, QColor("#E881AA"));
+    addDefinedColor(7.0, QColor("#D56297"));
+  }
+};
+
 class CQColorsPaletteRdylbu : public CQColorsDefinedPalette {
  public:
   CQColorsPaletteRdylbu() {
@@ -2215,6 +2229,7 @@ addPalettes(CQColorsMgr *mgr)
   mgr->addNamedPalette("oranges"    , new CQColorsPaletteOranges   );
   mgr->addNamedPalette("purples"    , new CQColorsPalettePurples   );
   mgr->addNamedPalette("pinks"      , new CQColorsPaletteRdpu      );
+  mgr->addNamedPalette("light_pinks", new CQColorsPaletteLightPinks);
   mgr->addNamedPalette("dark_blues" , new CQColorsPaletteDarkBlues );
   mgr->addNamedPalette("dark_greens", new CQColorsPaletteDarkGreens);
 
