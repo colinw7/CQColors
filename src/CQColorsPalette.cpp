@@ -63,24 +63,10 @@ assign(const CQColorsPalette &palette)
   colorModel_ = palette.colorModel_;
 
   // Color Model
-  rModel_        = palette.rModel_;
-  gModel_        = palette.gModel_;
-  bModel_        = palette.bModel_;
-  gray_          = palette.gray_;
-  redNegative_   = palette.redNegative_;
-  greenNegative_ = palette.greenNegative_;
-  blueNegative_  = palette.blueNegative_;
-  redMin_        = palette.redMin_;
-  redMax_        = palette.redMax_;
-  greenMin_      = palette.greenMin_;
-  greenMax_      = palette.greenMax_;
-  blueMin_       = palette.blueMin_;
-  blueMax_       = palette.blueMax_;
+  modelData_ = palette.modelData_;
 
   // Functions
-  rf_ = palette.rf_;
-  gf_ = palette.gf_;
-  bf_ = palette.bf_;
+  tclFnData_ = palette.tclFnData_;
 
   // CubeHelix
   if (palette.cubeHelix_) {
@@ -99,14 +85,9 @@ assign(const CQColorsPalette &palette)
   //---
 
   // Defined
-  definedColors_      = palette.definedColors_;
-  definedValueColors_ = palette.definedValueColors_;
+  definedData_ = palette.definedData_;
 
-  definedMin_ = palette.definedMin_;
-  definedMax_ = palette.definedMax_;
-
-  definedDistinct_ = palette.definedDistinct_;
-  definedInverted_ = palette.definedInverted_;
+  //---
 
   // Misc
   defaultNumColors_ = palette.defaultNumColors_;
@@ -180,21 +161,21 @@ void
 CQColorsPalette::
 setRedFunction(const std::string &fn)
 {
-  rf_.fn = fn;
+  tclFnData_.rf.fn = fn;
 }
 
 void
 CQColorsPalette::
 setGreenFunction(const std::string &fn)
 {
-  gf_.fn = fn;
+  tclFnData_.gf.fn = fn;
 }
 
 void
 CQColorsPalette::
 setBlueFunction(const std::string &fn)
 {
-  bf_.fn = fn;
+  tclFnData_.bf.fn = fn;
 }
 
 void
@@ -298,16 +279,70 @@ setRgbModel(int r, int g, int b)
 {
   colorType_ = ColorType::MODEL;
 
-  rModel_ = r;
-  gModel_ = g;
-  bModel_ = b;
+  modelData_.rModel = r;
+  modelData_.gModel = g;
+  modelData_.bModel = b;
+}
+
+//---
+
+int
+CQColorsPalette::
+numDefinedColors() const
+{
+  return int(definedData_.definedColors.size());
+}
+
+CQColorsPalette::DefinedColors
+CQColorsPalette::
+definedColors() const
+{
+  return definedData_.definedColors;
+}
+
+CQColorsPalette::ColorMap
+CQColorsPalette::
+definedValueColors() const
+{
+  return definedData_.definedValueColors;
+}
+
+QColor
+CQColorsPalette::
+definedColor(int i) const
+{
+  auto nc = definedData_.definedColors.size();
+  assert(i >= 0 && i < int(nc));
+
+  if (isInverted()) i = int(nc - 1 - size_t(i));
+
+  return definedColorData(i).c;
+}
+
+double
+CQColorsPalette::
+definedColorValue(int i) const
+{
+  auto nc = definedData_.definedColors.size();
+  assert(i >= 0 && i < int(nc));
+
+  if (isInverted()) i = int(nc - 1 - size_t(i));
+
+  return definedColorData(i).v;
+}
+
+CQColorsPalette::DefinedColor
+CQColorsPalette::
+definedColorData(int i) const
+{
+  return definedData_.definedColors[size_t(i)];
 }
 
 bool
 CQColorsPalette::
 isDefinedColor(double v) const
 {
-  return (definedValueColors_.find(v) != definedValueColors_.end());
+  return (definedData_.definedValueColors.find(v) != definedData_.definedValueColors.end());
 }
 
 void
@@ -316,23 +351,23 @@ addDefinedColor(double v, const QColor &c)
 {
   assert(! isDefinedColor(v));
 
-  definedColors_.push_back(DefinedColor(v, c));
+  definedData_.definedColors.push_back(DefinedColor(v, c));
 
-  definedValueColors_[v] = c;
+  definedData_.definedValueColors[v] = c;
 
-  definedMin_ = definedValueColors_. begin()->first;
-  definedMax_ = definedValueColors_.rbegin()->first;
+  definedData_.definedMin = definedData_.definedValueColors. begin()->first;
+  definedData_.definedMax = definedData_.definedValueColors.rbegin()->first;
 }
 
 void
 CQColorsPalette::
 resetDefinedColors()
 {
-  definedColors_     .clear();
-  definedValueColors_.clear();
+  definedData_.definedColors     .clear();
+  definedData_.definedValueColors.clear();
 
-  definedMin_ = 0.0;
-  definedMax_ = 0.0;
+  definedData_.definedMin = 0.0;
+  definedData_.definedMax = 0.0;
 }
 
 void
@@ -341,11 +376,11 @@ setDefinedColor(int i, const QColor &c)
 {
   assert(i >= 0 && i < numDefinedColors());
 
-  DefinedColor &dc = definedColors_[size_t(i)];
+  auto &dc = definedData_.definedColors[size_t(i)];
 
   dc.c = c;
 
-  definedValueColors_[dc.v] = c;
+  definedData_.definedValueColors[dc.v] = c;
 }
 
 void
@@ -384,36 +419,50 @@ double
 CQColorsPalette::
 mapDefinedColorX(double x) const
 {
-  double d = definedMax_ - definedMin_;
+  double d = definedData_.definedMax - definedData_.definedMin;
 
-  return (d > 0.0 ? (x - definedMin_)/d : x);
+  return (d > 0.0 ? (x - definedData_.definedMin)/d : x);
 }
 
 double
 CQColorsPalette::
 unmapDefinedColorX(double x) const
 {
-  double d = definedMax_ - definedMin_;
+  double d = definedData_.definedMax - definedData_.definedMin;
 
-  return x*d + definedMin_;
+  return x*d + definedData_.definedMin;
+}
+
+bool
+CQColorsPalette::
+isDistinct() const
+{
+  return definedData_.definedDistinct;
 }
 
 void
 CQColorsPalette::
 setDistinct(bool b)
 {
-  definedDistinct_ = b;
+  definedData_.definedDistinct = b;
 
   emit colorsChanged();
 
   gradientImageDirty_ = true;
 }
 
+bool
+CQColorsPalette::
+isInverted() const
+{
+  return definedData_.definedInverted;
+}
+
 void
 CQColorsPalette::
 setInverted(bool b)
 {
-  definedInverted_ = b;
+  definedData_.definedInverted = b;
 
   emit colorsChanged();
 
@@ -429,10 +478,8 @@ getColor(int i, int n, WrapMode wrapMode) const
   assert(i >= 0);
 
   if      (colorType() == ColorType::DEFINED) {
-    auto nc = definedColors_.size();
-
-    if (nc <= 0)
-      return QColor();
+    auto nc = definedData_.definedColors.size();
+    if (nc <= 0) return QColor();
 
     if (isInverted())
       i = n - 1 - i;
@@ -467,11 +514,11 @@ getColor(int i, int n, WrapMode wrapMode) const
         return QColor();
     }
 
-    return definedColors_[size_t(i)].c;
+    return definedColorData(i).c;
   }
   else {
     if (n < 0)
-      n = defaultNumColors_; // TODO: default value
+      n = defaultNumColors(); // TODO: default value
 
     if (n <= 0)
       return QColor();
@@ -487,7 +534,7 @@ CQColorsPalette::
 getColor(double x, bool scale, bool invert) const
 {
   if      (colorType() == ColorType::DEFINED) {
-    if (definedColors_.empty()) {
+    if (definedData_.definedColors.empty()) {
       QColor c1(Qt::black);
       QColor c2(Qt::white);
 
@@ -508,14 +555,14 @@ getColor(double x, bool scale, bool invert) const
     if (isInverted())
       x = 1.0 - x;
 
-    auto p = definedValueColors_.begin();
+    auto p = definedData_.definedValueColors.begin();
 
     auto x1 = mapDefinedColorX((*p).first);
     auto c1 = (*p).second;
 
     if (x <= x1) return c1;
 
-    for (++p; p != definedValueColors_.end(); ++p) {
+    for (++p; p != definedData_.definedValueColors.end(); ++p) {
       auto x2 = mapDefinedColorX((*p).first);
       auto c2 = (*p).second;
 
@@ -584,13 +631,13 @@ getColor(double x, bool scale, bool invert) const
     QVariant res;
     bool     ok;
 
-    if (qtcl->evalExpr(rf_.fn.c_str(), res))
+    if (qtcl->evalExpr(tclFnData_.rf.fn.c_str(), res))
       r = CQTclUtil::toReal(res, ok);
 
-    if (qtcl->evalExpr(gf_.fn.c_str(), res))
+    if (qtcl->evalExpr(tclFnData_.gf.fn.c_str(), res))
       g = CQTclUtil::toReal(res, ok);
 
-    if (qtcl->evalExpr(bf_.fn.c_str(), res))
+    if (qtcl->evalExpr(tclFnData_.bf.fn.c_str(), res))
       b = CQTclUtil::toReal(res, ok);
 #endif
 
@@ -884,13 +931,13 @@ unset()
   colorModel_ = ColorModel::RGB;
 
   // Model
-  rModel_        = 7;
-  gModel_        = 5;
-  bModel_        = 15;
-  gray_          = false;
-  redNegative_   = false;
-  greenNegative_ = false;
-  blueNegative_  = false;
+  modelData_.rModel        = 7;
+  modelData_.gModel        = 5;
+  modelData_.bModel        = 15;
+  modelData_.gray          = false;
+  modelData_.redNegative   = false;
+  modelData_.greenNegative = false;
+  modelData_.blueNegative  = false;
 
   // Defined
   resetDefinedColors();

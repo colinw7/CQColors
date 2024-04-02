@@ -40,7 +40,8 @@ class CQColorsPalette : public QObject {
     MODEL,
     DEFINED,
     FUNCTIONS,
-    CUBEHELIX
+    CUBEHELIX,
+    CUSTOM
   };
 
   enum class ColorModel {
@@ -77,6 +78,7 @@ class CQColorsPalette : public QObject {
     else if (str == "defined"  ) return ColorType::DEFINED;
     else if (str == "functions") return ColorType::FUNCTIONS;
     else if (str == "cubehelix") return ColorType::CUBEHELIX;
+    else if (str == "custom"   ) return ColorType::CUSTOM;
 
     return ColorType::NONE;
   }
@@ -87,6 +89,7 @@ class CQColorsPalette : public QObject {
       case ColorType::DEFINED  : return "defined";
       case ColorType::FUNCTIONS: return "functions";
       case ColorType::CUBEHELIX: return "cubehelix";
+      case ColorType::CUSTOM   : return "custom";
       default                  : return "";
     }
   }
@@ -158,70 +161,63 @@ class CQColorsPalette : public QObject {
   // model
   void setRgbModel(int r, int g, int b);
 
-  int redModel() const { return rModel_; }
-  void setRedModel(int r) { rModel_ = r; }
+  int redModel() const { return modelData_.rModel; }
+  void setRedModel(int r) { modelData_.rModel = r; }
 
-  int greenModel() const { return gModel_; }
-  void setGreenModel(int r) { gModel_ = r; }
+  int greenModel() const { return modelData_.gModel; }
+  void setGreenModel(int r) { modelData_.gModel = r; }
 
-  int blueModel() const { return bModel_; }
-  void setBlueModel(int r) { bModel_ = r; }
+  int blueModel() const { return modelData_.bModel; }
+  void setBlueModel(int r) { modelData_.bModel = r; }
 
-  bool isGray() const { return gray_; }
-  void setGray(bool b) { gray_ = b; }
+  bool isGray() const { return modelData_.gray; }
+  void setGray(bool b) { modelData_.gray = b; }
 
-  bool isRedNegative() const { return redNegative_; }
-  void setRedNegative(bool b) { redNegative_ = b; }
+  bool isRedNegative() const { return modelData_.redNegative; }
+  void setRedNegative(bool b) { modelData_.redNegative = b; }
 
-  bool isGreenNegative() const { return greenNegative_; }
-  void setGreenNegative(bool b) { greenNegative_ = b; }
+  bool isGreenNegative() const { return modelData_.greenNegative; }
+  void setGreenNegative(bool b) { modelData_.greenNegative = b; }
 
-  bool isBlueNegative() const { return blueNegative_; }
-  void setBlueNegative(bool b) { blueNegative_ = b; }
+  bool isBlueNegative() const { return modelData_.blueNegative; }
+  void setBlueNegative(bool b) { modelData_.blueNegative = b; }
 
-  void setRedMin(double r) { redMin_ = std::min(std::max(r, 0.0), 1.0); }
-  double redMin() const { return redMin_; }
-  void setRedMax(double r) { redMax_ = std::min(std::max(r, 0.0), 1.0); }
-  double redMax() const { return redMax_; }
+  void setRedMin(double r) { modelData_.redMin = std::min(std::max(r, 0.0), 1.0); }
+  double redMin() const { return modelData_.redMin; }
+  void setRedMax(double r) { modelData_.redMax = std::min(std::max(r, 0.0), 1.0); }
+  double redMax() const { return modelData_.redMax; }
 
-  void setGreenMin(double r) { greenMin_ = std::min(std::max(r, 0.0), 1.0); }
-  double greenMin() const { return greenMin_; }
-  void setGreenMax(double r) { greenMax_ = std::min(std::max(r, 0.0), 1.0); }
-  double greenMax() const { return greenMax_; }
+  void setGreenMin(double r) { modelData_.greenMin = std::min(std::max(r, 0.0), 1.0); }
+  double greenMin() const { return modelData_.greenMin; }
+  void setGreenMax(double r) { modelData_.greenMax = std::min(std::max(r, 0.0), 1.0); }
+  double greenMax() const { return modelData_.greenMax; }
 
-  void setBlueMin(double r) { blueMin_ = std::min(std::max(r, 0.0), 1.0); }
-  double blueMin() const { return blueMin_; }
-  void setBlueMax(double r) { blueMax_ = std::min(std::max(r, 0.0), 1.0); }
-  double blueMax() const { return blueMax_; }
+  void setBlueMin(double r) { modelData_.blueMin = std::min(std::max(r, 0.0), 1.0); }
+  double blueMin() const { return modelData_.blueMin; }
+  void setBlueMax(double r) { modelData_.blueMax = std::min(std::max(r, 0.0), 1.0); }
+  double blueMax() const { return modelData_.blueMax; }
 
   //---
 
   // defined colors
 
   // get number of defined colors
-  int numDefinedColors() const { return int(definedColors_.size()); }
+  int numDefinedColors() const;
 
   // get defined color
-  const DefinedColors &definedColors() const { return definedColors_; }
-  const ColorMap &definedValueColors() const { return definedValueColors_; }
+  DefinedColors definedColors() const;
+  ColorMap definedValueColors() const;
 
   // get defined color
-  const QColor &definedColor(int i) const {
-    auto nc = definedColors_.size();
-    assert(i >= 0 && i < int(nc));
-    if (isInverted()) i = int(nc - 1 - size_t(i));
-    return definedColors_[size_t(i)].c;
-  }
+  QColor definedColor(int i) const;
 
   // get defined color value
-  double definedColorValue(int i) const {
-    auto nc = definedColors_.size();
-    assert(i >= 0 && i < int(nc));
-    if (isInverted()) i = int(nc - 1 - size_t(i));
-    return definedColors_[size_t(i)].v;
-  }
+  double definedColorValue(int i) const;
 
-  // is existing defned color
+  // get defined color data
+  DefinedColor definedColorData(int i) const;
+
+  // is existing defined color
   bool isDefinedColor(double v) const;
 
   // add new defined color
@@ -242,11 +238,11 @@ class CQColorsPalette : public QObject {
   double unmapDefinedColorX(double x) const;
 
   // are defined colors meant to be used as distinct values
-  bool isDistinct() const { return definedDistinct_; }
+  bool isDistinct() const;
   void setDistinct(bool b);
 
   // are defined colors inverted
-  bool isInverted() const { return definedInverted_; }
+  bool isInverted() const;
   void setInverted(bool b);
 
   //---
@@ -279,13 +275,13 @@ class CQColorsPalette : public QObject {
   //---
 
   // functions
-  const std::string &redFunction() const { return rf_.fn; }
+  const std::string &redFunction() const { return tclFnData_.rf.fn; }
   void setRedFunction(const std::string &fn);
 
-  const std::string &greenFunction() const { return gf_.fn; }
+  const std::string &greenFunction() const { return tclFnData_.gf.fn; }
   void setGreenFunction(const std::string &fn);
 
-  const std::string &blueFunction() const { return bf_.fn; }
+  const std::string &blueFunction() const { return tclFnData_.bf.fn; }
   void setBlueFunction(const std::string &fn);
 
   void setFunctions(const std::string &rf, const std::string &gf, const std::string &bf);
@@ -411,44 +407,58 @@ class CQColorsPalette : public QObject {
   ColorModel   colorModel_    { ColorModel::RGB };  //!< color model
 
   // Model
-  int          rModel_        { 7 };     //!< red model number
-  int          gModel_        { 5 };     //!< green model number
-  int          bModel_        { 15 };    //!< blue model number
-  bool         gray_          { false }; //!< is gray
-  bool         redNegative_   { false }; //!< is red negated
-  bool         greenNegative_ { false }; //!< is green negated
-  bool         blueNegative_  { false }; //!< is blue negated
-  double       redMin_        { 0.0 };   //!< red minimum
-  double       redMax_        { 1.0 };   //!< red maximum
-  double       greenMin_      { 0.0 };   //!< green minimum
-  double       greenMax_      { 1.0 };   //!< green maximum
-  double       blueMin_       { 0.0 };   //!< blue minimum
-  double       blueMax_       { 1.0 };   //!< blue maximum
+  struct ModelData {
+    int    rModel        { 7 };     //!< red model number
+    int    gModel        { 5 };     //!< green model number
+    int    bModel        { 15 };    //!< blue model number
+    bool   gray          { false }; //!< is gray
+    bool   redNegative   { false }; //!< is red negated
+    bool   greenNegative { false }; //!< is green negated
+    bool   blueNegative  { false }; //!< is blue negated
+    double redMin        { 0.0 };   //!< red minimum
+    double redMax        { 1.0 };   //!< red maximum
+    double greenMin      { 0.0 };   //!< green minimum
+    double greenMax      { 1.0 };   //!< green maximum
+    double blueMin       { 0.0 };   //!< blue minimum
+    double blueMax       { 1.0 };   //!< blue maximum
+  };
+
+  ModelData modelData_;
 
   // Functions
-  ColorFn       rf_;                       //!< red color tcl function
-  ColorFn       gf_;                       //!< green color tcl function
-  ColorFn       bf_;                       //!< blue color tcl function
+  struct TclFnData {
+    ColorFn rf; //!< red color tcl function
+    ColorFn gf; //!< green color tcl function
+    ColorFn bf; //!< blue color tcl function
+  };
+
+  TclFnData tclFnData_;
+
 #ifdef CQCOLORS_TCL
-  CQTcl*        qtcl_         { nullptr }; //!< qtcl pointer for functions
+  CQTcl* qtcl_ { nullptr }; //!< qtcl pointer for functions
 #endif
 
   // CubeHelix
-  CCubeHelix*   cubeHelix_    { nullptr }; //!< cube helix data
-  bool          cubeNegative_ { false };   //!< is cube helix negated
+  CCubeHelix* cubeHelix_    { nullptr }; //!< cube helix data
+  bool        cubeNegative_ { false };   //!< is cube helix negated
 
   // Defined
-  DefinedColors definedColors_;                 //!< array of defined colors
-  ColorMap      definedValueColors_;            //!< map of defined colors by value
-  double        definedMin_          { 0.0 };   //!< colors min value (for scaling)
-  double        definedMax_          { 0.0 };   //!< colors max value (for scaling)
-  bool          definedDistinct_     { false }; //!< prefer use distinct colors
-  bool          definedInverted_     { false }; //!< invert color order
-  int           defaultNumColors_    { 100 };   //!< default number of colors for interp
+  struct DefinedData {
+    DefinedColors definedColors;                //!< array of defined colors
+    ColorMap      definedValueColors;           //!< map of defined colors by value
+    double        definedMin         { 0.0 };   //!< colors min value (for scaling)
+    double        definedMax         { 0.0 };   //!< colors max value (for scaling)
+    bool          definedDistinct    { false }; //!< prefer use distinct colors
+    bool          definedInverted    { false }; //!< invert color order
+  };
+
+  DefinedData definedData_;
+
+  int defaultNumColors_ { 100 };   //!< default number of colors for interp
 
 #if 0
   // Misc
-  double        gamma_ { 1.5 }; //!< gamma value
+  double gamma_ { 1.5 }; //!< gamma value
 #endif
 
   QImage gradientImage_;               //!< gradient image (of size)
